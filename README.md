@@ -44,15 +44,16 @@ harness never overwrites or resumes published evidence.
 
 ## Run the full workflow
 
-Use an exact model identifier available to your account, generate a new live input directory,
-and set the credential in the environment:
+Set your exact model identifier and credential once in `.env` (copy `.env.example` and replace
+the placeholders), then generate a new live input directory:
 
 ```bash
-export MODEL_ID="replace-with-an-available-model-id"
-uv run dsx-pilot generate pilot-live-inputs --model "$MODEL_ID"
-export OPENAI_API_KEY="replace-with-your-api-key"
+uv run dsx-pilot generate pilot-live-inputs
 uv run dsx-pilot run pilot-live-inputs pilot-run --order-seed 731
 ```
+
+`--model` remains available when you need a one-off override. `.env` is ignored by Git, while
+`.env.example` is the safe template to share.
 
 `run` makes paid live OpenAI requests and executes exactly three pairs sequentially. It
 re-loads and re-proves the generated requests immediately before the client boundary, writes

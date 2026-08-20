@@ -55,22 +55,18 @@ request_configuration.json
 For the default seed, the printed case digest must be
 `57eec293b8b511ac9c1cf244eded3dddd483f375b47435bd92db67dcc5af5c9a`.
 
-Before a live run, regenerate with the exact model identifier you intend to call. Use a new
+Before a live run, copy `.env.example` to `.env` and set the exact model identifier and API
+key you intend to call. The local `.env` file is ignored by Git. Then regenerate with a new
 directory because generation never overwrites:
 
 ```bash
-export MODEL_ID="replace-with-an-available-model-id"
-uv run dsx-pilot generate pilot-live-inputs --model "$MODEL_ID"
+uv run dsx-pilot generate pilot-live-inputs
 ```
 
 ## 3. Run three live pairs
 
-Set the credential in the environment. Do not put it in a command argument, JSON artifact,
+The credential is loaded from `.env`. Do not put it in a command argument, JSON artifact,
 documentation, or shell history.
-
-```bash
-export OPENAI_API_KEY="replace-with-your-api-key"
-```
 
 Choose and record a base order seed, then start a new run root:
 

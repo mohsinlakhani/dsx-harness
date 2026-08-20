@@ -54,6 +54,51 @@ def _generate(runner: CliRunner, destination: Path, *options: str) -> None:
     assert result.exit_code == 0, result.output
 
 
+def test_load_dotenv_and_generate_uses_model_id(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    cli._load_dotenv(tmp_path / "missing.env")
+    cli._load_dotenv(tmp_path)
+    dotenv_path = tmp_path / ".env"
+    dotenv_path.write_text(
+        "# comment\n"
+        "not-an-assignment\n"
+        "=missing-key\n"
+        "invalid-key=value\n"
+        "export MODEL_ID='dotenv-model'\n"
+        'OPENAI_API_KEY="dotenv-key"\n'
+        "EMPTY=\n",
+        encoding="utf-8",
+    )
+    monkeypatch.delenv("MODEL_ID", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    cli._load_dotenv(dotenv_path)
+    assert os.environ["MODEL_ID"] == "dotenv-model"
+    assert os.environ["OPENAI_API_KEY"] == "dotenv-key"
+    assert "EMPTY" not in os.environ
+
+    monkeypatch.setenv("MODEL_ID", "shell-model")
+    cli._load_dotenv(dotenv_path)
+    assert os.environ["MODEL_ID"] == "shell-model"
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("MODEL_ID")
+    runner = CliRunner()
+    result = runner.invoke(cli.app, ["generate", "generated"])
+
+    assert result.exit_code == 0, result.output
+    configuration = RequestConfiguration.model_validate_json(
+        (tmp_path / "generated" / "request_configuration.json").read_text(encoding="utf-8")
+    )
+    assert configuration.model_identifier == "dotenv-model"
+
+    dotenv_path.unlink()
+    monkeypatch.delenv("MODEL_ID")
+    result = runner.invoke(cli.app, ["generate", "missing-model"])
+    assert result.exit_code != 0
+    assert "model identifier is required" in result.output
+
+
 def _run(
     runner: CliRunner,
     monkeypatch: pytest.MonkeyPatch,

@@ -66,6 +66,37 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
+
+def _load_dotenv(path: Path) -> None:
+    """Load simple KEY=VALUE settings without overriding the real environment."""
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except FileNotFoundError:
+        return
+    except OSError:
+        return
+
+    for line in lines:
+        entry = line.strip()
+        if not entry or entry.startswith("#") or "=" not in entry:
+            continue
+        key, value = entry.split("=", maxsplit=1)
+        key = key.strip()
+        value = value.strip()
+        if key.startswith("export "):
+            key = key.removeprefix("export ").strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        if key and value and key.replace("_", "").isalnum():
+            os.environ.setdefault(key, value)
+
+
+@app.callback()
+def load_environment() -> None:
+    """Load optional local configuration before running a command."""
+    _load_dotenv(Path.cwd() / ".env")
+
+
 def _abort(message: str) -> NoReturn:
     typer.echo(f"Error: {message}", err=True)
     raise typer.Exit(code=1)
@@ -276,7 +307,10 @@ def generate(
     output_directory: Annotated[
         Path, typer.Argument(help="New directory for generated pilot artifacts.")
     ],
-    model: Annotated[str, typer.Option("--model", help="Exact model identifier.")],
+    model: Annotated[
+        str | None,
+        typer.Option("--model", help="Exact model identifier (defaults to MODEL_ID)."),
+    ] = None,
     seed: Annotated[
         int, typer.Option("--seed", help="Deterministic pilot-case generation seed.")
     ] = DEFAULT_GENERATION_SEED,
@@ -289,11 +323,14 @@ def generate(
     ] = DEFAULT_RESPONSE_SCHEMA_NAME,
 ) -> None:
     """Generate, render, prove, and persist a new immutable pilot input bundle."""
+    model_identifier = os.environ.get("MODEL_ID") if model is None else model
+    if model is None and not model_identifier:
+        _abort("a model identifier is required; pass --model or set MODEL_ID in .env")
     case = generate_pilot_case(seed)
     packet = candidate_packet()
     try:
         configuration = RequestConfiguration(
-            model_identifier=model,
+            model_identifier=model_identifier,
             system_prompt=system_prompt,
             response_schema_name=response_schema_name,
         )

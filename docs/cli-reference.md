@@ -27,7 +27,7 @@ dsx-pilot generate [OPTIONS] OUTPUT_DIRECTORY
 
 | Option | Type | Default | Meaning |
 | --- | --- | --- | --- |
-| `--model` | string | required | Exact model identifier recorded in both rendered requests. |
+| `--model` | string | no | Exact model identifier recorded in both rendered requests. Defaults to `MODEL_ID` from `.env`. |
 | `--seed` | integer | `20260819` | Pilot-case generation seed. The default seed is checked against the frozen case digest. |
 | `--system-prompt` | string | `Return only a valid structured analysis matching the requested response schema.` | System prompt shared by both arms. |
 | `--response-schema-name` | string | `analysis_decision` | Structured-output schema name recorded in the request and sent to the provider; 1–64 ASCII letters, digits, underscores, or hyphens. |
@@ -38,6 +38,9 @@ Example:
 ```bash
 uv run dsx-pilot generate pilot-generated --model offline-example
 ```
+
+For normal live runs, create `.env` from `.env.example` and set `MODEL_ID` once; then omit
+`--model`. Environment variables supplied by the shell take precedence over `.env` values.
 
 The command prints the output path, the case digest, both full-request digests, and the
 common-projection digest. It does not print the 5,000 case rows.
