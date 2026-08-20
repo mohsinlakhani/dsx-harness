@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dsx-harness"
+version = "0.1.0"
+description = "DSX proof-first pilot harness"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = [
+  "openai>=3.3.1,<4",
+  "pydantic>=2",
+  "typer>=0.12",
+]
+
+[project.scripts]
+dsx-pilot = "dsx.pilot.cli:app"
+
+[dependency-groups]
+dev = [
+  "hypothesis>=6",
+  "mypy>=1.13",
+  "pytest>=8",
+  "pytest-cov>=6",
+  "ruff>=0.8",
+]
+
+[tool.pytest.ini_options]
+markers = ["live: tests that make live external requests"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["dsx.pilot"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dsx"]
