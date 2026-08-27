@@ -326,6 +326,7 @@ def generate(
     model_identifier = os.environ.get("MODEL_ID") if model is None else model
     if model is None and not model_identifier:
         _abort("a model identifier is required; pass --model or set MODEL_ID in .env")
+    assert model_identifier is not None
     case = generate_pilot_case(seed)
     packet = candidate_packet()
     try:
