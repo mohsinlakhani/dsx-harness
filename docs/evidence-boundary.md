@@ -1,5 +1,10 @@
 # Evidence boundary
 
+This document describes **Context Lift**, the frozen packet-on versus packet-off pilot. Its
+separate successor, **Data Access**, compares packet delivery with a full-data discovery arm;
+see [Data Access](data-access.md). The Context Lift evidence and persisted contracts are not
+reused or reinterpreted as Data Access results.
+
 This pilot asks a narrow question: for one deterministic synthetic case, how do model
 decisions differ when a hand-authored evidence packet is available versus absent? It does
 not establish that DSX is generally superior, and it is not a causal proof against a capable
@@ -143,12 +148,27 @@ could compute prevalence, missingness, likely identifier fields, baseline accura
 metric implications itself. This pilot does not compare the packet with that agent and cannot
 show that DSX beats it.
 
-A broader causal claim would require a different design: multiple representative cases,
-pre-registered scoring, enough repetitions for uncertainty estimates, and an explicit
-equal-discovery control with equivalent data and tool access.
+A broader causal claim requires multiple representative cases, pre-registered scoring, and
+enough repetitions for uncertainty estimates. Data Access now supplies the explicit
+full-data-discovery control, but an initial one-case execution remains descriptive.
+
+## Data Access boundary
+
+Data Access gives `full_data` full logical access to the prepared dataset through bounded,
+read-only SQL and gives `dsx_packet` the opaque committed packet instead. It is a
+capability-ceiling comparison: a discovery agent may inspect facts that are absent from the
+packet, and it may spend more calls, time, tokens, and cost doing so. Those are measurements,
+not hidden equalization rules.
+
+The public blind bundle contains only decisions and claim statements. Packet payloads, SQL,
+query results, evidence locators, source data, arm assignment, operational metrics, and
+automatic claim scores remain private until judgments freeze. SQL result digests are replayed
+against the frozen DuckDB database during reveal; generic packet pointers bind to the frozen
+packet artifact but do not claim a computation replay without compatible packet tracing.
 
 ## Related documentation
 
 - [CLI reference](cli-reference.md)
 - [How to run the pilot](how-to-run-pilot.md)
+- [Data Access](data-access.md)
 - [Project introduction](../README.md)

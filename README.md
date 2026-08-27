@@ -1,18 +1,21 @@
-# DSX proof-first pilot harness
+# DSX experiment harness
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![Python: 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776AB.svg)](https://www.python.org/)
 
-A packet experiment fails when prompt drift, retries, or early label access can explain the
-result. This harness makes those boundaries inspectable: it proves the packet is the sole
-request delta, records sequential attempts append-only, and freezes blind judgments before
-revealing official arms.
+DSX contains two deliberately separate experiments. Both keep prompts, execution, and
+evaluation evidence inspectable rather than treating them as operator assumptions.
 
-Its claim is deliberately narrow: **one-case unscored information-availability pilot**. The
-pilot does not claim statistical significance, general model superiority, or that DSX beats
-a capable agent with equivalent access to the underlying rows and discovery tools.
+**Context Lift** is the frozen packet-on versus packet-off information-availability pilot. Its
+claim remains deliberately narrow: **one-case unscored information-availability pilot**.
 
-## Get a visible offline result in three steps
+**Data Access v2** compares three fresh same-model arms: opaque `dsx_packet`, full data via a
+bounded read-only SQL tool, and `packet_and_full_data`. It tests a capability ceiling and
+measures quality, time, calls, token/cost use, failed discovery, and evidence reproducibility.
+Initial one-case results are descriptive; they do not establish statistical significance or
+general model superiority.
+
+## Context Lift: visible offline result
 
 Requires Python 3.12 or newer and [uv](https://docs.astral.sh/uv/).
 
@@ -42,7 +45,7 @@ Requires Python 3.12 or newer and [uv](https://docs.astral.sh/uv/).
 Every destination is exclusive. If `pilot-generated` already exists, choose a new path; the
 harness never overwrites or resumes published evidence.
 
-## Run the full workflow
+## Context Lift: full workflow
 
 Set your exact model identifier and credential once in `.env` (copy `.env.example` and replace
 the placeholders), then generate a new live input directory:
@@ -71,19 +74,40 @@ uv run dsx-pilot reveal pilot-run pilot-blind
 Do not give evaluators the private `pilot-run` directory. Because the blind seed is public,
 the seed plus labeled source artifacts can reconstruct treatment labels before scoring.
 
+## Data Access
+
+Prepare an arbitrary packet and a JSON case configuration, then run the v2 three-arm experiment:
+
+```bash
+uv run dsx-data-access prepare case.json dsx-packet.json data-access-inputs \
+  --model "$MODEL_ID" --pricing pricing.json
+uv run dsx-data-access run data-access-inputs data-access-run --order-seed 731
+uv run dsx-data-access judge data-access-run data-access-blind --blind-seed 991
+uv run dsx-data-access judge data-access-run data-access-blind --blind-seed 991 \
+  --judgments judgments.json
+uv run dsx-data-access reveal data-access-run data-access-blind
+```
+
+Only `run` needs `OPENAI_API_KEY` and may incur provider cost. The full-data and combined arms
+receive read-only SQL access to the prepared table named `dataset`; the packet and combined arms
+receive the same committed packet. Packet contents, SQL text/results, evidence locators, usage,
+and automatic scores never enter the public blind bundle. See [Data Access](docs/data-access.md)
+for the case and pricing schemas and its claim boundary.
+
 ## Documentation
 
 - [CLI reference](docs/cli-reference.md): every command, option, artifact, and error boundary.
 - [How to run the pilot](docs/how-to-run-pilot.md): prerequisites through blind reveal and troubleshooting.
 - [Evidence boundary](docs/evidence-boundary.md): sole-delta proof, retries, masking, trade-offs, and claim limits.
+- [Data Access](docs/data-access.md): full-data discovery protocol, SQL safety boundary, and artifacts.
 
 ## Development gate
 
-The required offline gate enforces 100% statement and branch coverage for `dsx.pilot` and
-does not require provider credentials:
+The required offline gate enforces 100% statement and branch coverage for the experiment
+packages and does not require provider credentials:
 
 ```bash
-uv run pytest -m "not live" --cov=dsx.pilot --cov-branch --cov-fail-under=100
+uv run pytest -m "not live" --cov=dsx.pilot --cov=dsx.experiments.data_access --cov-branch --cov-fail-under=100
 ```
 
 Run the remaining checks and package build with:

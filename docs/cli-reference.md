@@ -1,5 +1,43 @@
 # CLI reference
 
+## Data Access
+
+`dsx-data-access` implements the separate **Data Access v2** comparison: `dsx_packet` receives
+canonical opaque packet JSON, `full_data` receives an audited read-only SQL tool over the same
+prepared dataset, and `packet_and_full_data` receives both. Its inputs, run, blind bundle, and
+reveal artifacts are independent of the frozen Context Lift (`dsx-pilot`) artifacts below.
+
+```text
+dsx-data-access prepare CASE_CONFIG DSX_PACKET OUTPUT --model MODEL --pricing PRICING_JSON
+dsx-data-access run INPUT_DIRECTORY RUN_ROOT --order-seed SEED
+dsx-data-access judge RUN_ROOT BLIND_BUNDLE --blind-seed SEED [--judgments FILE]
+dsx-data-access reveal RUN_ROOT BLIND_BUNDLE
+```
+
+`prepare` is local and exclusively writes a materialized DuckDB database and an immutable
+manifest. It accepts CSV, Parquet, and pilot-case JSON as configured in `CASE_CONFIG`. Packet
+JSON remains opaque to the framework. The manifest commits source and materialized dataset
+digests, packet, task/configuration, pricing, oracle version, limits, and query tool schema.
+
+`run` is the only command requiring `OPENAI_API_KEY`. It revalidates every prepared digest
+before a provider call, writes an exclusive private run root, randomizes all three arms inside
+each repetition from `--order-seed`, and records raw model/tool events append-only. The data
+tool is restricted to one `SELECT`, `WITH`, or `DESCRIBE dataset` query per call; results are
+capped at 1,000 rows and 64 KiB by default. Rejected, invalid, timed-out, oversized, and failed
+queries remain observable failed discovery attempts.
+
+`judge` without judgments writes a new public blind bundle. It publishes decisions and factual
+claim statements only. It excludes treatment identity, packet contents, data, SQL, tool
+results, evidence locators, usage, cost, automatic scoring, and repetition identifiers. With a
+complete judgments JSON array, it revalidates the source and public commitments and freezes
+the judgments exclusively. `reveal` requires that freeze, then exclusively joins qualitative
+judgments with official arms and the private objective/operational report.
+
+See [Data Access](data-access.md) for the full protocol and claim boundary. Destinations are
+exclusive; malformed or tampered inputs fail nonzero without overwriting evidence.
+
+## Context Lift
+
 `dsx-pilot` runs one fixed-size, one-case information-availability pilot. It has four
 top-level commands: `generate`, `run`, `judge`, and `reveal`.
 

@@ -2,16 +2,16 @@
 
 ## Evaluation
 
-### Compare packet delivery with equal discovery access
+### Run Data Access across representative datasets
 
-**What:** Add a later comparison where the control can inspect the same dataset through an equivalent discovery path instead of receiving no data facts.
+**What:** Run the completed Data Access framework across multiple representative datasets and packet versions.
 
-**Why:** The proof-first pilot can show that supplying relevant evidence changes an answer, but it cannot show that DSX outperforms a capable agent that could discover the same evidence itself.
+**Why:** One synthetic case can describe packet-only, data-only, and combined-access behavior but cannot establish a general DSX advantage.
 
-**Context:** The initial pilot intentionally uses one hand-authored packet and a packet-off control with no discovery tools. After the packet contract is frozen, design a separate comparator with equal model, prompt, budgets, and discovery capability so the result can support a stronger DSX-versus-agent claim. Keep this comparison separate from the information-availability pilot.
+**Context:** Data Access holds the model and task contract constant across packet-only, full-data, and combined arms; data-bearing arms have full logical access through read-only SQL. It tracks evidence, cost, timing, and failed queries. Pre-register case selection and analyze within-repetition contrasts descriptively before broadening claims.
 
 **Effort:** M
 **Priority:** P2
-**Depends on:** Frozen pilot packet contract and completion of the proof-first pilot
+**Depends on:** Representative case corpus and DSX packet generators with trace data
 
 ## Completed

@@ -16,3 +16,22 @@ build/
 pilot-runs/
 .superpowers/
 pilot-generated/
+
+# Local Data Access experiment inputs, run ledgers, blind bundles, and scratch judgments.
+/data-access-inputs/
+/data-access-run/
+/data-access-blind
+/.data-access-blind.stage-*/
+/data-access-case.json
+/data-access-pricing.json
+/data-access-judgments.json
+/data-access-judgments.template.json
+/data-access-analysis.md
+
+# Local Pilot live runs, blind bundles, judgments, and disposable showcase workspace.
+/pilot-live-inputs/
+/pilot-run/
+/pilot-blind
+/.pilot-blind.stage-*/
+/judgments.json
+/pilot-showcase/
