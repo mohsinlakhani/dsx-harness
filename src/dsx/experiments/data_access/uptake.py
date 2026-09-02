@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import math
 import re
+import shutil
+from pathlib import Path
+
+from pydantic import ValidationError
 
 from dsx.builders.models import (
     COLUMN_PROFILE_MODULE_ID,
@@ -14,6 +18,8 @@ from dsx.builders.models import (
 )
 from dsx.packet import DsxPacket
 
+from .blind import _decision as _arm_decision
+from .blind import _final_completed, _read_repetition_runs, _read_run_manifest
 from .evaluation import DataAccessDecision, EvidenceKind
 from .models import Arm, DataAccessContract
 from .realistic import _data_traps, packet_module_content
@@ -46,6 +52,10 @@ class UptakeRecord(DataAccessContract):
     identifiers: IdentifierUptake
     imbalance: ImbalanceUptake
     packet_module_citations: PacketModuleCitations | None
+
+
+class UptakeReport(DataAccessContract):
+    records: tuple[UptakeRecord, ...]
 
 
 def identifier_columns_for_arm(
@@ -133,3 +143,41 @@ def evaluate_uptake(
         imbalance=imbalance,
         packet_module_citations=citations,
     )
+
+
+def evaluate_run_uptake(run_root: Path) -> tuple[UptakeRecord, ...]:
+    """Score completed arms in a private run root against the committed packet."""
+    run_manifest = _read_run_manifest(run_root)
+    try:
+        packet = DsxPacket.model_validate(run_manifest.input_manifest.packet.value)
+    except ValidationError as error:
+        raise ValueError("committed packet is not a DSX Packet") from error
+    target_column = run_manifest.input_manifest.case.target_column
+    records: list[UptakeRecord] = []
+    for repetition in _read_repetition_runs(run_root):
+        completed = _final_completed(repetition)
+        if completed is None:
+            continue
+        for arm_run in completed:
+            records.append(
+                evaluate_uptake(
+                    _arm_decision(arm_run),
+                    packet,
+                    arm=arm_run.arm,
+                    repetition_id=repetition.repetition_id,
+                    target_column=target_column,
+                )
+            )
+    return tuple(records)
+
+
+def write_uptake_report(report: UptakeReport, output: Path) -> None:
+    """Write an exclusive directory containing ``uptake.json``."""
+    output.mkdir()
+    try:
+        with (output / "uptake.json").open("x", encoding="utf-8") as artifact:
+            artifact.write(report.model_dump_json(indent=2))
+            artifact.write("\n")
+    except Exception:
+        shutil.rmtree(output, ignore_errors=True)
+        raise

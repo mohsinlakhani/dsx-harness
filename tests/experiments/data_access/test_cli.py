@@ -417,6 +417,66 @@ def test_freeze_cli_writes_exclusive_directory(tmp_path: Path) -> None:
     assert (output / "packet.json").is_file()
 
 
+def test_uptake_cli_writes_exclusive_report(tmp_path: Path) -> None:
+    from tests.experiments.data_access.test_uptake import _completed_run_root
+
+    run_root = _completed_run_root(tmp_path)
+    output = tmp_path / "uptake"
+    result = runner.invoke(app, ["uptake", str(run_root), str(output)])
+    assert result.exit_code == 0, result.output
+    assert (output / "uptake.json").is_file()
+    duplicate = runner.invoke(app, ["uptake", str(run_root), str(output)])
+    assert duplicate.exit_code == 1
+    assert "Error:" in duplicate.output
+    assert "already exists" in duplicate.output
+
+
+def test_uptake_cli_rejects_non_dsx_packet(tmp_path: Path) -> None:
+    case, packet, pricing = _write_inputs(tmp_path)
+    prepared = tmp_path / "prepared"
+    assert (
+        runner.invoke(
+            app,
+            [
+                "prepare",
+                str(case),
+                str(packet),
+                str(prepared),
+                "--model",
+                "offline",
+                "--pricing",
+                str(pricing),
+            ],
+        ).exit_code
+        == 0
+    )
+    run_root = tmp_path / "run"
+    run_root.mkdir()
+    manifest = _load_manifest(prepared)
+    run_manifest = DataAccessRunManifest(
+        run_manifest_version="data-access-run-manifest-v2",
+        input_manifest=manifest,
+        input_manifest_digest=canonical_digest(manifest),
+        order_seed=1,
+    )
+    (run_root / "run_manifest.json").write_text(
+        run_manifest.model_dump_json(indent=2) + "\n", encoding="utf-8"
+    )
+    result = runner.invoke(app, ["uptake", str(run_root), str(tmp_path / "uptake")])
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert "committed packet is not a DSX Packet" in result.output
+
+
+def test_uptake_cli_reports_missing_run(tmp_path: Path) -> None:
+    result = runner.invoke(
+        app, ["uptake", str(tmp_path / "missing"), str(tmp_path / "uptake")]
+    )
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert "could not evaluate Data Access uptake" in result.output
+
+
 def test_freeze_cli_aborts_when_output_exists(tmp_path: Path) -> None:
     dataset = tmp_path / "data.csv"
     dataset.write_text("label\n0\n", encoding="utf-8")

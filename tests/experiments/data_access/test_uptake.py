@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -8,8 +9,25 @@ from pydantic import ValidationError
 
 from dsx.builders.build import build_packet
 from dsx.builders.models import PacketBuildRequest
+from dsx.experiments.data_access.canonical import canonical_digest, canonical_json
+from dsx.experiments.data_access.cli import RUN_MANIFEST_FILENAME, DataAccessRunManifest
 from dsx.experiments.data_access.evaluation import DataAccessDecision, Metric
-from dsx.experiments.data_access.models import Arm
+from dsx.experiments.data_access.execution import (
+    ResponsesEnvelope,
+    ScriptedResponsesClient,
+    Usage,
+    run_experiment,
+)
+from dsx.experiments.data_access.models import (
+    Arm,
+    ExperimentLimits,
+    ModelConfig,
+    OpaquePacket,
+    PricingSnapshot,
+    TokenPrice,
+)
+from dsx.experiments.data_access.prepare import prepare_manifest
+from dsx.experiments.data_access.realistic import freeze_case
 from dsx.packet import DsxPacket
 from tests.builders.helpers import write_csv
 
@@ -257,3 +275,174 @@ def test_imbalance_not_applicable_without_target_class_imbalance_trap(tmp_path) 
     )
     assert record.imbalance.applicable is False
     assert record.imbalance.acknowledged is None
+
+
+def _scripted_decision() -> str:
+    return canonical_json(
+        {
+            "primary_metric": "recall_at_5_percent",
+            "supporting_metrics": ["precision_at_5_percent"],
+            "review_budget_fraction": 0.05,
+            "split_strategy": "stratified validation",
+            "excluded_columns": ["row_id"],
+            "reasoning": "The data is rare-event ranking.",
+            "limitations": ["synthetic"],
+            "recommendation": "rank cases",
+            "factual_claims": [],
+            "narrative_claim_ids": [],
+        }
+    )
+
+
+def _scripted_reply(*, decision: str | None = None) -> ResponsesEnvelope:
+    return ResponsesEnvelope(
+        response_id="response",
+        status="completed",
+        raw_envelope_json=canonical_json({"output": []}),
+        usage=Usage(input_tokens=2, output_tokens=3, total_tokens=5),
+        function_calls=(),
+        decision_json=decision,
+        continuation_items_json=(),
+    )
+
+
+def _scripted_run_root(tmp_path: Path, replies: list[object]) -> Path:
+    source = write_csv(tmp_path / "source.csv", _eligible_rows())
+    freeze = freeze_case(
+        dataset_path=source,
+        output=tmp_path / "freeze",
+        case_id="case-a",
+        target_column="label",
+        source_id="src",
+    )
+    packet_value = json.loads((tmp_path / "freeze" / "packet.json").read_text(encoding="utf-8"))
+    manifest = prepare_manifest(
+        case=freeze.case,
+        packet=OpaquePacket.from_value(packet_value),
+        model=ModelConfig(model_identifier="test", system_prompt="Return JSON."),
+        pricing=PricingSnapshot(
+            input=TokenPrice(usd_per_million_tokens=1),
+            output=TokenPrice(usd_per_million_tokens=1),
+            source="test",
+            effective_date="2026-08-26",
+        ),
+        limits=ExperimentLimits(repetitions=1),
+        packet_build_metrics=freeze.packet_build_metrics,
+        database_path=tmp_path / "inputs" / "dataset.duckdb",
+    )
+    run_root = tmp_path / "run"
+    run_root.mkdir()
+    run_manifest = DataAccessRunManifest(
+        run_manifest_version="data-access-run-manifest-v2",
+        input_manifest=manifest,
+        input_manifest_digest=canonical_digest(manifest),
+        order_seed=1,
+    )
+    (run_root / RUN_MANIFEST_FILENAME).write_text(
+        run_manifest.model_dump_json(indent=2) + "\n", encoding="utf-8"
+    )
+    run_experiment(
+        manifest=manifest,
+        run_root=run_root,
+        client=ScriptedResponsesClient(replies),
+        order_seed=1,
+    )
+    return run_root
+
+
+def _completed_run_root(tmp_path: Path) -> Path:
+    return _scripted_run_root(tmp_path, [_scripted_reply(decision=_scripted_decision())] * 3)
+
+
+def test_evaluate_run_uptake_returns_one_record_per_completed_arm(tmp_path: Path) -> None:
+    from dsx.experiments.data_access.uptake import evaluate_run_uptake
+
+    records = evaluate_run_uptake(_completed_run_root(tmp_path))
+    assert tuple(record.arm for record in records) == (
+        Arm.dsx_packet,
+        Arm.full_data,
+        Arm.packet_and_full_data,
+    )
+    assert all(record.repetition_id == "repetition-001" for record in records)
+    assert all(record.identifiers.columns == ("row_id",) for record in records)
+    assert records[0].packet_module_citations is not None
+    assert records[1].packet_module_citations is None
+
+
+def test_write_uptake_report_creates_exclusive_uptake_json(tmp_path: Path) -> None:
+    from dsx.experiments.data_access.uptake import UptakeReport, write_uptake_report
+
+    output = tmp_path / "uptake"
+    write_uptake_report(UptakeReport(records=()), output)
+    assert (output / "uptake.json").is_file()
+    with pytest.raises(FileExistsError):
+        write_uptake_report(UptakeReport(records=()), output)
+    assert (output / "uptake.json").is_file()
+
+
+def test_evaluate_run_uptake_rejects_committed_non_packet(tmp_path: Path) -> None:
+    from dsx.experiments.data_access.models import CaseConfig, DatasetFormat
+    from dsx.experiments.data_access.uptake import evaluate_run_uptake
+
+    source = tmp_path / "source.csv"
+    source.write_text("row_id,label\na,0\nb,1\n", encoding="utf-8")
+    manifest = prepare_manifest(
+        case=CaseConfig(
+            case_id="case",
+            task_prompt="Recommend a plan.",
+            dataset_path=str(source),
+            dataset_format=DatasetFormat.csv,
+            target_column="label",
+        ),
+        packet=OpaquePacket.from_value({"finding": {"id": "row_id"}}),
+        model=ModelConfig(model_identifier="test", system_prompt="Return JSON."),
+        pricing=PricingSnapshot(
+            input=TokenPrice(usd_per_million_tokens=1),
+            output=TokenPrice(usd_per_million_tokens=1),
+            source="test",
+            effective_date="2026-08-26",
+        ),
+        database_path=tmp_path / "dataset.duckdb",
+    )
+    run_root = tmp_path / "run"
+    run_root.mkdir()
+    run_manifest = DataAccessRunManifest(
+        run_manifest_version="data-access-run-manifest-v2",
+        input_manifest=manifest,
+        input_manifest_digest=canonical_digest(manifest),
+        order_seed=1,
+    )
+    (run_root / RUN_MANIFEST_FILENAME).write_text(
+        run_manifest.model_dump_json(indent=2) + "\n", encoding="utf-8"
+    )
+    with pytest.raises(ValueError, match="committed packet is not a DSX Packet"):
+        evaluate_run_uptake(run_root)
+
+
+def test_evaluate_run_uptake_skips_incomplete_repetitions(tmp_path: Path) -> None:
+    from dsx.experiments.data_access.execution import ModelTransportError
+    from dsx.experiments.data_access.uptake import evaluate_run_uptake
+
+    records = evaluate_run_uptake(
+        _scripted_run_root(tmp_path, [ModelTransportError("offline")] * 6)
+    )
+    assert records == ()
+
+
+def test_write_uptake_report_removes_partial_directory_on_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from dsx.experiments.data_access.uptake import UptakeReport, write_uptake_report
+
+    original_open = Path.open
+
+    def fail_json(self: Path, *args: object, **kwargs: object) -> object:
+        if self.name == "uptake.json":
+            raise OSError("disk full")
+        return original_open(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", fail_json)
+    output = tmp_path / "uptake"
+    with pytest.raises(OSError, match="disk full"):
+        write_uptake_report(UptakeReport(records=()), output)
+    assert not output.exists()

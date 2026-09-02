@@ -331,3 +331,22 @@ def freeze(
         _abort(f"could not freeze Data Access case: {error}")
     typer.echo(f"Frozen Data Access case: {output}")
     typer.echo(f"Packet digest: {result.note.packet_digest}")
+
+
+@app.command()
+def uptake(
+    run_root: Annotated[Path, typer.Argument(help="Private Data Access run directory.")],
+    output: Annotated[Path, typer.Argument(help="New exclusive uptake report directory.")],
+) -> None:
+    """Write post-reveal uptake diagnostics for completed arms."""
+    try:
+        from .uptake import UptakeReport, evaluate_run_uptake, write_uptake_report
+
+        write_uptake_report(UptakeReport(records=evaluate_run_uptake(run_root)), output)
+    except FileExistsError:
+        _abort(f"output directory already exists: {output}")
+    except (OSError, ValidationError, ValueError, TypeError) as error:
+        if str(error) == "committed packet is not a DSX Packet":
+            _abort("committed packet is not a DSX Packet")
+        _abort(f"could not evaluate Data Access uptake: {error}")
+    typer.echo(f"Wrote Data Access uptake: {output / 'uptake.json'}")
