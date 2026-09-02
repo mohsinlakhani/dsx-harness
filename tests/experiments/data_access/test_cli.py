@@ -63,12 +63,15 @@ def test_cli_help_describes_data_access_v2_three_arm_repetitions() -> None:
     root_help = runner.invoke(app, ["--help"])
     prepare_help = runner.invoke(app, ["prepare", "--help"])
     run_help = runner.invoke(app, ["run", "--help"])
+    suite_help = runner.invoke(app, ["suite", "--help"])
     assert root_help.exit_code == 0
     assert "v2 three-arm" in root_help.output
     assert prepare_help.exit_code == 0
     assert "Three-arm repetitions" in prepare_help.output
     assert run_help.exit_code == 0
     assert "Three-arm order randomization seed" in run_help.output
+    assert suite_help.exit_code == 0
+    assert "suite configuration" in suite_help.output.lower()
 
 
 def test_prepare_writes_committed_input_bundle(tmp_path: Path) -> None:
@@ -141,6 +144,18 @@ def test_run_requires_api_key_before_creating_a_run_root(
     assert result.exit_code == 1
     assert "OPENAI_API_KEY" in result.output
     assert not (tmp_path / "run").exists()
+
+
+def test_suite_requires_api_key_before_creating_output(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    result = runner.invoke(
+        app, ["suite", str(tmp_path / "suite.json"), str(tmp_path / "suite")]
+    )
+    assert result.exit_code == 1
+    assert "OPENAI_API_KEY" in result.output
+    assert not (tmp_path / "suite").exists()
 
 
 def test_cli_helpers_env_dotenv_and_input_commitment_fail_closed(
@@ -381,3 +396,225 @@ def test_cli_failure_boundaries_cover_directory_and_dataset_tampering(
     monkeypatch.setattr(Path, "mkdir", denied_mkdir)
     with pytest.raises(typer.Exit):
         cli._create_directory(tmp_path / "denied", "destination")
+
+
+def test_freeze_cli_writes_exclusive_directory(tmp_path: Path) -> None:
+    from tests.builders.helpers import write_csv
+
+    rows = [
+        {
+            "row_id": f"r{index}",
+            "label": 1 if index == 0 else 0,
+            "nullable": None if index < 2 else index,
+            "noise": index,
+        }
+        for index in range(20)
+    ]
+    dataset = write_csv(tmp_path / "data.csv", rows)
+    output = tmp_path / "freeze"
+    result = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(dataset),
+            str(output),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "datascibench:example-a",
+            "--license-accepted",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    assert "Frozen Data Access case" in result.output
+    assert (output / "packet.json").is_file()
+
+
+def test_uptake_cli_writes_exclusive_report(tmp_path: Path) -> None:
+    from tests.experiments.data_access.test_uptake import _completed_run_root
+
+    run_root = _completed_run_root(tmp_path)
+    output = tmp_path / "uptake"
+    result = runner.invoke(app, ["uptake", str(run_root), str(output)])
+    assert result.exit_code == 0, result.output
+    assert (output / "uptake.json").is_file()
+    duplicate = runner.invoke(app, ["uptake", str(run_root), str(output)])
+    assert duplicate.exit_code == 1
+    assert "Error:" in duplicate.output
+    assert "already exists" in duplicate.output
+
+
+def test_uptake_cli_rejects_non_dsx_packet(tmp_path: Path) -> None:
+    case, packet, pricing = _write_inputs(tmp_path)
+    prepared = tmp_path / "prepared"
+    assert (
+        runner.invoke(
+            app,
+            [
+                "prepare",
+                str(case),
+                str(packet),
+                str(prepared),
+                "--model",
+                "offline",
+                "--pricing",
+                str(pricing),
+            ],
+        ).exit_code
+        == 0
+    )
+    run_root = tmp_path / "run"
+    run_root.mkdir()
+    manifest = _load_manifest(prepared)
+    run_manifest = DataAccessRunManifest(
+        run_manifest_version="data-access-run-manifest-v2",
+        input_manifest=manifest,
+        input_manifest_digest=canonical_digest(manifest),
+        order_seed=1,
+    )
+    (run_root / "run_manifest.json").write_text(
+        run_manifest.model_dump_json(indent=2) + "\n", encoding="utf-8"
+    )
+    result = runner.invoke(app, ["uptake", str(run_root), str(tmp_path / "uptake")])
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert "committed packet is not a DSX Packet" in result.output
+
+
+def test_uptake_cli_reports_missing_run(tmp_path: Path) -> None:
+    result = runner.invoke(
+        app, ["uptake", str(tmp_path / "missing"), str(tmp_path / "uptake")]
+    )
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert "could not evaluate Data Access uptake" in result.output
+
+
+def test_suite_cli_invokes_run_suite_with_live_client(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
+    from dsx.experiments.data_access import execution
+    from dsx.experiments.data_access import suite as suite_mod
+    from dsx.experiments.data_access.suite import SuiteIndex
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    config = tmp_path / "suite.json"
+    config.write_text(
+        json.dumps(
+            {
+                "study_id": "data-access-luna-realistic",
+                "model_identifier": "gpt-5.6-luna",
+                "pricing_path": str(tmp_path / "pricing.json"),
+                "cases": [
+                    {
+                        "case_id": "case-a",
+                        "freeze_directory": str(tmp_path / "freeze"),
+                        "order_seed": 7,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    calls: list[object] = []
+    monkeypatch.setattr(execution, "OpenAIResponsesClient", lambda: "client")
+    monkeypatch.setattr(
+        suite_mod,
+        "run_suite",
+        lambda *args, **kwargs: calls.append((args, kwargs))
+        or SuiteIndex(study_id="data-access-luna-realistic", cases=()),
+    )
+    output = tmp_path / "suite"
+    result = runner.invoke(app, ["suite", str(config), str(output)])
+    assert result.exit_code == 0, result.output
+    assert calls
+    assert calls[0][1]["client"] == "client"
+    assert "suite" in result.output.lower()
+
+
+def test_suite_cli_rejects_invalid_config(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    config = tmp_path / "suite.json"
+    config.write_text("{}", encoding="utf-8")
+    result = runner.invoke(app, ["suite", str(config), str(tmp_path / "suite")])
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert not (tmp_path / "suite").exists()
+
+
+def test_freeze_cli_aborts_when_output_exists(tmp_path: Path) -> None:
+    dataset = tmp_path / "data.csv"
+    dataset.write_text("label\n0\n", encoding="utf-8")
+    output = tmp_path / "freeze"
+    output.mkdir()
+    result = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(dataset),
+            str(output),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "src",
+            "--license-accepted",
+        ],
+    )
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert output.is_dir()
+
+
+def _freeze_cli_output(result: object) -> str:
+    stdout = getattr(result, "stdout", "") or ""
+    stderr = getattr(result, "stderr", "") or ""
+    output = getattr(result, "output", "") or ""
+    return f"{stdout}{stderr}{output}"
+
+
+def test_freeze_cli_reports_unreadable_datasets_without_traceback(tmp_path: Path) -> None:
+    missing = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(tmp_path / "missing.csv"),
+            str(tmp_path / "out-missing"),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "src",
+            "--license-accepted",
+        ],
+    )
+    missing_output = _freeze_cli_output(missing)
+    assert missing.exit_code == 1
+    assert "Error:" in missing_output
+    assert "Traceback" not in missing_output
+
+    garbage = tmp_path / "bad.parquet"
+    garbage.write_bytes(b"not a parquet file")
+    invalid = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(garbage),
+            str(tmp_path / "out-parquet"),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "src",
+            "--license-accepted",
+        ],
+    )
+    invalid_output = _freeze_cli_output(invalid)
+    assert invalid.exit_code == 1
+    assert "Error:" in invalid_output
+    assert "Traceback" not in invalid_output

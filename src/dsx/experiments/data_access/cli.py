@@ -14,6 +14,10 @@ from pydantic import BaseModel, ValidationError, model_validator
 
 from .canonical import canonical_digest, json_value
 from .models import (
+    DATABASE_FILENAME,
+    DEFAULT_SYSTEM_PROMPT,
+    MANIFEST_FILENAME,
+    RUN_MANIFEST_FILENAME,
     CaseConfig,
     DataAccessContract,
     DataAccessManifest,
@@ -24,13 +28,6 @@ from .models import (
     PricingSnapshot,
 )
 from .prepare import prepare_manifest
-
-MANIFEST_FILENAME = "manifest.json"
-DATABASE_FILENAME = "dataset.duckdb"
-RUN_MANIFEST_FILENAME = "run_manifest.json"
-DEFAULT_SYSTEM_PROMPT = (
-    "Return only a valid structured analysis matching the requested response schema."
-)
 
 app = typer.Typer(
     add_completion=False,
@@ -291,3 +288,81 @@ def reveal(
         _abort(f"could not reveal Data Access run: {error}")
     typer.echo(f"Data Access reveal published: {blind_bundle / 'reveal'}")
     typer.echo(f"Revealed outputs: {len(report.raw_judgments)}")
+
+
+@app.command()
+def freeze(
+    dataset: Annotated[Path, typer.Argument(help="CSV or Parquet dataset to freeze.")],
+    output: Annotated[Path, typer.Argument(help="New exclusive freeze directory.")],
+    case_id: Annotated[str, typer.Option("--case-id", help="Case identity for CaseConfig.")],
+    target: Annotated[str, typer.Option("--target", help="Target column in the dataset.")],
+    source_id: Annotated[
+        str, typer.Option("--source-id", help="Provenance identifier for the source.")
+    ],
+    license_accepted: Annotated[
+        bool,
+        typer.Option(
+            ...,
+            "--license-accepted",
+            help="Confirm the source dataset license is accepted.",
+        ),
+    ],
+    packet_id: Annotated[
+        str | None,
+        typer.Option("--packet-id", help="Optional packet identity; defaults to case id."),
+    ] = None,
+) -> None:
+    """Freeze a builder-generated Data Access case from a tabular dataset."""
+    try:
+        from .realistic import freeze_case
+
+        result = freeze_case(
+            dataset_path=dataset,
+            output=output,
+            case_id=case_id,
+            target_column=target,
+            source_id=source_id,
+            packet_id=packet_id,
+        )
+    except (FileExistsError, ValueError, OSError, ValidationError, duckdb.Error) as error:
+        _abort(f"could not freeze Data Access case: {error}")
+    typer.echo(f"Frozen Data Access case: {output}")
+    typer.echo(f"Packet digest: {result.note.packet_digest}")
+
+
+@app.command()
+def suite(
+    suite_config: Annotated[Path, typer.Argument(help="JSON Data Access suite configuration.")],
+    output: Annotated[Path, typer.Argument(help="New exclusive suite output directory.")],
+) -> None:
+    """Prepare and run frozen Data Access cases from a suite config."""
+    if not os.environ.get("OPENAI_API_KEY"):
+        _abort("OPENAI_API_KEY is required for live Data Access runs")
+    try:
+        from .execution import OpenAIResponsesClient
+        from .suite import SuiteConfig, run_suite
+
+        config = _load_contract(suite_config, SuiteConfig)
+        run_suite(config, output, client=OpenAIResponsesClient())
+    except (OSError, ValidationError, ValueError, TypeError) as error:
+        _abort(f"could not run Data Access suite: {error}")
+    typer.echo(f"Data Access suite complete: {output}")
+
+
+@app.command()
+def uptake(
+    run_root: Annotated[Path, typer.Argument(help="Private Data Access run directory.")],
+    output: Annotated[Path, typer.Argument(help="New exclusive uptake report directory.")],
+) -> None:
+    """Write post-reveal uptake diagnostics for completed arms."""
+    try:
+        from .uptake import UptakeReport, evaluate_run_uptake, write_uptake_report
+
+        write_uptake_report(UptakeReport(records=evaluate_run_uptake(run_root)), output)
+    except FileExistsError:
+        _abort(f"output directory already exists: {output}")
+    except (OSError, ValidationError, ValueError, TypeError) as error:
+        if str(error) == "committed packet is not a DSX Packet":
+            _abort("committed packet is not a DSX Packet")
+        _abort(f"could not evaluate Data Access uptake: {error}")
+    typer.echo(f"Wrote Data Access uptake: {output / 'uptake.json'}")

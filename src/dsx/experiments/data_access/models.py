@@ -16,6 +16,13 @@ from .canonical import (
 
 Digest = str
 
+DEFAULT_SYSTEM_PROMPT = (
+    "Return only a valid structured analysis matching the requested response schema."
+)
+MANIFEST_FILENAME = "manifest.json"
+DATABASE_FILENAME = "dataset.duckdb"
+RUN_MANIFEST_FILENAME = "run_manifest.json"
+
 
 class DataAccessContract(BaseModel):
     """Strict base model for every Data Access persisted artifact."""
