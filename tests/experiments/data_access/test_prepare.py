@@ -145,7 +145,7 @@ def test_prepare_manifest_commits_the_default_limits(tmp_path: Path) -> None:
 def test_prepare_manifest_accepts_generated_dsx_packet_without_changing_it(
     tmp_path: Path,
 ) -> None:
-    from dsx.builders import PacketBuildRequest, build_packet
+    from dsx.builders import PacketBuildRequest, build_packet, write_packet_bundle
 
     source = tmp_path / "source.csv"
     source.write_text("label,value\n0,one\n1,two\n", encoding="utf-8")
@@ -157,9 +157,13 @@ def test_prepare_manifest_accepts_generated_dsx_packet_without_changing_it(
         )
     )
     packet_payload = json.loads(result.packet.canonical_json())
+    bundle = tmp_path / "generated-bundle"
+    write_packet_bundle(result, bundle)
+    on_disk = json.loads((bundle / "packet.json").read_text(encoding="utf-8"))
+    assert on_disk == packet_payload
     manifest = prepare_manifest(
         case=_case(source, DatasetFormat.csv),
-        packet=OpaquePacket.from_value(packet_payload),
+        packet=OpaquePacket.from_value(on_disk),
         model=ModelConfig(model_identifier="offline", system_prompt="return JSON"),
         pricing=PricingSnapshot(
             input=TokenPrice(usd_per_million_tokens=1),

@@ -124,23 +124,24 @@ class TransformationGraph:
 
     def augment_steps(self) -> tuple[str, ...]:
         return tuple(
-            step.step_id
-            for step in self.manifest.steps
-            if step.operation is TransformationOperation.augment
+            step_id
+            for step_id in self._topological_steps
+            if self._steps[step_id].operation is TransformationOperation.augment
         )
 
     def split_steps(self) -> tuple[str, ...]:
         return tuple(
-            step.step_id
-            for step in self.manifest.steps
-            if step.operation is TransformationOperation.split
+            step_id
+            for step_id in self._topological_steps
+            if self._steps[step_id].operation is TransformationOperation.split
         )
 
     def evaluation_snapshot_ids(self) -> tuple[str, ...]:
         return tuple(
-            snapshot.snapshot_id
-            for snapshot in self.manifest.snapshots
-            if snapshot.role in {SnapshotRole.validation, SnapshotRole.test}
+            snapshot_id
+            for snapshot_id in self._topological_snapshots
+            if self._snapshots[snapshot_id].role
+            in {SnapshotRole.validation, SnapshotRole.test}
         )
 
     def _validate_and_index(self) -> None:
@@ -159,7 +160,9 @@ class TransformationGraph:
             self._step_outputs[step.step_id] = step.outputs
             for snapshot_id in (*step.inputs, *step.outputs):
                 if snapshot_id not in self._snapshots:
-                    raise ValueError(f"step {step.step_id} references missing snapshot {snapshot_id}")
+                    raise ValueError(
+                        f"step {step.step_id} references missing snapshot {snapshot_id}"
+                    )
             for output_id in step.outputs:
                 if output_id in self._producer:
                     raise ValueError(f"snapshot {output_id} has more than one producer")
@@ -231,7 +234,8 @@ class TransformationGraph:
                 if remaining_inputs[step_id]:
                     continue
                 for output_id in sorted(self._step_outputs[step_id]):
-                    if output_id in ordered or output_id in ready:  # pragma: no cover - unique producers
+                    already_ready = output_id in ordered or output_id in ready
+                    if already_ready:  # pragma: no cover - unique producers
                         continue
                     ready.append(output_id)
                 ready.sort()

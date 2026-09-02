@@ -14,22 +14,34 @@ from .models import PacketBuildRecord, PacketBuildResult
 
 def write_packet_bundle(result: PacketBuildResult, output: Path) -> None:
     """Write a packet bundle to a new directory. Never overwrites an existing path."""
-    if output.exists():
-        raise FileExistsError(f"output destination already exists: {output}")
     parent = output.parent
     if not parent.exists():
         raise ValueError(f"output parent directory does not exist: {parent}")
     if not parent.is_dir():
         raise ValueError(f"output parent is not a directory: {parent}")
-    temporary = Path(
-        tempfile.mkdtemp(prefix=f".{output.name}.tmp-", dir=parent)
-    )
     try:
+        output.mkdir()
+    except FileExistsError as error:
+        raise FileExistsError(f"output destination already exists: {output}") from error
+    reserved = True
+    temporary: Path | None = None
+    try:
+        temporary = Path(tempfile.mkdtemp(prefix=f".{output.name}.tmp-", dir=parent))
         _write_bundle_contents(result, temporary)
         _validate_bundle(temporary, result)
+        # Brief window after rmdir: POSIX rename can replace an empty dest. Exclusive
+        # mkdir above is the reservation; this rmdir is required for the atomic rename.
+        output.rmdir()
+        reserved = False
         temporary.rename(output)
     except Exception:
-        shutil.rmtree(temporary, ignore_errors=True)
+        if temporary is not None:
+            shutil.rmtree(temporary, ignore_errors=True)
+        if reserved:
+            try:
+                output.rmdir()
+            except OSError:
+                pass
         raise
 
 
@@ -63,7 +75,9 @@ def _validate_bundle(directory: Path, result: PacketBuildResult) -> None:
         )
         if restored != result.manifest:
             raise ValueError("written manifest does not match the normalized input")
-        if restored.digest() != result.manifest.digest():  # pragma: no cover - inequality is caught above
+        written = restored.digest()
+        expected_digest = result.manifest.digest()
+        if written != expected_digest:  # pragma: no cover - inequality is caught above
             raise ValueError("written manifest digest does not match the build result")
     expected = {"packet.json", "build-record.json"}
     if result.manifest is not None:

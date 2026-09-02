@@ -137,7 +137,10 @@ def test_write_validates_parent_and_reparsed_artifacts(tmp_path: Path) -> None:
     (output / "extra.json").unlink()
     packet_path = output / "packet.json"
     original_packet = packet_path.read_text(encoding="utf-8")
-    packet_path.write_text(original_packet.replace(result.packet.packet_id, "other-id"), encoding="utf-8")
+    packet_path.write_text(
+        original_packet.replace(result.packet.packet_id, "other-id"),
+        encoding="utf-8",
+    )
     with pytest.raises(ValueError, match="written packet digest"):
         _validate_bundle(output, result)
     packet_path.write_text(original_packet, encoding="utf-8")
@@ -163,6 +166,59 @@ def test_validate_bundle_rejects_rewritten_manifest(tmp_path: Path) -> None:
     manifest_path.write_text(rewritten.canonical_json() + "\n", encoding="utf-8")
     with pytest.raises(ValueError, match="written manifest does not match"):
         _validate_bundle(output, result)
+
+
+def test_refuses_existing_empty_directory_and_cleans_validation_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    result = _result(tmp_path)
+    occupied = tmp_path / "occupied"
+    occupied.mkdir()
+    with pytest.raises(FileExistsError, match="already exists"):
+        write_packet_bundle(result, occupied)
+
+    output = tmp_path / "bundle"
+
+    def fail_validate(*args: object, **kwargs: object) -> None:
+        raise ValueError("bundle invalid")
+
+    monkeypatch.setattr("dsx.builders.persist._validate_bundle", fail_validate)
+    with pytest.raises(ValueError, match="bundle invalid"):
+        write_packet_bundle(result, output)
+    assert not output.exists()
+    assert list(tmp_path.glob(".bundle.tmp-*")) == []
+
+
+def test_cleans_reservation_if_temporary_directory_cannot_be_created(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    result = _result(tmp_path)
+    output = tmp_path / "bundle"
+
+    def fail_mkdtemp(*args: object, **kwargs: object) -> str:
+        raise OSError("mkdtemp failed")
+
+    monkeypatch.setattr("dsx.builders.persist.tempfile.mkdtemp", fail_mkdtemp)
+    with pytest.raises(OSError, match="mkdtemp failed"):
+        write_packet_bundle(result, output)
+    assert not output.exists()
+
+
+def test_cleanup_ignores_busy_output_reservation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    result = _result(tmp_path)
+    output = tmp_path / "bundle"
+
+    def fail_validate_with_blocker(*args: object, **kwargs: object) -> None:
+        (output / "blocker").write_text("x", encoding="utf-8")
+        raise ValueError("bundle invalid")
+
+    monkeypatch.setattr("dsx.builders.persist._validate_bundle", fail_validate_with_blocker)
+    with pytest.raises(ValueError, match="bundle invalid"):
+        write_packet_bundle(result, output)
+    assert (output / "blocker").is_file()
+    assert list(tmp_path.glob(".bundle.tmp-*")) == []
 
 
 def test_relative_historical_path_resolves_from_snapshot_root(tmp_path: Path) -> None:

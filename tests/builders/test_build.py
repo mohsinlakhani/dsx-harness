@@ -82,7 +82,13 @@ def test_history_lineage_unavailable_snapshots_and_digest_checks(tmp_path: Path)
                 path="train-balanced.csv",
                 fmt=DatasetFormat.csv,
             ),
-            snapshot("holdout", "d" * 64, SnapshotRole.test, path="absent.csv", fmt=DatasetFormat.csv),
+            snapshot(
+                "holdout",
+                "d" * 64,
+                SnapshotRole.test,
+                path="absent.csv",
+                fmt=DatasetFormat.csv,
+            ),
             snapshot("omitted", "e" * 64, SnapshotRole.intermediate),
         ),
         steps=(
@@ -116,7 +122,9 @@ def test_history_lineage_unavailable_snapshots_and_digest_checks(tmp_path: Path)
         )
     )
     history = next(
-        module for module in result.packet.modules if module.module_id == TRANSFORMATION_HISTORY_MODULE_ID
+        module
+        for module in result.packet.modules
+        if module.module_id == TRANSFORMATION_HISTORY_MODULE_ID
     )
     content = history.content
     assert isinstance(content, dict)
@@ -139,6 +147,28 @@ def test_history_lineage_unavailable_snapshots_and_digest_checks(tmp_path: Path)
     kinds = {item["kind"] for item in traps.content}  # type: ignore[index]
     assert "augmentation_changed_target_distribution" in kinds
     assert "augmentation_before_split" not in kinds
+    second_history = build_packet(
+        PacketBuildRequest(
+            dataset_path=balanced,
+            target_column="label",
+            packet_id="fraud-v1",
+            manifest=declared,
+            snapshot_root=tmp_path,
+        )
+    )
+    assert result.packet.canonical_json() == second_history.packet.canonical_json()
+    assert result.build_record.manifest_digest == declared.digest()
+    assert result.build_record.revision == 1
+    assert result.build_record.previous_packet_digest is None
+    assert result.build_record.dataset_digest == digest_of(balanced)
+    dist_trap = next(
+        item
+        for item in traps.content  # type: ignore[union-attr]
+        if item["kind"] == "augmentation_changed_target_distribution"
+    )
+    assert f"sha256:{digest_of(natural)}" in dist_trap["evidence_refs"]
+    assert f"sha256:{digest_of(balanced)}" in dist_trap["evidence_refs"]
+    assert f"manifest:{declared.digest()}" in dist_trap["evidence_refs"]
 
     mismatched = write_csv(tmp_path / "wrong.csv", _rows(["pos"]))
     with pytest.raises(ValueError, match="current dataset digest"):
@@ -270,7 +300,26 @@ def test_build_covers_edge_paths(tmp_path: Path) -> None:
     from dsx.builders.build import resolve_snapshot_path
 
     assert resolve_snapshot_path("/abs/raw.csv", tmp_path) == Path("/abs/raw.csv")
-    assert resolve_snapshot_path("rel.csv", None).name == "rel.csv"
+    with pytest.raises(ValueError, match="requires snapshot_root"):
+        resolve_snapshot_path("rel.csv", None)
+    with pytest.raises(ValidationError, match="snapshot_root is required"):
+        PacketBuildRequest(
+            dataset_path=tmp_path / "current.csv",
+            target_column="label",
+            packet_id="case-v1",
+            manifest=manifest(
+                current="current",
+                snapshots=(
+                    snapshot(
+                        "current",
+                        "a" * 64,
+                        SnapshotRole.source,
+                        path="current.csv",
+                        fmt=DatasetFormat.csv,
+                    ),
+                ),
+            ),
+        )
     with pytest.raises(ValueError, match="does not exist"):
         build_packet(
             PacketBuildRequest(
@@ -287,7 +336,13 @@ def test_build_covers_edge_paths(tmp_path: Path) -> None:
     declared = manifest(
         current="current",
         snapshots=(
-            snapshot("raw", digest_of(raw), SnapshotRole.source, path="raw.csv", fmt=DatasetFormat.csv),
+            snapshot(
+                "raw",
+                digest_of(raw),
+                SnapshotRole.source,
+                path="raw.csv",
+                fmt=DatasetFormat.csv,
+            ),
             snapshot("ghost", "b" * 64, SnapshotRole.intermediate),
             snapshot(
                 "current",
@@ -296,7 +351,13 @@ def test_build_covers_edge_paths(tmp_path: Path) -> None:
                 path="current.csv",
                 fmt=DatasetFormat.csv,
             ),
-            snapshot("side", digest_of(side), SnapshotRole.intermediate, path="side.csv", fmt=DatasetFormat.csv),
+            snapshot(
+                "side",
+                digest_of(side),
+                SnapshotRole.intermediate,
+                path="side.csv",
+                fmt=DatasetFormat.csv,
+            ),
             snapshot(
                 "features",
                 digest_of(no_target),
@@ -346,8 +407,20 @@ def test_build_covers_edge_paths(tmp_path: Path) -> None:
     multi_manifest = manifest(
         current="merged",
         snapshots=(
-            snapshot("raw", digest_of(raw), SnapshotRole.source, path="raw.csv", fmt=DatasetFormat.csv),
-            snapshot("side", digest_of(side), SnapshotRole.intermediate, path="side.csv", fmt=DatasetFormat.csv),
+            snapshot(
+                "raw",
+                digest_of(raw),
+                SnapshotRole.source,
+                path="raw.csv",
+                fmt=DatasetFormat.csv,
+            ),
+            snapshot(
+                "side",
+                digest_of(side),
+                SnapshotRole.intermediate,
+                path="side.csv",
+                fmt=DatasetFormat.csv,
+            ),
             snapshot(
                 "merged",
                 digest_of(merged_current),
@@ -371,3 +444,128 @@ def test_build_covers_edge_paths(tmp_path: Path) -> None:
         )
     )
     assert multi_result.packet.modules[1].content["augmentation_distributions"] == []  # type: ignore[index]
+
+
+def test_declared_format_empty_history_and_absolute_paths(tmp_path: Path) -> None:
+    raw_rows = _rows(["neg", "pos"])
+    raw_csv = write_csv(tmp_path / "raw.csv", raw_rows)
+    raw_dat = tmp_path / "raw.dat"
+    raw_dat.write_bytes(raw_csv.read_bytes())
+    empty = write_csv(tmp_path / "empty.csv", [])
+    nulls = write_csv(tmp_path / "nulls.csv", [{"label": None, "feature": "x"}] * 2)
+    parquet_raw = write_parquet(tmp_path / "raw.parquet", raw_rows)
+    current = write_csv(tmp_path / "current.csv", _rows(["pos"] * 4 + ["neg"] * 4))
+    declared = manifest(
+        current="current",
+        snapshots=(
+            snapshot(
+                "raw",
+                digest_of(raw_dat),
+                SnapshotRole.source,
+                path="raw.dat",
+                fmt=DatasetFormat.csv,
+            ),
+            snapshot(
+                "empty",
+                digest_of(empty),
+                SnapshotRole.intermediate,
+                path="empty.csv",
+                fmt=DatasetFormat.csv,
+            ),
+            snapshot(
+                "nulls",
+                digest_of(nulls),
+                SnapshotRole.intermediate,
+                path="nulls.csv",
+                fmt=DatasetFormat.csv,
+            ),
+            snapshot(
+                "current",
+                digest_of(current),
+                SnapshotRole.train,
+                path="current.csv",
+                fmt=DatasetFormat.csv,
+            ),
+        ),
+        steps=(
+            step("to-empty", TransformationOperation.filter, ("raw",), ("empty",)),
+            step("to-nulls", TransformationOperation.filter, ("empty",), ("nulls",)),
+            step("oversample", TransformationOperation.augment, ("nulls",), ("current",)),
+        ),
+    )
+    result = build_packet(
+        PacketBuildRequest(
+            dataset_path=current,
+            target_column="label",
+            packet_id="format-v1",
+            manifest=declared,
+            snapshot_root=tmp_path,
+        )
+    )
+    history = next(
+        module.content
+        for module in result.packet.modules
+        if module.module_id == TRANSFORMATION_HISTORY_MODULE_ID
+    )
+    assert isinstance(history, dict)
+    assert "raw" in history["accessible_snapshot_ids"]
+    assert "empty" in history["unavailable_snapshot_ids"]
+    assert "nulls" in history["accessible_snapshot_ids"]
+    traps = next(
+        module.content
+        for module in result.packet.modules
+        if module.module_id == DATA_TRAPS_MODULE_ID
+    )
+    assert "augmentation_changed_target_distribution" not in {
+        item["kind"] for item in traps  # type: ignore[union-attr]
+    }
+
+    parquet_current = write_parquet(tmp_path / "current.parquet", _rows(["pos", "neg"]))
+    parquet_manifest = manifest(
+        current="current",
+        snapshots=(
+            snapshot(
+                "raw",
+                digest_of(parquet_raw),
+                SnapshotRole.source,
+                path=str(parquet_raw.resolve()),
+                fmt=DatasetFormat.parquet,
+            ),
+            snapshot(
+                "current",
+                digest_of(parquet_current),
+                SnapshotRole.train,
+                path=str(parquet_current.resolve()),
+                fmt=DatasetFormat.parquet,
+            ),
+        ),
+        steps=(step("copy", TransformationOperation.filter, ("raw",), ("current",)),),
+    )
+    absolute = build_packet(
+        PacketBuildRequest(
+            dataset_path=parquet_current,
+            target_column="label",
+            packet_id="abs-v1",
+            manifest=parquet_manifest,
+        )
+    )
+    abs_history = absolute.packet.modules[2].content
+    assert isinstance(abs_history, dict)
+    assert "raw" in abs_history["accessible_snapshot_ids"]
+
+    pathless = write_csv(tmp_path / "pathless.csv", _rows(["pos", "neg"]))
+    pathless_manifest = manifest(
+        current="current",
+        snapshots=(
+            snapshot("current", digest_of(pathless), SnapshotRole.source),
+        ),
+    )
+    pathless_result = build_packet(
+        PacketBuildRequest(
+            dataset_path=pathless,
+            target_column="label",
+            packet_id="pathless-v1",
+            manifest=pathless_manifest,
+        )
+    )
+    assert pathless_result.build_record.manifest_digest == pathless_manifest.digest()

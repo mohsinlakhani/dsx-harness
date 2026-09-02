@@ -8,7 +8,13 @@ from pathlib import Path
 
 import pytest
 
-from dsx.builders.profiling import json_value, profile_table, profile_target, sha256_file
+from dsx.builders.profiling import (
+    class_sort_key,
+    json_value,
+    profile_table,
+    profile_target,
+    sha256_file,
+)
 from tests.builders.helpers import write_csv, write_parquet
 
 
@@ -85,19 +91,7 @@ def test_missing_target_and_null_exclusion(tmp_path: Path) -> None:
 def test_class_values_include_string_numeric_boolean_and_sort_deterministically(
     tmp_path: Path,
 ) -> None:
-    path = write_csv(
-        tmp_path / "typed.csv",
-        [
-            {"label": True},
-            {"label": False},
-            {"label": True},
-            {"label": "true"},
-            {"label": 1},
-            {"label": 1.5},
-            {"label": None},
-        ],
-    )
-    # Mixed inference can collapse types; write a parquet with explicit types instead.
+    # Mixed CSV inference can collapse types; write parquet with explicit types instead.
     import duckdb
 
     parquet = tmp_path / "typed.parquet"
@@ -113,7 +107,7 @@ def test_class_values_include_string_numeric_boolean_and_sort_deterministically(
     string_target = profile_target(parquet, snapshot_id="current", target_column="label")
     assert string_target is not None
     keys = [item.value for item in string_target.classes]
-    assert keys == sorted(keys, key=lambda value: str(value) if not isinstance(value, str) else value) or True
+    assert keys == sorted(keys, key=class_sort_key)
     assert string_target.null_count == 1
     numeric = tmp_path / "numeric.parquet"
     connection = duckdb.connect()
@@ -136,7 +130,9 @@ def test_class_values_include_string_numeric_boolean_and_sort_deterministically(
     assert flags.majority_class_rate == pytest.approx(2 / 3)
 
 
-def test_duplicate_class_json_keys_are_merged(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_duplicate_class_json_keys_are_merged(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     path = write_csv(tmp_path / "data.csv", [{"label": "a"}, {"label": "b"}])
     from dsx.builders import profiling
 

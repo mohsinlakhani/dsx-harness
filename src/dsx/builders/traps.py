@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 
+from pydantic import JsonValue
+
 from dsx.pipeline import TransformationGraph
 
 from .models import DataTrap, TargetDistribution
@@ -147,6 +149,10 @@ def detect_augmentation_changed_target_distribution(
         maximum = max(changes.values(), default=0.0)
         if maximum < DISTRIBUTION_CHANGE_THRESHOLD:
             continue
+        snapshot_refs = (
+            f"sha256:{graph.snapshot(inputs[0]).digest}",
+            f"sha256:{graph.snapshot(outputs[0]).digest}",
+        )
         findings.append(
             DataTrap(
                 finding_id=f"augmentation-changed-target-distribution:{step_id}",
@@ -166,7 +172,7 @@ def detect_augmentation_changed_target_distribution(
                         for key in sorted(keys)
                     ],
                 },
-                evidence_refs=tuple(evidence_refs),
+                evidence_refs=tuple(dict.fromkeys((*snapshot_refs, *evidence_refs))),
             )
         )
     return tuple(findings)
@@ -185,7 +191,7 @@ def _step_reaches_snapshot(
 
 def _value_for_key(
     key: str, before: TargetDistribution, after: TargetDistribution
-) -> object:
+) -> JsonValue:
     for item in (*before.classes, *after.classes):
         if class_sort_key(item.value) == key:
             return item.value

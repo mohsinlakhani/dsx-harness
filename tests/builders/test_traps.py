@@ -148,7 +148,10 @@ def test_augmentation_on_evaluation_for_val_and_test_lineage() -> None:
             ),
         )
     )
-    assert detect_augmentation_on_evaluation(train_only, evidence_refs=("manifest:" + "e" * 64,)) == ()
+    train_only_traps = detect_augmentation_on_evaluation(
+        train_only, evidence_refs=("manifest:" + "e" * 64,)
+    )
+    assert train_only_traps == ()
 
     direct = TransformationGraph.from_manifest(
         manifest(
@@ -276,5 +279,8 @@ def test_distribution_change_threshold_union_and_skip_rules() -> None:
     assert "neg" in [
         item["value"] for item in union[0].details["class_rate_changes"]  # type: ignore[index]
     ]
+    assert f"sha256:{'b' * 64}" in union[0].evidence_refs
+    assert f"sha256:{'c' * 64}" in union[0].evidence_refs
+    assert f"manifest:{'e' * 64}" in union[0].evidence_refs
     assert skipped_missing == ()
     assert skipped_multi == ()

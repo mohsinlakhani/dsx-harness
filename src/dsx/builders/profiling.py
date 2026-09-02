@@ -67,7 +67,18 @@ def json_value(value: Any) -> JsonValue:
 
 
 def class_sort_key(value: JsonValue) -> str:
-    return json.dumps(value, allow_nan=False, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    return json.dumps(
+        value, allow_nan=False, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+    )
+
+
+def count_table_rows(path: Path, dataset_format: SupportedFormat) -> int:
+    """Return the row count of a CSV or Parquet table using an explicit format."""
+    connection = _open_table(path, dataset_format)
+    try:
+        return _row_count(connection)
+    finally:
+        connection.close()
 
 
 def profile_table(

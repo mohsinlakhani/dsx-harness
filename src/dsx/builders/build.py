@@ -5,9 +5,12 @@ from __future__ import annotations
 import secrets
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import NamedTuple
+
+from pydantic import ValidationError
 
 from dsx.packet.models import DatasetRef, DsxPacket, PacketModule
-from dsx.pipeline import TransformationGraph, TransformationManifest
+from dsx.pipeline import DatasetFormat, TransformationGraph, TransformationManifest
 
 from .models import (
     CURRENT_SNAPSHOT_ID,
@@ -36,6 +39,8 @@ from .models import (
     TransformationHistory,
 )
 from .profiling import (
+    SupportedFormat,
+    count_table_rows,
     detect_dataset_format,
     profile_table,
     profile_target,
@@ -47,6 +52,11 @@ from .traps import (
     detect_augmentation_on_evaluation,
     detect_target_class_imbalance,
 )
+
+
+class HistoricalSnapshot(NamedTuple):
+    path: Path
+    format: SupportedFormat
 
 
 def snapshot_evidence_ref(digest: str) -> str:
@@ -61,19 +71,20 @@ def resolve_snapshot_path(declared_path: str, snapshot_root: Path | None) -> Pat
     path = Path(declared_path)
     if path.is_absolute():
         return path
-    root = snapshot_root if snapshot_root is not None else Path.cwd()
-    return root / path
+    if snapshot_root is None:
+        raise ValueError(f"relative snapshot path requires snapshot_root: {declared_path}")
+    return snapshot_root / path
 
 
 def classify_historical_snapshots(
     manifest: TransformationManifest,
     *,
     snapshot_root: Path | None,
-) -> tuple[tuple[str, ...], tuple[str, ...], dict[str, Path]]:
+) -> tuple[tuple[str, ...], tuple[str, ...], dict[str, HistoricalSnapshot]]:
     """Return accessible IDs, unavailable IDs, and readable historical paths."""
     accessible: list[str] = []
     unavailable: list[str] = []
-    readable: dict[str, Path] = {}
+    readable: dict[str, HistoricalSnapshot] = {}
     current_id = manifest.current_snapshot_id
     for snapshot in manifest.snapshots:
         if snapshot.snapshot_id == current_id:
@@ -92,8 +103,15 @@ def classify_historical_snapshots(
                 f"historical snapshot {snapshot.snapshot_id} digest mismatch: "
                 f"declared {snapshot.digest}, actual {actual}"
             )
+        assert snapshot.format is not None
+        declared_format: SupportedFormat = (
+            "csv" if snapshot.format is DatasetFormat.csv else "parquet"
+        )
+        if count_table_rows(resolved, declared_format) == 0:
+            unavailable.append(snapshot.snapshot_id)
+            continue
         accessible.append(snapshot.snapshot_id)
-        readable[snapshot.snapshot_id] = resolved
+        readable[snapshot.snapshot_id] = HistoricalSnapshot(resolved, declared_format)
     return tuple(accessible), tuple(unavailable), readable
 
 
@@ -108,7 +126,7 @@ def load_previous_bundle(path: Path) -> tuple[DsxPacket, PacketBuildRecord]:
     try:
         packet = DsxPacket.model_validate_json(packet_path.read_text(encoding="utf-8"))
         record = PacketBuildRecord.model_validate_json(record_path.read_text(encoding="utf-8"))
-    except Exception as error:
+    except (ValidationError, OSError, UnicodeError) as error:
         raise ValueError(f"previous bundle could not be parsed: {path}") from error
     digest = packet.digest()
     if digest != record.packet_digest:
@@ -127,7 +145,7 @@ def build_packet(request: PacketBuildRequest) -> PacketBuildResult:
     current_snapshot_id = CURRENT_SNAPSHOT_ID
     accessible: tuple[str, ...] = (CURRENT_SNAPSHOT_ID,)
     unavailable: tuple[str, ...] = ()
-    historical_paths: dict[str, Path] = {}
+    historical_paths: dict[str, HistoricalSnapshot] = {}
     manifest_digest: str | None = None
 
     if request.manifest is not None:
@@ -207,7 +225,10 @@ def build_packet(request: PacketBuildRequest) -> PacketBuildResult:
         modules=modules,
     )
     previous_digest = request.previous_packet_digest
-    revision = 1 if request.previous_build_record is None else request.previous_build_record.revision + 1
+    if request.previous_build_record is None:
+        revision = 1
+    else:
+        revision = request.previous_build_record.revision + 1
     record = PacketBuildRecord(
         build_id=secrets.token_urlsafe(18),
         built_at=datetime.now(UTC),
@@ -235,7 +256,7 @@ def _augmentation_distributions(
     *,
     graph: TransformationGraph,
     current_snapshot_id: str,
-    historical_paths: dict[str, Path],
+    historical_paths: dict[str, HistoricalSnapshot],
     target_column: str,
     current_target: TargetDistribution,
 ) -> tuple[tuple[AugmentationDistribution, ...], dict[str, TargetDistribution]]:
@@ -272,24 +293,26 @@ def _augmentation_distributions(
 def _target_for_snapshot(
     *,
     snapshot_id: str,
-    historical_paths: dict[str, Path],
+    historical_paths: dict[str, HistoricalSnapshot],
     target_column: str,
     cache: dict[str, TargetDistribution],
 ) -> TargetDistribution | None:
     cached = cache.get(snapshot_id)
     if cached is not None:
         return cached
-    path = historical_paths.get(snapshot_id)
-    if path is None:
+    historical = historical_paths.get(snapshot_id)
+    if historical is None:
         return None
     profiled = profile_target(
-        path,
+        historical.path,
         snapshot_id=snapshot_id,
         target_column=target_column,
+        format=historical.format,
         require_target=False,
     )
-    if profiled is not None:
-        cache[snapshot_id] = profiled
+    if profiled is None or profiled.non_null_count == 0:
+        return None
+    cache[snapshot_id] = profiled
     return profiled
 
 
@@ -325,7 +348,7 @@ def _collect_traps(
             graph=graph,
             current_snapshot_id=current_snapshot_id,
             distributions=historical_targets,
-            evidence_refs=dataset_evidence + history_evidence,
+            evidence_refs=history_evidence,
         )
     )
     return tuple(traps)

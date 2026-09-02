@@ -192,6 +192,14 @@ class PacketBuildRequest(PacketContract):
             and self.previous_build_record.packet_digest != self.previous_packet_digest
         ):
             raise ValueError("previous packet digest does not match the previous build record")
+        if self.manifest is not None and self.snapshot_root is None:
+            for snapshot in self.manifest.snapshots:
+                if snapshot.path is None:
+                    continue
+                if not Path(snapshot.path).is_absolute():
+                    raise ValueError(
+                        "snapshot_root is required when the manifest declares relative paths"
+                    )
         return self
 
 

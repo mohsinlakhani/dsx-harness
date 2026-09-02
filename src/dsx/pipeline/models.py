@@ -32,11 +32,11 @@ class SnapshotRole(StrEnum):
 
 class TransformationOperation(StrEnum):
     filter = "filter"
-    join = "join"
+    join = "join"  # type: ignore[assignment]  # shadows str.join; use the enum member
     derive = "derive"
     rename = "rename"
     drop = "drop"
-    split = "split"
+    split = "split"  # type: ignore[assignment]  # shadows str.split; use the enum member
     sample = "sample"
     augment = "augment"
     custom = "custom"
