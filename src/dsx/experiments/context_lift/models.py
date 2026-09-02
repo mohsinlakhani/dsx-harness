@@ -1,4 +1,4 @@
-"""Pydantic contracts for the proof-first pilot.
+"""Pydantic contracts for the frozen Context Lift experiment.
 
 These models are the normative source for persisted pilot data and the
 structured model response. JSON Schema is generated from them when needed.

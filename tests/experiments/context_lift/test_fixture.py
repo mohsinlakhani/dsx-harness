@@ -1,4 +1,4 @@
-"""Behavioral oracle tests for the deterministic proof-first pilot fixture."""
+"""Behavioral oracle tests for the deterministic Context Lift fixture."""
 
 from __future__ import annotations
 
@@ -8,8 +8,12 @@ import re
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from dsx.pilot.models import FROZEN_CASE_DIGEST, candidate_packet, generate_pilot_case
-from tests.pilot.fixtures.oracle import (
+from dsx.experiments.context_lift.models import (
+    FROZEN_CASE_DIGEST,
+    candidate_packet,
+    generate_pilot_case,
+)
+from tests.experiments.context_lift.fixtures.oracle import (
     canonical_case_digest,
     class_counts,
     missing_indices,

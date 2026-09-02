@@ -1,4 +1,4 @@
-"""Tests for the durable, sequential paired-model runner."""
+"""Tests for the durable, sequential Context Lift runner."""
 
 from __future__ import annotations
 
@@ -18,9 +18,15 @@ from openai import (
     UnprocessableEntityError,
 )
 
-from dsx.pilot.models import AnalysisDecision, Arm, ArmOutcome, Metric, OutcomeKind
-from dsx.pilot.render import RequestConfiguration, render_requests
-from dsx.pilot.runner import ModelReply
+from dsx.experiments.context_lift.models import (
+    AnalysisDecision,
+    Arm,
+    ArmOutcome,
+    Metric,
+    OutcomeKind,
+)
+from dsx.experiments.context_lift.render import RequestConfiguration, render_requests
+from dsx.experiments.context_lift.runner import ModelReply
 
 
 def _decision() -> AnalysisDecision:
@@ -38,7 +44,7 @@ def _decision() -> AnalysisDecision:
 
 
 def _rendered():  # type: ignore[no-untyped-def]
-    from dsx.pilot.models import candidate_packet, generate_pilot_case
+    from dsx.experiments.context_lift.models import candidate_packet, generate_pilot_case
 
     return render_requests(
         generate_pilot_case(seed=7),
@@ -93,7 +99,7 @@ def _sdk_client(*payloads: dict[str, object]) -> OpenAI:
 
 def test_runner_calls_arms_sequentially_in_recorded_seeded_order(tmp_path: Path) -> None:
     """Changing execution to parallel or ignoring the frozen order seed breaks the ledger."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     rendered = _rendered()
     client = ScriptedModelClient([ModelReply(parsed_decision=_decision())] * 2)
@@ -117,7 +123,7 @@ def test_runner_calls_arms_sequentially_in_recorded_seeded_order(tmp_path: Path)
 
 def test_infrastructure_retries_reuse_the_exact_request_and_backoff(tmp_path: Path) -> None:
     """Replacing a retry request or changing the 1, 2 delays invalidates comparability."""
-    from dsx.pilot.runner import (
+    from dsx.experiments.context_lift.runner import (
         ModelReply,
         ModelTransportError,
         ScriptedModelClient,
@@ -166,7 +172,7 @@ def test_runner_classifies_every_reply_kind(
     tmp_path: Path, reply: str, expected: OutcomeKind
 ) -> None:
     """Removing a classification branch makes a durable outcome ambiguous."""
-    from dsx.pilot.runner import (
+    from dsx.experiments.context_lift.runner import (
         ModelProviderError,
         ModelReply,
         ModelTransportError,
@@ -214,7 +220,7 @@ def test_runner_classifies_every_reply_kind(
 
 def test_refusal_is_terminal_for_its_arm_and_pair(tmp_path: Path) -> None:
     """Retrying refusals would turn a model behavior into infrastructure noise."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     client = ScriptedModelClient(
         [ModelReply(refusal="No."), ModelReply(parsed_decision=_decision())]
@@ -236,7 +242,12 @@ def test_refusal_is_terminal_for_its_arm_and_pair(tmp_path: Path) -> None:
 
 def test_first_exhausted_infrastructure_attempt_reruns_both_arms(tmp_path: Path) -> None:
     """Reusing a first-attempt success would violate fresh paired execution."""
-    from dsx.pilot.runner import ModelReply, ModelTransportError, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import (
+        ModelReply,
+        ModelTransportError,
+        ScriptedModelClient,
+        run_pair,
+    )
 
     client = ScriptedModelClient(
         [
@@ -266,7 +277,11 @@ def test_first_exhausted_infrastructure_attempt_reruns_both_arms(tmp_path: Path)
 
 def test_second_exhausted_infrastructure_attempt_is_terminal(tmp_path: Path) -> None:
     """A third pair attempt would exceed the experimental retry contract."""
-    from dsx.pilot.runner import ModelTransportError, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import (
+        ModelTransportError,
+        ScriptedModelClient,
+        run_pair,
+    )
 
     client = ScriptedModelClient([ModelTransportError("offline")] * 6)
     pair = run_pair(
@@ -287,8 +302,8 @@ def test_second_exhausted_infrastructure_attempt_is_terminal(tmp_path: Path) -> 
 
 def test_artifacts_are_written_before_calls_and_round_trip(tmp_path: Path) -> None:
     """Writing artifacts after calling the provider would lose crash-recovery evidence."""
-    from dsx.pilot.models import AttemptStart, AttemptSummary, PairSummary
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.models import AttemptStart, AttemptSummary, PairSummary
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     class InspectingClient(ScriptedModelClient):
         def complete(self, request):  # type: ignore[no-untyped-def]
@@ -326,7 +341,7 @@ def test_unexpected_exception_leaves_started_attempt_and_collision_never_overwri
     tmp_path: Path,
 ) -> None:
     """A crash must preserve evidence, and a reused attempt ID must fail safely."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     crashed = ScriptedModelClient([RuntimeError("unexpected")])
     with pytest.raises(RuntimeError, match="unexpected"):
@@ -359,7 +374,7 @@ def test_classification_precedence_prefers_provider_failure_over_all_response_fi
     tmp_path: Path,
 ) -> None:
     """Moving refusal or incompleteness ahead of provider failure masks infrastructure errors."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     client = ScriptedModelClient(
         [
@@ -390,7 +405,7 @@ def test_classification_precedence_prefers_provider_failure_over_all_response_fi
 
 def test_fresh_id_after_crash_runs_without_resuming_the_interrupted_attempt(tmp_path: Path) -> None:
     """Resuming an interrupted attempt would mix artifacts from separate invocations."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     with pytest.raises(RuntimeError):
         run_pair(
@@ -419,7 +434,7 @@ def test_fresh_id_after_crash_runs_without_resuming_the_interrupted_attempt(tmp_
 
 def test_existing_terminal_pair_summary_is_never_overwritten(tmp_path: Path) -> None:
     """Starting a completed pair again must preserve its terminal result byte-for-byte."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     run_pair(
         _rendered(),
@@ -449,7 +464,7 @@ def test_existing_terminal_pair_summary_is_never_overwritten(tmp_path: Path) -> 
 
 def test_openai_adapter_maps_request_and_exposes_typed_reply() -> None:
     """Changing adapter keywords or hiding provider status loses the shared reply boundary."""
-    from dsx.pilot.runner import OpenAIModelClient
+    from dsx.experiments.context_lift.runner import OpenAIModelClient
 
     class FakeResponses:
         def __init__(self) -> None:
@@ -503,7 +518,7 @@ def test_openai_adapter_maps_request_and_exposes_typed_reply() -> None:
 
 def test_openai_adapter_uses_the_committed_response_schema_name_on_the_wire() -> None:
     """Ignoring the rendered schema name makes the request digest cosmetic at the SDK seam."""
-    from dsx.pilot.runner import OpenAIModelClient
+    from dsx.experiments.context_lift.runner import OpenAIModelClient
 
     captured: dict[str, object] = {}
 
@@ -540,7 +555,7 @@ def test_openai_adapter_uses_the_committed_response_schema_name_on_the_wire() ->
 
 def test_openai_adapter_exposes_refusal_and_incomplete_data() -> None:
     """Discarding provider refusal or truncation fields breaks outcome classification."""
-    from dsx.pilot.runner import OpenAIModelClient
+    from dsx.experiments.context_lift.runner import OpenAIModelClient
 
     class FakeResponses:
         def __init__(self) -> None:
@@ -579,7 +594,7 @@ def test_real_openai_sdk_parse_failures_are_terminal_typed_outcomes(
     tmp_path: Path, status: str, text: str, expected: OutcomeKind
 ) -> None:
     """SDK structured parsing failures must not leave an interrupted pair attempt."""
-    from dsx.pilot.runner import OpenAIModelClient, run_pair
+    from dsx.experiments.context_lift.runner import OpenAIModelClient, run_pair
 
     client = OpenAIModelClient(
         _sdk_client(_responses_payload(status, text), _responses_payload(status, text))
@@ -620,7 +635,7 @@ def test_openai_status_error_subclasses_are_provider_errors_with_raw_body(
     outer_response = '{"id":"resp-test","error":{"message":"denied"},"status":"failed"}'
     response = httpx2.Response(401, text=outer_response, request=request)
     error = error_type("denied", response=response, body={"message": "denied"})
-    from dsx.pilot.runner import ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ScriptedModelClient, run_pair
 
     pair = run_pair(
         _rendered(),
@@ -666,7 +681,7 @@ def test_non_provider_outcome_precedence(
     tmp_path: Path, reply: object, expected: OutcomeKind
 ) -> None:
     """Refusal, incompleteness, invalid output, and completion use the documented order."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     assert isinstance(reply, ModelReply)
     pair = run_pair(
@@ -686,7 +701,12 @@ def test_second_arm_failure_discards_a_successful_first_arm_before_pair_rerun(
     tmp_path: Path,
 ) -> None:
     """A successful first-arm output must not be reused when the second arm invalidates it."""
-    from dsx.pilot.runner import ModelReply, ModelTransportError, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import (
+        ModelReply,
+        ModelTransportError,
+        ScriptedModelClient,
+        run_pair,
+    )
 
     client = ScriptedModelClient(
         [
@@ -722,8 +742,13 @@ def test_second_arm_failure_discards_a_successful_first_arm_before_pair_rerun(
 
 def test_every_published_outcome_and_rendered_request_artifact_round_trips(tmp_path: Path) -> None:
     """Each append-only JSON artifact must be backed by its Pydantic contract."""
-    from dsx.pilot.render import RenderedRequests
-    from dsx.pilot.runner import ModelReply, ModelTransportError, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.render import RenderedRequests
+    from dsx.experiments.context_lift.runner import (
+        ModelReply,
+        ModelTransportError,
+        ScriptedModelClient,
+        run_pair,
+    )
 
     rendered = _rendered()
     run_pair(
@@ -766,7 +791,7 @@ def test_openai_adapter_constructs_the_sdk_with_retries_disabled(
         return object()
 
     monkeypatch.setattr(openai, "OpenAI", fake_openai)
-    from dsx.pilot.runner import OpenAIModelClient
+    from dsx.experiments.context_lift.runner import OpenAIModelClient
 
     OpenAIModelClient()
 
@@ -775,7 +800,7 @@ def test_openai_adapter_constructs_the_sdk_with_retries_disabled(
 
 def test_raw_envelope_and_adapter_scalar_conversion_paths_remain_observable() -> None:
     """Unusual provider envelope values must become durable strings or invalid output."""
-    from dsx.pilot.runner import OpenAIModelClient, _reply_from_raw_envelope
+    from dsx.experiments.context_lift.runner import OpenAIModelClient, _reply_from_raw_envelope
 
     non_object_raw = SimpleNamespace(
         http_response=SimpleNamespace(text="[]", json=lambda: [])
@@ -825,7 +850,7 @@ def test_raw_envelope_and_adapter_scalar_conversion_paths_remain_observable() ->
 
 def test_nested_response_refusal_scans_all_outputs_and_content_parts() -> None:
     """A refusal after empty provider content must not be missed."""
-    from dsx.pilot.runner import _response_refusal
+    from dsx.experiments.context_lift.runner import _response_refusal
 
     response = SimpleNamespace(
         refusal=None,
@@ -861,7 +886,7 @@ def test_raw_payload_refusal_handles_every_provider_shape(
     payload: dict[str, object], expected: str | None
 ) -> None:
     """Malformed envelope containers must not crash or hide a later valid refusal."""
-    from dsx.pilot.runner import _payload_refusal
+    from dsx.experiments.context_lift.runner import _payload_refusal
 
     assert _payload_refusal(payload) == expected
 
@@ -871,7 +896,7 @@ def test_builtin_transport_errors_use_the_recorded_retry_path(
     tmp_path: Path, error: Exception
 ) -> None:
     """Built-in timeout and connection failures must classify like SDK transport errors."""
-    from dsx.pilot.runner import ModelReply, ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ModelReply, ScriptedModelClient, run_pair
 
     pair = run_pair(
         _rendered(),
@@ -904,7 +929,7 @@ def test_status_errors_fall_back_to_each_available_body_shape(
     request = httpx2.Request("POST", "https://example.test/v1/responses")
     response = httpx2.Response(500, text="", request=request)
     error = APIStatusError("failed", response=response, body=body)
-    from dsx.pilot.runner import ScriptedModelClient, run_pair
+    from dsx.experiments.context_lift.runner import ScriptedModelClient, run_pair
 
     pair = run_pair(
         _rendered(),

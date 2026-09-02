@@ -1,4 +1,4 @@
-"""Sequential paired execution with append-only attempt artifacts."""
+"""Sequential Context Lift execution with append-only attempt artifacts."""
 
 from __future__ import annotations
 

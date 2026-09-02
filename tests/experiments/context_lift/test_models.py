@@ -1,3 +1,5 @@
+"""Tests for Context Lift's persisted contracts."""
+
 from __future__ import annotations
 
 import json
@@ -5,7 +7,7 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from dsx.pilot.models import (
+from dsx.experiments.context_lift.models import (
     AnalysisDecision,
     Arm,
     ArmOutcome,

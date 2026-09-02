@@ -22,6 +22,7 @@ from dsx.experiments.data_access.evaluation import (
     EvidenceResolution,
     EvidenceResolutionStatus,
     FactualClaim,
+    Metric,
     OracleResult,
     PacketJsonPointerEvidence,
     SqlReplayStatus,
@@ -46,7 +47,6 @@ from dsx.experiments.data_access.models import (
 )
 from dsx.experiments.data_access.prepare import prepare_manifest
 from dsx.experiments.data_access.sql_tool import ReadOnlySqlTool
-from dsx.pilot.models import Metric
 
 
 def _manifest(tmp_path: Path):  # type: ignore[no-untyped-def]

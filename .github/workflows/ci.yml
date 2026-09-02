@@ -26,7 +26,13 @@ jobs:
         run: uv sync --all-groups --locked --python 3.12
 
       - name: Run exact offline coverage gate
-        run: uv run pytest -m "not live" --cov=dsx.pilot --cov-branch --cov-fail-under=100
+        run: >-
+          uv run pytest -m "not live"
+          --cov=dsx.packet
+          --cov=dsx.experiments.context_lift
+          --cov=dsx.experiments.data_access
+          --cov-branch
+          --cov-fail-under=100
 
       - name: Run Ruff
         run: uv run ruff check .

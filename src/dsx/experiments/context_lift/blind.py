@@ -1,4 +1,4 @@
-"""File-backed blind export, frozen judgment, and post-freeze reveal workflow."""
+"""File-backed blind evaluation for the Context Lift experiment."""
 
 from __future__ import annotations
 

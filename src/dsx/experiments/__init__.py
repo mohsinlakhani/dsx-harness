@@ -1,1 +1,1 @@
-"""Experiment frameworks kept independent from the frozen Context Lift pilot."""
+"""Bounded DSX experiments, kept separate from reusable product code."""

@@ -1,4 +1,4 @@
-# How to run the proof-first pilot
+# Context Lift experiment
 
 This guide takes one generated case through three live pairs, blind export, immutable
 judgment freeze, and reveal. The result is a descriptive one-case report with a durable
@@ -25,7 +25,7 @@ uv sync --all-groups
 Confirm the four commands are available:
 
 ```bash
-uv run dsx-pilot --help
+uv run dsx-context-lift --help
 ```
 
 ## 2. Generate and inspect the input bundle
@@ -33,7 +33,7 @@ uv run dsx-pilot --help
 Generation is offline. The model identifier is recorded but not called.
 
 ```bash
-uv run dsx-pilot generate pilot-generated --model offline-example
+uv run dsx-context-lift generate pilot-generated --model offline-example
 ```
 
 The command prints four digests without printing the 5,000 rows. Confirm the four typed
@@ -60,7 +60,7 @@ key you intend to call. The local `.env` file is ignored by Git. Then regenerate
 directory because generation never overwrites:
 
 ```bash
-uv run dsx-pilot generate pilot-live-inputs
+uv run dsx-context-lift generate pilot-live-inputs
 ```
 
 ## 3. Run three live pairs
@@ -71,7 +71,7 @@ documentation, or shell history.
 Choose and record a base order seed, then start a new run root:
 
 ```bash
-uv run dsx-pilot run pilot-live-inputs pilot-run --order-seed 731
+uv run dsx-context-lift run pilot-live-inputs pilot-run --order-seed 731
 ```
 
 The command validates and re-renders the generated inputs before constructing the provider
@@ -87,7 +87,7 @@ data needed to reconstruct the public opaque IDs.
 Choose a public blind seed and export to another new path:
 
 ```bash
-uv run dsx-pilot judge pilot-run pilot-blind --blind-seed 991
+uv run dsx-context-lift judge pilot-run pilot-blind --blind-seed 991
 ```
 
 The command prints the ordered opaque IDs and the exact judgment object shape. Give the
@@ -133,7 +133,7 @@ numbers, decimal values such as `5.0`, and booleans are rejected rather than con
 Freeze the complete array against the existing public manifest and the same blind seed:
 
 ```bash
-uv run dsx-pilot judge pilot-run pilot-blind --blind-seed 991 \
+uv run dsx-context-lift judge pilot-run pilot-blind --blind-seed 991 \
   --judgments judgments.json
 ```
 
@@ -146,7 +146,7 @@ against the digest committed at export. A changed blind output and a second free
 After the freeze exists, join the opaque records to their official source assignments:
 
 ```bash
-uv run dsx-pilot reveal pilot-run pilot-blind
+uv run dsx-context-lift reveal pilot-run pilot-blind
 ```
 
 The command publishes two files under `pilot-blind/reveal/` and prints three separate report
@@ -163,7 +163,7 @@ Reveal is exclusive. A second invocation is refused instead of replacing the rep
 Run the exact offline test and branch-coverage gate:
 
 ```bash
-uv run pytest -m "not live" --cov=dsx.pilot --cov-branch --cov-fail-under=100
+uv run pytest -m "not live" --cov=dsx.experiments.context_lift --cov-branch --cov-fail-under=100
 ```
 
 Then run the static checks and package build:
@@ -187,7 +187,7 @@ do not delete or reuse it merely to make a command pass.
 ### `OPENAI_API_KEY is required`
 
 The key is absent or empty in the process environment. Export it in the same shell that runs
-`dsx-pilot run`. Do not pass the value on the command line.
+`dsx-context-lift run`. Do not pass the value on the command line.
 
 ### Generated artifact or digest mismatch
 
@@ -205,7 +205,7 @@ than treating it as a scored comparison.
 
 Check that the top-level value is an array; every manifest ID appears exactly once; there are
 no extra IDs; all 12 rating/confidence fields are integers from 1 through 5; and
-`packet_guess` is `packet_off` or `packet_on`. The [CLI reference](cli-reference.md) lists every
+`packet_guess` is `packet_off` or `packet_on`. The [CLI reference](../cli-reference.md) lists every
 field.
 
 ### Reveal is refused before freeze
@@ -217,6 +217,6 @@ necessary.
 
 ## Related documentation
 
-- [CLI reference](cli-reference.md)
-- [Evidence boundary](evidence-boundary.md)
-- [Project introduction](../README.md)
+- [CLI reference](../cli-reference.md)
+- [Evidence boundary](../evidence-boundary.md)
+- [Project introduction](../../README.md)

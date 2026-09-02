@@ -1,4 +1,4 @@
-"""Deterministic rendering and proof of the pilot's controlled request pair."""
+"""Deterministic rendering and proof of Context Lift's controlled request pair."""
 
 from __future__ import annotations
 

@@ -2,7 +2,7 @@
 
 This document describes **Context Lift**, the frozen packet-on versus packet-off pilot. Its
 separate successor, **Data Access**, compares packet delivery with a full-data discovery arm;
-see [Data Access](data-access.md). The Context Lift evidence and persisted contracts are not
+see [Data Access](experiments/data-access.md). The Context Lift evidence and persisted contracts are not
 reused or reinterpreted as Data Access results.
 
 This pilot asks a narrow question: for one deterministic synthetic case, how do model
@@ -169,6 +169,6 @@ packet artifact but do not claim a computation replay without compatible packet 
 ## Related documentation
 
 - [CLI reference](cli-reference.md)
-- [How to run the pilot](how-to-run-pilot.md)
-- [Data Access](data-access.md)
+- [Context Lift](experiments/context-lift.md)
+- [Data Access](experiments/data-access.md)
 - [Project introduction](../README.md)

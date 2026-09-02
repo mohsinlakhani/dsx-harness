@@ -1,4 +1,4 @@
-"""Independent, test-only observations of the frozen pilot fixture."""
+"""Independent, test-only observations of the frozen Context Lift fixture."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import hashlib
 import json
 from collections import Counter
 
-from dsx.pilot.models import Packet, PilotCase
+from dsx.experiments.context_lift.models import Packet, PilotCase
 
 
 def canonical_case_digest(case: PilotCase) -> str:

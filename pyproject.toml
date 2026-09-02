@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "dsx-harness"
 version = "0.1.0"
-description = "DSX proof-first pilot harness"
+description = "Harness for developing and evaluating task-aware DSX Packets"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
@@ -18,7 +18,8 @@ dependencies = [
 
 [project.scripts]
 dsx-data-access = "dsx.experiments.data_access.cli:app"
-dsx-pilot = "dsx.pilot.cli:app"
+dsx-context-lift = "dsx.experiments.context_lift.cli:app"
+dsx-pilot = "dsx.experiments.context_lift.cli:app"
 
 [dependency-groups]
 dev = [
@@ -35,7 +36,7 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["dsx.pilot", "dsx.experiments.data_access"]
+source = ["dsx.packet", "dsx.experiments.context_lift", "dsx.experiments.data_access"]
 
 [tool.ruff]
 target-version = "py312"

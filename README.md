@@ -1,122 +1,129 @@
-# DSX experiment harness
+# DSX harness
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![Python: 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776AB.svg)](https://www.python.org/)
 
-DSX contains two deliberately separate experiments. Both keep prompts, execution, and
-evaluation evidence inspectable rather than treating them as operator assumptions.
+DSX harness develops and evaluates **DSX Packets**: inspectable, evidence-backed context that
+helps an agent make a data-science decision. The repository separates the reusable packet
+domain from completed experiments so new product work does not accrete inside a pilot runner.
 
-**Context Lift** is the frozen packet-on versus packet-off information-availability pilot. Its
-claim remains deliberately narrow: **one-case unscored information-availability pilot**.
+## Repository map
 
-**Data Access v2** compares three fresh same-model arms: opaque `dsx_packet`, full data via a
-bounded read-only SQL tool, and `packet_and_full_data`. It tests a capability ceiling and
-measures quality, time, calls, token/cost use, failed discovery, and evidence reproducibility.
-Initial one-case results are descriptive; they do not establish statistical significance or
-general model superiority.
+```text
+src/dsx/
+├── packet/                         # reusable DSX Packet contracts and task projections
+└── experiments/
+    ├── context_lift/               # experiment 1: packet versus no packet
+    └── data_access/                # experiment 2: packet, data discovery, or both
 
-## Context Lift: visible offline result
+tests/
+├── packet/
+└── experiments/                    # mirrors src/dsx/experiments
 
-Requires Python 3.12 or newer and [uv](https://docs.astral.sh/uv/).
-
-1. Install all dependency groups.
-
-   ```bash
-   uv sync --all-groups
-   ```
-
-2. Generate the deterministic case and proved request pair. Generation does not call a
-   provider, so `offline-example` is only a recorded identifier.
-
-   ```bash
-   uv run dsx-pilot generate pilot-generated --model offline-example
-   ```
-
-3. Inspect the four human-readable typed artifacts.
-
-   ```bash
-   ls pilot-generated
-   ```
-
-   You should see `case.json`, `packet.json`, `rendered_requests.json`, and
-   `request_configuration.json`. The generate command also prints the case, request, and
-   common-projection digests without dumping 5,000 rows.
-
-Every destination is exclusive. If `pilot-generated` already exists, choose a new path; the
-harness never overwrites or resumes published evidence.
-
-## Context Lift: full workflow
-
-Set your exact model identifier and credential once in `.env` (copy `.env.example` and replace
-the placeholders), then generate a new live input directory:
-
-```bash
-uv run dsx-pilot generate pilot-live-inputs
-uv run dsx-pilot run pilot-live-inputs pilot-run --order-seed 731
+docs/
+├── architecture.md                 # boundaries and naming
+├── roadmap.md                      # product and experiment direction
+└── experiments/                    # protocols for completed experiments
 ```
 
-`--model` remains available when you need a one-off override. `.env` is ignored by Git, while
-`.env.example` is the safe template to share.
+Generated inputs, run ledgers, and blind bundles belong under `artifacts/`, which is ignored
+by Git. Historical root-level output paths continue to work and are also ignored.
 
-`run` makes paid live OpenAI requests and executes exactly three pairs sequentially. It
-re-loads and re-proves the generated requests immediately before the client boundary, writes
-the run manifest before pair calls, and gives every intended pair a terminal summary.
+## DSX Packet
 
-Export decisions for an evaluator, freeze complete blind judgments, then reveal:
+`DsxPacket` is a stable envelope containing independently versioned modules. A module has a
+namespaced type and arbitrary JSON content, so population profiles, feature risks, operating
+constraints, provenance, and future packet capabilities can evolve without expanding one
+monolithic model.
 
-```bash
-uv run dsx-pilot judge pilot-run pilot-blind --blind-seed 991
-uv run dsx-pilot judge pilot-run pilot-blind --blind-seed 991 \
-  --judgments judgments.json
-uv run dsx-pilot reveal pilot-run pilot-blind
+```python
+from dsx.packet import DatasetRef, DsTask, DsxPacket, PacketModule, assemble_task_packet
+
+packet = DsxPacket(
+    packet_id="credit-v1",
+    dataset=DatasetRef(digest="a" * 64),
+    modules=(
+        PacketModule(
+            module_id="population",
+            module_type="profile.population",
+            schema_version="1",
+            content={"rows": 5_000},
+        ),
+        PacketModule(
+            module_id="feature-risks",
+            module_type="risk.features",
+            schema_version="1",
+            content={"likely_ids": ["row_id"]},
+        ),
+    ),
+)
+
+task_packet = assemble_task_packet(
+    packet,
+    DsTask(
+        task_id="feature-review-1",
+        task_type="feature-review",
+        objective="Review candidate features for leakage.",
+        module_types=("profile.population", "risk.features"),
+    ),
+)
 ```
 
-Do not give evaluators the private `pilot-run` directory. Because the blind seed is public,
-the seed plus labeled source artifacts can reconstruct treatment labels before scoring.
+Task assembly is deliberately declarative for now: the task says which module types it
+requires, and assembly fails if the source packet cannot satisfy it. A learned or rule-based
+router can later produce the same `DsTask` contract without changing packet storage.
 
-## Data Access
+## Experiments
 
-Prepare an arbitrary packet and a JSON case configuration, then run the v2 three-arm experiment:
+The repository contains two completed, deliberately bounded studies:
+
+| Experiment | Question | Arms | CLI |
+| --- | --- | --- | --- |
+| **Context Lift** | Does supplied dataset context change the decision? | packet off, packet on | `dsx-context-lift` |
+| **Data Access** | How does packaged context compare with on-demand discovery? | DSX Packet, full data, both | `dsx-data-access` |
+
+Context Lift is the frozen original pilot. Its historical contracts and artifact field names
+remain intact for reproducibility. `dsx-pilot` remains as a compatibility alias for its CLI.
+Data Access accepts arbitrary packet JSON, including the new `DsxPacket` envelope, and keeps
+that content opaque during execution.
+
+Generate a visible offline Context Lift fixture:
 
 ```bash
-uv run dsx-data-access prepare case.json dsx-packet.json data-access-inputs \
+uv sync --all-groups
+uv run dsx-context-lift generate artifacts/context-lift/generated --model offline-example
+```
+
+Run Data Access after preparing a case, packet, and pricing snapshot:
+
+```bash
+uv run dsx-data-access prepare case.json dsx-packet.json artifacts/data-access/inputs \
   --model "$MODEL_ID" --pricing pricing.json
-uv run dsx-data-access run data-access-inputs data-access-run --order-seed 731
-uv run dsx-data-access judge data-access-run data-access-blind --blind-seed 991
-uv run dsx-data-access judge data-access-run data-access-blind --blind-seed 991 \
-  --judgments judgments.json
-uv run dsx-data-access reveal data-access-run data-access-blind
+uv run dsx-data-access run artifacts/data-access/inputs artifacts/data-access/run \
+  --order-seed 731
 ```
 
-Only `run` needs `OPENAI_API_KEY` and may incur provider cost. The full-data and combined arms
-receive read-only SQL access to the prepared table named `dataset`; the packet and combined arms
-receive the same committed packet. Packet contents, SQL text/results, evidence locators, usage,
-and automatic scores never enter the public blind bundle. See [Data Access](docs/data-access.md)
-for the case and pricing schemas and its claim boundary.
+Only experiment `run` commands require `OPENAI_API_KEY` and may incur provider cost. Both
+experiments use exclusive destinations and will not overwrite published evidence.
 
-## Documentation
+## Development
 
-- [CLI reference](docs/cli-reference.md): every command, option, artifact, and error boundary.
-- [How to run the pilot](docs/how-to-run-pilot.md): prerequisites through blind reveal and troubleshooting.
-- [Evidence boundary](docs/evidence-boundary.md): sole-delta proof, retries, masking, trade-offs, and claim limits.
-- [Data Access](docs/data-access.md): full-data discovery protocol, SQL safety boundary, and artifacts.
-
-## Development gate
-
-The required offline gate enforces 100% statement and branch coverage for the experiment
-packages and does not require provider credentials:
+The offline gate does not require provider credentials:
 
 ```bash
-uv run pytest -m "not live" --cov=dsx.pilot --cov=dsx.experiments.data_access --cov-branch --cov-fail-under=100
-```
-
-Run the remaining checks and package build with:
-
-```bash
+uv run pytest -m "not live" \
+  --cov=dsx.packet \
+  --cov=dsx.experiments.context_lift \
+  --cov=dsx.experiments.data_access \
+  --cov-branch --cov-fail-under=100
 uv run ruff check .
 uv run mypy src
 uv build
 ```
+
+See [architecture](docs/architecture.md), [CLI reference](docs/cli-reference.md), and the
+[roadmap](docs/roadmap.md) for the next development steps. Experiment protocols live under
+[docs/experiments](docs/experiments/README.md).
 
 ## License
 

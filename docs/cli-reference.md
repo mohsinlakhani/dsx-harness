@@ -5,7 +5,7 @@
 `dsx-data-access` implements the separate **Data Access v2** comparison: `dsx_packet` receives
 canonical opaque packet JSON, `full_data` receives an audited read-only SQL tool over the same
 prepared dataset, and `packet_and_full_data` receives both. Its inputs, run, blind bundle, and
-reveal artifacts are independent of the frozen Context Lift (`dsx-pilot`) artifacts below.
+reveal artifacts are independent of the frozen Context Lift (`dsx-context-lift`) artifacts below.
 
 ```text
 dsx-data-access prepare CASE_CONFIG DSX_PACKET OUTPUT --model MODEL --pricing PRICING_JSON
@@ -33,12 +33,13 @@ complete judgments JSON array, it revalidates the source and public commitments 
 the judgments exclusively. `reveal` requires that freeze, then exclusively joins qualitative
 judgments with official arms and the private objective/operational report.
 
-See [Data Access](data-access.md) for the full protocol and claim boundary. Destinations are
+See [Data Access](experiments/data-access.md) for the full protocol and claim boundary. Destinations are
 exclusive; malformed or tampered inputs fail nonzero without overwriting evidence.
 
 ## Context Lift
 
-`dsx-pilot` runs one fixed-size, one-case information-availability pilot. It has four
+`dsx-context-lift` runs the fixed Context Lift experiment. The older `dsx-pilot` command is a
+compatibility alias. Both expose four
 top-level commands: `generate`, `run`, `judge`, and `reveal`.
 
 All persisted artifacts are UTF-8, indented JSON validated by immutable Pydantic contracts.
@@ -52,7 +53,7 @@ Generate the synthetic case and hand-authored packet, render both request arms, 
 `context.profile_packet` is the only request delta, and write a new input bundle.
 
 ```text
-dsx-pilot generate [OPTIONS] OUTPUT_DIRECTORY
+dsx-context-lift generate [OPTIONS] OUTPUT_DIRECTORY
 ```
 
 ### Argument
@@ -74,7 +75,7 @@ dsx-pilot generate [OPTIONS] OUTPUT_DIRECTORY
 Example:
 
 ```bash
-uv run dsx-pilot generate pilot-generated --model offline-example
+uv run dsx-context-lift generate pilot-generated --model offline-example
 ```
 
 For normal live runs, create `.env` from `.env.example` and set `MODEL_ID` once; then omit
@@ -110,7 +111,7 @@ and hand-authored packet, re-render both requests, re-prove the sole delta, and 
 exactly three pairs sequentially.
 
 ```text
-dsx-pilot run [OPTIONS] GENERATED_DIRECTORY RUN_ROOT
+dsx-context-lift run [OPTIONS] GENERATED_DIRECTORY RUN_ROOT
 ```
 
 ### Arguments
@@ -131,7 +132,7 @@ dsx-pilot run [OPTIONS] GENERATED_DIRECTORY RUN_ROOT
 requests.
 
 ```bash
-uv run dsx-pilot run pilot-generated pilot-run --order-seed 731
+uv run dsx-context-lift run pilot-generated pilot-run --order-seed 731
 ```
 
 The command derives three deterministic pair IDs and three pair-specific order seeds from
@@ -191,7 +192,7 @@ version, ordered IDs, output digests, and exclusions must all match source evide
 mode reveals the official arm assignment.
 
 ```text
-dsx-pilot judge [OPTIONS] RUN_ROOT BLIND_BUNDLE
+dsx-context-lift judge [OPTIONS] RUN_ROOT BLIND_BUNDLE
 ```
 
 ### Arguments
@@ -212,7 +213,7 @@ dsx-pilot judge [OPTIONS] RUN_ROOT BLIND_BUNDLE
 Export example:
 
 ```bash
-uv run dsx-pilot judge pilot-run pilot-blind --blind-seed 991
+uv run dsx-context-lift judge pilot-run pilot-blind --blind-seed 991
 ```
 
 The command prints the ordered opaque IDs, a judgment JSON template, and a source-access
@@ -226,7 +227,7 @@ evaluator who also has the labeled source artifacts can reconstruct treatment la
 Freeze example:
 
 ```bash
-uv run dsx-pilot judge pilot-run pilot-blind --blind-seed 991 \
+uv run dsx-context-lift judge pilot-run pilot-blind --blind-seed 991 \
   --judgments judgments.json
 ```
 
@@ -268,7 +269,7 @@ Validate the public outputs and frozen judgments against their digests, reconstr
 IDs from the source run, and publish the official mapping and descriptive report exactly once.
 
 ```text
-dsx-pilot reveal [OPTIONS] RUN_ROOT BLIND_BUNDLE
+dsx-context-lift reveal [OPTIONS] RUN_ROOT BLIND_BUNDLE
 ```
 
 ### Arguments and options
@@ -282,7 +283,7 @@ dsx-pilot reveal [OPTIONS] RUN_ROOT BLIND_BUNDLE
 Example:
 
 ```bash
-uv run dsx-pilot reveal pilot-run pilot-blind
+uv run dsx-context-lift reveal pilot-run pilot-blind
 ```
 
 The command writes `BLIND_BUNDLE/reveal/` exclusively:
@@ -304,6 +305,7 @@ exclusive publication.
 
 ## Related documentation
 
-- [How to run the pilot](how-to-run-pilot.md)
+- [Context Lift](experiments/context-lift.md)
 - [Evidence boundary](evidence-boundary.md)
+- [Data Access](experiments/data-access.md)
 - [Project introduction](../README.md)

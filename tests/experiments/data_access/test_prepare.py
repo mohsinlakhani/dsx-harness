@@ -6,6 +6,7 @@ from pathlib import Path
 import duckdb
 import pytest
 
+from dsx.experiments.context_lift.models import generate_pilot_case
 from dsx.experiments.data_access import prepare
 from dsx.experiments.data_access.models import (
     CaseConfig,
@@ -16,7 +17,7 @@ from dsx.experiments.data_access.models import (
     TokenPrice,
 )
 from dsx.experiments.data_access.prepare import materialize_dataset, prepare_manifest
-from dsx.pilot.models import generate_pilot_case
+from dsx.packet import DatasetRef, DsxPacket, PacketModule
 
 
 def _case(path: Path, fmt: DatasetFormat, *, target: str = "label") -> CaseConfig:
@@ -113,9 +114,21 @@ def test_prepare_manifest_uses_supplied_or_default_limits_and_cleans_close_error
 def test_prepare_manifest_commits_the_default_limits(tmp_path: Path) -> None:
     source = tmp_path / "source.csv"
     source.write_text("label\n1\n", encoding="utf-8")
+    packet = DsxPacket(
+        packet_id="case-v1",
+        dataset=DatasetRef(digest="c" * 64),
+        modules=(
+            PacketModule(
+                module_id="population",
+                module_type="profile.population",
+                schema_version="1",
+                content={"rows": 1},
+            ),
+        ),
+    )
     manifest = prepare_manifest(
         case=_case(source, DatasetFormat.csv),
-        packet=OpaquePacket.from_value({"future": {"trace": 1}}),
+        packet=OpaquePacket.from_value(packet),
         model=ModelConfig(model_identifier="offline", system_prompt="return JSON"),
         pricing=PricingSnapshot(
             input=TokenPrice(usd_per_million_tokens=1),
@@ -126,3 +139,4 @@ def test_prepare_manifest_commits_the_default_limits(tmp_path: Path) -> None:
         database_path=tmp_path / "manifest.duckdb",
     )
     assert manifest.limits.repetitions == 3
+    assert manifest.packet.value["schema_version"] == "dsx-packet/v1"

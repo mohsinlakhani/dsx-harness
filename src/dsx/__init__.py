@@ -1,1 +1,1 @@
-"""DSX harness package."""
+"""DSX Packet contracts and experiment harnesses."""

@@ -1,4 +1,4 @@
-"""End-to-end tests for the public proof-first pilot CLI."""
+"""End-to-end tests for the public Context Lift CLI."""
 
 from __future__ import annotations
 
@@ -11,15 +11,15 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner, Result
 
-from dsx.pilot import cli
-from dsx.pilot.blind import (
+from dsx.experiments.context_lift import cli
+from dsx.experiments.context_lift.blind import (
     FROZEN_JUDGMENTS_FILENAME,
     MANIFEST_FILENAME,
     REVEAL_DIRECTORY,
     REVEAL_MAP_FILENAME,
     REVEALED_REPORT_FILENAME,
 )
-from dsx.pilot.models import (
+from dsx.experiments.context_lift.models import (
     AnalysisDecision,
     BlindJudgment,
     BlindManifest,
@@ -28,8 +28,8 @@ from dsx.pilot.models import (
     PilotCase,
     RunManifest,
 )
-from dsx.pilot.render import RenderedRequests, RequestConfiguration
-from dsx.pilot.runner import ModelReply, ModelTransportError, ScriptedModelClient
+from dsx.experiments.context_lift.render import RenderedRequests, RequestConfiguration
+from dsx.experiments.context_lift.runner import ModelReply, ModelTransportError, ScriptedModelClient
 
 
 def _decision() -> AnalysisDecision:

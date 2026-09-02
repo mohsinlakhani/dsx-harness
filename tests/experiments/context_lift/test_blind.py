@@ -1,4 +1,4 @@
-"""Tests for the file-backed opaque blind-evaluation workflow."""
+"""Tests for Context Lift's file-backed opaque blind-evaluation workflow."""
 
 from __future__ import annotations
 
@@ -12,8 +12,8 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from dsx.pilot import blind
-from dsx.pilot.blind import (
+from dsx.experiments.context_lift import blind
+from dsx.experiments.context_lift.blind import (
     FROZEN_JUDGMENTS_FILENAME,
     MANIFEST_FILENAME,
     REVEAL_DIRECTORY,
@@ -24,7 +24,7 @@ from dsx.pilot.blind import (
     opaque_id_for,
     reveal_blind,
 )
-from dsx.pilot.models import (
+from dsx.experiments.context_lift.models import (
     AnalysisDecision,
     Arm,
     ArmOutcome,

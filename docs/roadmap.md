@@ -1,4 +1,4 @@
-# From pilot result to DSX harness roadmap
+# DSX harness roadmap
 
 ## Executive takeaway
 
@@ -45,7 +45,8 @@ whether DSX-generated packets are useful.
 
 ### 2. Modular packets
 
-The current `Packet` model combines several different things:
+The frozen Context Lift `Packet` model combines several different things. The reusable
+`DsxPacket` envelope now separates them into independently versioned modules:
 
 - descriptive facts;
 - column-level risk signals;
@@ -359,7 +360,7 @@ runner code.
 Implement a local-first command such as:
 
 ```bash
-dsx packet build data.parquet --target label --output packet.json
+dsx-packet build data.parquet --target label --output dsx-packet.json
 ```
 
 The MVP should prioritize a few high-value, testable features:
@@ -402,10 +403,10 @@ validation against packet facts and constraints.
 Possible interfaces:
 
 ```text
-dsx context metric-review
-dsx context feature-review
-dsx context split-review
-dsx check analysis-plan.json --packet packet.json
+dsx-packet for-task metric-review
+dsx-packet for-task feature-review
+dsx-packet for-task split-review
+dsx-packet check analysis-plan.json --packet dsx-packet.json
 ```
 
 Provide adapters for agent prompts, notebooks, and CI or pull-request checks only after the

@@ -17,8 +17,6 @@ from typing import Annotated, Any, Literal, Protocol
 import duckdb
 from pydantic import Field, field_validator, model_validator
 
-from dsx.pilot.models import Metric
-
 from .canonical import (
     JsonPointerTraceAdapter,
     PacketTraceAdapter,
@@ -34,6 +32,15 @@ from .models import (
     SqlAttemptOutcome,
 )
 from .sql_tool import ReadOnlySqlTool
+
+
+class Metric(StrEnum):
+    """Metrics supported by the synthetic classification case oracle."""
+
+    recall_at_5_percent = "recall_at_5_percent"
+    precision_at_5_percent = "precision_at_5_percent"
+    pr_auc = "pr_auc"
+    accuracy = "accuracy"
 
 
 class EvidenceKind(StrEnum):

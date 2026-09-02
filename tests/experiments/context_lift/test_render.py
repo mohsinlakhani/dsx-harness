@@ -1,4 +1,4 @@
-"""Tests for deterministic controlled-arm request rendering."""
+"""Tests for deterministic Context Lift request rendering."""
 
 from __future__ import annotations
 
@@ -7,14 +7,14 @@ import warnings
 
 import pytest
 
-from dsx.pilot.models import (
+from dsx.experiments.context_lift.models import (
     Arm,
     ModelRequest,
     RequestContext,
     candidate_packet,
     generate_pilot_case,
 )
-from dsx.pilot.render import (
+from dsx.experiments.context_lift.render import (
     RequestConfiguration,
     canonicalize_request,
     prove_controlled_delta,

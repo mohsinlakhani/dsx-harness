@@ -13,6 +13,7 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+/artifacts/
 pilot-runs/
 .superpowers/
 pilot-generated/
@@ -22,6 +23,11 @@ pilot-generated/
 /data-access-run/
 /data-access-blind
 /.data-access-blind.stage-*/
+/.data-access-blind-v*.stage-*/
+/data-access-inputs-v*/
+/data-access-run-v*/
+/data-access-blind-v*
+/data-access-judgments-v*.json
 /data-access-case.json
 /data-access-pricing.json
 /data-access-judgments.json

@@ -1,4 +1,4 @@
-"""Public command-line boundary for the proof-first pilot workflow."""
+"""Public command-line boundary for the Context Lift experiment."""
 
 from __future__ import annotations
 
@@ -62,7 +62,7 @@ RUN_MANIFEST_FILENAME = "run_manifest.json"
 
 app = typer.Typer(
     add_completion=False,
-    help="Run the one-case proof-first DSX information-availability pilot.",
+    help="Run the frozen Context Lift DSX Packet experiment.",
     no_args_is_help=True,
 )
 
@@ -305,14 +305,14 @@ def _load_blind_manifest(bundle: Path) -> BlindManifest:
 @app.command("generate")
 def generate(
     output_directory: Annotated[
-        Path, typer.Argument(help="New directory for generated pilot artifacts.")
+        Path, typer.Argument(help="New directory for generated Context Lift artifacts.")
     ],
     model: Annotated[
         str | None,
         typer.Option("--model", help="Exact model identifier (defaults to MODEL_ID)."),
     ] = None,
     seed: Annotated[
-        int, typer.Option("--seed", help="Deterministic pilot-case generation seed.")
+        int, typer.Option("--seed", help="Deterministic Context Lift case seed.")
     ] = DEFAULT_GENERATION_SEED,
     system_prompt: Annotated[
         str, typer.Option("--system-prompt", help="Shared system prompt for both arms.")
@@ -322,7 +322,7 @@ def generate(
         typer.Option("--response-schema-name", help="Structured response schema name."),
     ] = DEFAULT_RESPONSE_SCHEMA_NAME,
 ) -> None:
-    """Generate, render, prove, and persist a new immutable pilot input bundle."""
+    """Generate, prove, and persist a new immutable Context Lift input bundle."""
     model_identifier = os.environ.get("MODEL_ID") if model is None else model
     if model is None and not model_identifier:
         _abort("a model identifier is required; pass --model or set MODEL_ID in .env")
