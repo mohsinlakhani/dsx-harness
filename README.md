@@ -12,12 +12,16 @@ domain from completed experiments so new product work does not accrete inside a 
 ```text
 src/dsx/
 ├── packet/                         # reusable DSX Packet contracts and task projections
+├── pipeline/                       # transformation-manifest contracts and graph validation
+├── builders/                       # history-aware packet builder and `dsx-packet` CLI
 └── experiments/
     ├── context_lift/               # experiment 1: packet versus no packet
     └── data_access/                # experiment 2: packet, data discovery, or both
 
 tests/
 ├── packet/
+├── pipeline/
+├── builders/
 └── experiments/                    # mirrors src/dsx/experiments
 
 docs/
@@ -73,6 +77,19 @@ Task assembly is deliberately declarative for now: the task says which module ty
 requires, and assembly fails if the source packet cannot satisfy it. A learned or rule-based
 router can later produce the same `DsTask` contract without changing packet storage.
 
+Build a packet from a CSV or Parquet file, optionally with a declared transformation
+manifest:
+
+```bash
+uv run dsx-packet build data/train.parquet artifacts/packet-bundle \
+  --target label \
+  --packet-id fraud-v1 \
+  --manifest data/transforms.json
+```
+
+The command writes an exclusive bundle containing `packet.json`, `build-record.json`, and a
+copy of the normalized manifest when one was supplied. It does not copy the dataset.
+
 ## Experiments
 
 The repository contains two completed, deliberately bounded studies:
@@ -113,6 +130,8 @@ The offline gate does not require provider credentials:
 ```bash
 uv run pytest -m "not live" \
   --cov=dsx.packet \
+  --cov=dsx.pipeline \
+  --cov=dsx.builders \
   --cov=dsx.experiments.context_lift \
   --cov=dsx.experiments.data_access \
   --cov-branch --cov-fail-under=100

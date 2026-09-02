@@ -1,5 +1,53 @@
 # CLI reference
 
+## DSX Packet
+
+`dsx-packet` builds an immutable history-aware packet bundle from a CSV or Parquet dataset.
+The generated `packet.json` remains opaque to Data Access: `prepare` consumes it as JSON
+without interpreting module contents.
+
+```text
+dsx-packet build DATASET OUTPUT \
+  --target TARGET_COLUMN \
+  --packet-id PACKET_ID \
+  [--manifest MANIFEST_JSON] \
+  [--previous-bundle PREVIOUS_OUTPUT]
+```
+
+### Arguments
+
+| Name | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `DATASET` | path | yes | Existing `.csv` or `.parquet` file used as the current snapshot. The file is not copied into the bundle. |
+| `OUTPUT` | path | yes | New exclusive directory for the packet bundle. The path must not exist. |
+
+### Options
+
+| Option | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `--target` | string | yes | Target column that must exist in the current dataset. |
+| `--packet-id` | string | yes | Packet identity matching the `PacketId` contract. |
+| `--manifest` | path | no | Optional DSX transformation-manifest JSON. Relative snapshot paths resolve from the manifest directory. |
+| `--previous-bundle` | path | no | Optional previous packet bundle used to increment `revision` and record the predecessor digest. |
+
+On success the command prints the output path, packet digest, dataset digest, revision, and
+module IDs. The bundle contains `packet.json`, `build-record.json`, and `manifest.json` when a
+manifest was supplied. Builds write into a temporary sibling directory and rename it only after
+every artifact validates.
+
+Expected user errors exit nonzero with an `Error:` message and no internal traceback. Destinations
+are exclusive: a second build to the same path is refused, and a failed build leaves no partial
+output directory.
+
+Example:
+
+```bash
+uv run dsx-packet build data/train.parquet artifacts/packet-bundle \
+  --target label \
+  --packet-id fraud-v1 \
+  --manifest data/transforms.json
+```
+
 ## Data Access
 
 `dsx-data-access` implements the separate **Data Access v2** comparison: `dsx_packet` receives

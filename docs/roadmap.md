@@ -444,11 +444,13 @@ This is the fastest way to turn the pilot into feature evidence.
 
 ### Increment 2: local packet-builder prototype
 
-Generate population, target, missingness, cardinality, likely-ID, and review-budget facts from
-CSV or Parquet. Include dataset and computation fingerprints plus an `open_questions` section.
+The first history-aware builder is available as `dsx-packet build`. It profiles a CSV or Parquet
+file, optionally consumes a declared transformation manifest, and writes an immutable packet
+bundle with dataset, target, history, and data-trap modules.
 
-Use the module-ablation cases to assess whether the generated packet preserves the useful
-parts of the hand-authored packet.
+Further builder work can still add likely-ID detection, review-budget calculations, and open
+questions, then use module-ablation cases to assess whether generated packets preserve the useful
+parts of a hand-authored packet.
 
 ### Increment 3: equal-discovery and workflow experiments
 
