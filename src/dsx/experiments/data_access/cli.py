@@ -334,6 +334,25 @@ def freeze(
 
 
 @app.command()
+def suite(
+    suite_config: Annotated[Path, typer.Argument(help="JSON Data Access suite configuration.")],
+    output: Annotated[Path, typer.Argument(help="New exclusive suite output directory.")],
+) -> None:
+    """Prepare and run frozen Data Access cases from a suite config."""
+    if not os.environ.get("OPENAI_API_KEY"):
+        _abort("OPENAI_API_KEY is required for live Data Access runs")
+    try:
+        from .execution import OpenAIResponsesClient
+        from .suite import SuiteConfig, run_suite
+
+        config = _load_contract(suite_config, SuiteConfig)
+        run_suite(config, output, client=OpenAIResponsesClient())
+    except (OSError, ValidationError, ValueError, TypeError) as error:
+        _abort(f"could not run Data Access suite: {error}")
+    typer.echo(f"Data Access suite complete: {output}")
+
+
+@app.command()
 def uptake(
     run_root: Annotated[Path, typer.Argument(help="Private Data Access run directory.")],
     output: Annotated[Path, typer.Argument(help="New exclusive uptake report directory.")],

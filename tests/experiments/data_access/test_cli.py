@@ -63,12 +63,15 @@ def test_cli_help_describes_data_access_v2_three_arm_repetitions() -> None:
     root_help = runner.invoke(app, ["--help"])
     prepare_help = runner.invoke(app, ["prepare", "--help"])
     run_help = runner.invoke(app, ["run", "--help"])
+    suite_help = runner.invoke(app, ["suite", "--help"])
     assert root_help.exit_code == 0
     assert "v2 three-arm" in root_help.output
     assert prepare_help.exit_code == 0
     assert "Three-arm repetitions" in prepare_help.output
     assert run_help.exit_code == 0
     assert "Three-arm order randomization seed" in run_help.output
+    assert suite_help.exit_code == 0
+    assert "suite configuration" in suite_help.output.lower()
 
 
 def test_prepare_writes_committed_input_bundle(tmp_path: Path) -> None:
@@ -141,6 +144,18 @@ def test_run_requires_api_key_before_creating_a_run_root(
     assert result.exit_code == 1
     assert "OPENAI_API_KEY" in result.output
     assert not (tmp_path / "run").exists()
+
+
+def test_suite_requires_api_key_before_creating_output(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    result = runner.invoke(
+        app, ["suite", str(tmp_path / "suite.json"), str(tmp_path / "suite")]
+    )
+    assert result.exit_code == 1
+    assert "OPENAI_API_KEY" in result.output
+    assert not (tmp_path / "suite").exists()
 
 
 def test_cli_helpers_env_dotenv_and_input_commitment_fail_closed(
@@ -475,6 +490,58 @@ def test_uptake_cli_reports_missing_run(tmp_path: Path) -> None:
     assert result.exit_code == 1
     assert "Error:" in result.output
     assert "could not evaluate Data Access uptake" in result.output
+
+
+def test_suite_cli_invokes_run_suite_with_live_client(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
+    from dsx.experiments.data_access import execution
+    from dsx.experiments.data_access import suite as suite_mod
+    from dsx.experiments.data_access.suite import SuiteIndex
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    config = tmp_path / "suite.json"
+    config.write_text(
+        json.dumps(
+            {
+                "study_id": "data-access-luna-realistic",
+                "model_identifier": "gpt-5.6-luna",
+                "pricing_path": str(tmp_path / "pricing.json"),
+                "cases": [
+                    {
+                        "case_id": "case-a",
+                        "freeze_directory": str(tmp_path / "freeze"),
+                        "order_seed": 7,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    calls: list[object] = []
+    monkeypatch.setattr(execution, "OpenAIResponsesClient", lambda: "client")
+    monkeypatch.setattr(
+        suite_mod,
+        "run_suite",
+        lambda *args, **kwargs: calls.append((args, kwargs))
+        or SuiteIndex(study_id="data-access-luna-realistic", cases=()),
+    )
+    output = tmp_path / "suite"
+    result = runner.invoke(app, ["suite", str(config), str(output)])
+    assert result.exit_code == 0, result.output
+    assert calls
+    assert calls[0][1]["client"] == "client"
+    assert "suite" in result.output.lower()
+
+
+def test_suite_cli_rejects_invalid_config(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENAI_API_KEY", "test")
+    config = tmp_path / "suite.json"
+    config.write_text("{}", encoding="utf-8")
+    result = runner.invoke(app, ["suite", str(config), str(tmp_path / "suite")])
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert not (tmp_path / "suite").exists()
 
 
 def test_freeze_cli_aborts_when_output_exists(tmp_path: Path) -> None:
