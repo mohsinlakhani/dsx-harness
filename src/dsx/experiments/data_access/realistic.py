@@ -88,28 +88,31 @@ def inspect_tabular_source(path: Path, *, target_column: str) -> SourceInspectio
 
     connection = duckdb.connect()
     try:
-        connection.execute(reader_sql, [str(path)])
-        count_row = connection.execute("SELECT count(*) FROM dataset").fetchone()
-        if count_row is None:  # pragma: no cover - count always returns one row
-            raise RuntimeError("dataset count query did not return a row")
-        row_count = int(count_row[0])
-        column_names = tuple(
-            str(item[0]) for item in connection.execute("DESCRIBE dataset").fetchall()
-        )
-        if target_column not in column_names:
-            raise ValueError(f"target column is not present in dataset: {target_column}")
-        quoted = _quote_identifier(target_column)
-        distinct_row = connection.execute(
-            f"SELECT count(DISTINCT {quoted}) FROM dataset"
-        ).fetchone()
-        if distinct_row is None:  # pragma: no cover - count always returns one row
-            raise RuntimeError("target distinct query did not return a row")
-        return SourceInspection(
-            row_count=row_count,
-            column_names=column_names,
-            target_distinct_non_null=int(distinct_row[0]),
-            dataset_format=dataset_format,
-        )
+        try:
+            connection.execute(reader_sql, [str(path)])
+            count_row = connection.execute("SELECT count(*) FROM dataset").fetchone()
+            if count_row is None:  # pragma: no cover - count always returns one row
+                raise RuntimeError("dataset count query did not return a row")
+            row_count = int(count_row[0])
+            column_names = tuple(
+                str(item[0]) for item in connection.execute("DESCRIBE dataset").fetchall()
+            )
+            if target_column not in column_names:
+                raise ValueError(f"target column is not present in dataset: {target_column}")
+            quoted = _quote_identifier(target_column)
+            distinct_row = connection.execute(
+                f"SELECT count(DISTINCT {quoted}) FROM dataset"
+            ).fetchone()
+            if distinct_row is None:  # pragma: no cover - count always returns one row
+                raise RuntimeError("target distinct query did not return a row")
+            return SourceInspection(
+                row_count=row_count,
+                column_names=column_names,
+                target_distinct_non_null=int(distinct_row[0]),
+                dataset_format=dataset_format,
+            )
+        except duckdb.Error as error:
+            raise ValueError(f"could not inspect dataset: {error}") from error
     finally:
         connection.close()
 

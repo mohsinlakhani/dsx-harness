@@ -141,10 +141,17 @@ uv run dsx-data-access uptake RUN_ROOT artifacts/data-access-luna-realistic/CASE
 ```
 
 Uptake is a post-reveal diagnostic. It must not appear in the public blind
-bundle. After freeze, for each completed output it records identifier
-exclusion, imbalance acknowledgement when `target_class_imbalance` is present,
-and whether packet-bearing arms cited `column-profile`, `feature-risks`, or
-`data-traps`.
+bundle. `dsx-data-access uptake` does **not** call `validate_run_root`; it
+expects a completed run root after `run` (typically after reveal). Independent
+use on a mutated or pruned root is unsupported.
+
+After freeze, for each completed output it records identifier exclusion,
+imbalance acknowledgement when `target_class_imbalance` is present, and whether
+packet-bearing arms cited `column-profile`, `feature-risks`, or `data-traps`.
+Identifier `all_excluded` is only meaningful when identifier `columns` is
+non-empty / `applicable` is true. Imbalance acknowledgement is the substring
+`"imbalance"` in the lowercase concatenation of reasoning, recommendation, and
+limitations.
 
 Keep each case run root private until that case's judgments are frozen. Write
 `docs/experiments/data-access-luna-realistic-results.md` from the revealed

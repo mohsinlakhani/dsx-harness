@@ -15,7 +15,7 @@ from typing import Any, Literal
 from pydantic import Field, model_validator
 
 from .canonical import canonical_digest, parse_canonical_json
-from .cli import RUN_MANIFEST_FILENAME, DataAccessRunManifest, _validate_prepared_input
+from .cli import DataAccessRunManifest, _validate_prepared_input
 from .evaluation import (
     DataAccessDecision,
     cited_tool_evidence_ids,
@@ -36,7 +36,7 @@ from .execution import (
     validate_arm_transcript,
     validate_fairness,
 )
-from .models import Arm, DataAccessContract, DataAccessManifest
+from .models import RUN_MANIFEST_FILENAME, Arm, DataAccessContract, DataAccessManifest
 from .report import DataAccessReport, build_experiment_report, summarize_arm
 
 MANIFEST_FILENAME = "manifest.json"

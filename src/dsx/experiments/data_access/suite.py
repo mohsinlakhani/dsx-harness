@@ -11,6 +11,10 @@ from pydantic import Field
 from .canonical import canonical_digest
 from .execution import ResponsesClient, run_experiment
 from .models import (
+    DATABASE_FILENAME,
+    DEFAULT_SYSTEM_PROMPT,
+    MANIFEST_FILENAME,
+    RUN_MANIFEST_FILENAME,
     CaseConfig,
     DataAccessContract,
     ExperimentLimits,
@@ -21,17 +25,11 @@ from .models import (
 )
 from .prepare import prepare_manifest
 
-DEFAULT_SYSTEM_PROMPT = (
-    "Return only a valid structured analysis matching the requested response schema."
-)
-MANIFEST_FILENAME = "manifest.json"
-DATABASE_FILENAME = "dataset.duckdb"
-RUN_MANIFEST_FILENAME = "run_manifest.json"
 SUITE_INDEX_FILENAME = "suite-index.json"
 
 
 class SuiteCase(DataAccessContract):
-    case_id: str
+    case_id: str = Field(min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")
     freeze_directory: str
     order_seed: int
 
@@ -80,6 +78,12 @@ def _run_one_case(
         case_config = CaseConfig.model_validate_json(
             (freeze / "case.json").read_text(encoding="utf-8")
         )
+        if case_config.case_id != case.case_id:
+            raise ValueError(
+                "suite case_id "
+                f"{case.case_id!r} does not match freeze case.json case_id "
+                f"{case_config.case_id!r}"
+            )
         packet = OpaquePacket.from_value(
             json.loads((freeze / "packet.json").read_text(encoding="utf-8"))
         )

@@ -14,6 +14,10 @@ from pydantic import BaseModel, ValidationError, model_validator
 
 from .canonical import canonical_digest, json_value
 from .models import (
+    DATABASE_FILENAME,
+    DEFAULT_SYSTEM_PROMPT,
+    MANIFEST_FILENAME,
+    RUN_MANIFEST_FILENAME,
     CaseConfig,
     DataAccessContract,
     DataAccessManifest,
@@ -24,13 +28,6 @@ from .models import (
     PricingSnapshot,
 )
 from .prepare import prepare_manifest
-
-MANIFEST_FILENAME = "manifest.json"
-DATABASE_FILENAME = "dataset.duckdb"
-RUN_MANIFEST_FILENAME = "run_manifest.json"
-DEFAULT_SYSTEM_PROMPT = (
-    "Return only a valid structured analysis matching the requested response schema."
-)
 
 app = typer.Typer(
     add_completion=False,
@@ -327,7 +324,7 @@ def freeze(
             source_id=source_id,
             packet_id=packet_id,
         )
-    except (FileExistsError, ValueError, OSError, ValidationError) as error:
+    except (FileExistsError, ValueError, OSError, ValidationError, duckdb.Error) as error:
         _abort(f"could not freeze Data Access case: {error}")
     typer.echo(f"Frozen Data Access case: {output}")
     typer.echo(f"Packet digest: {result.note.packet_digest}")

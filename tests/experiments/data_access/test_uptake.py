@@ -113,6 +113,7 @@ def test_packet_arm_uses_feature_risk_findings(tmp_path) -> None:
         target_column="label",
     )
     assert record.identifiers.columns == ("row_id",)
+    assert record.identifiers.applicable is True
     assert record.identifiers.all_excluded is True
     assert record.imbalance.applicable is True
     assert record.imbalance.acknowledged is True
@@ -165,6 +166,37 @@ def test_identifier_columns_for_arm_uses_column_profile_uniqueness_for_full_data
     )
 
 
+def test_packet_arm_without_identifier_columns_is_not_applicable(tmp_path) -> None:
+    from dsx.experiments.data_access.uptake import evaluate_uptake, identifier_columns_for_arm
+
+    rows = [
+        {"label": 0, "group": "a", "score": 1},
+        {"label": 0, "group": "a", "score": 1},
+        {"label": 1, "group": "b", "score": 2},
+        {"label": 1, "group": "b", "score": 2},
+    ]
+    packet = build_packet(
+        PacketBuildRequest(
+            dataset_path=write_csv(tmp_path / "plain.csv", rows),
+            target_column="label",
+            packet_id="plain-v1",
+        )
+    ).packet
+    assert identifier_columns_for_arm(packet, arm=Arm.dsx_packet, target_column="label") == ()
+    assert identifier_columns_for_arm(packet, arm=Arm.full_data, target_column="label") == ()
+    record = evaluate_uptake(
+        _decision(packet, excluded_columns=()),
+        packet,
+        arm=Arm.dsx_packet,
+        repetition_id="repetition-001",
+        target_column="label",
+    )
+    assert record.identifiers.columns == ()
+    assert record.identifiers.applicable is False
+    assert record.identifiers.all_excluded is None
+    assert record.packet_module_citations is not None
+
+
 def test_module_id_for_pointer_indexes_modules_and_rejects_invalid(tmp_path) -> None:
     from dsx.experiments.data_access.uptake import module_id_for_pointer
 
@@ -190,6 +222,7 @@ def test_uptake_record_models_are_frozen_contracts() -> None:
         columns=("row_id",),
         excluded=("row_id",),
         missed=(),
+        applicable=True,
         all_excluded=True,
     )
     imbalance = ImbalanceUptake(applicable=True, acknowledged=True)
@@ -206,14 +239,25 @@ def test_uptake_record_models_are_frozen_contracts() -> None:
         packet_module_citations=citations,
     )
     assert record.identifiers.all_excluded is True
+    assert record.identifiers.applicable is True
     assert record.imbalance.acknowledged is True
     none_imbalance = ImbalanceUptake(applicable=False, acknowledged=None)
     assert none_imbalance.acknowledged is None
+    empty = IdentifierUptake(
+        columns=(),
+        excluded=(),
+        missed=(),
+        applicable=False,
+        all_excluded=None,
+    )
+    assert empty.applicable is False
+    assert empty.all_excluded is None
     with pytest.raises(ValidationError):
         IdentifierUptake(
             columns=("row_id",),
             excluded=("row_id",),
             missed=(),
+            applicable=True,
             all_excluded=True,
             extra=True,  # type: ignore[call-arg]
         )
@@ -255,6 +299,7 @@ def test_evaluate_uptake_records_missed_identifiers_and_module_citations(tmp_pat
     assert record.repetition_id == "repetition-002"
     assert record.identifiers.excluded == ()
     assert record.identifiers.missed == ("row_id",)
+    assert record.identifiers.applicable is True
     assert record.identifiers.all_excluded is False
     assert record.packet_module_citations is not None
     assert record.packet_module_citations.column_profile is True

@@ -567,3 +567,54 @@ def test_freeze_cli_aborts_when_output_exists(tmp_path: Path) -> None:
     assert result.exit_code == 1
     assert "Error:" in result.output
     assert output.is_dir()
+
+
+def _freeze_cli_output(result: object) -> str:
+    stdout = getattr(result, "stdout", "") or ""
+    stderr = getattr(result, "stderr", "") or ""
+    output = getattr(result, "output", "") or ""
+    return f"{stdout}{stderr}{output}"
+
+
+def test_freeze_cli_reports_unreadable_datasets_without_traceback(tmp_path: Path) -> None:
+    missing = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(tmp_path / "missing.csv"),
+            str(tmp_path / "out-missing"),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "src",
+            "--license-accepted",
+        ],
+    )
+    missing_output = _freeze_cli_output(missing)
+    assert missing.exit_code == 1
+    assert "Error:" in missing_output
+    assert "Traceback" not in missing_output
+
+    garbage = tmp_path / "bad.parquet"
+    garbage.write_bytes(b"not a parquet file")
+    invalid = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(garbage),
+            str(tmp_path / "out-parquet"),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "src",
+            "--license-accepted",
+        ],
+    )
+    invalid_output = _freeze_cli_output(invalid)
+    assert invalid.exit_code == 1
+    assert "Error:" in invalid_output
+    assert "Traceback" not in invalid_output

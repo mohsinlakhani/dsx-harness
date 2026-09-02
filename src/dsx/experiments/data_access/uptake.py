@@ -32,7 +32,8 @@ class IdentifierUptake(DataAccessContract):
     columns: tuple[str, ...]
     excluded: tuple[str, ...]
     missed: tuple[str, ...]
-    all_excluded: bool
+    applicable: bool
+    all_excluded: bool | None
 
 
 class ImbalanceUptake(DataAccessContract):
@@ -102,11 +103,13 @@ def evaluate_uptake(
     excluded_set = set(decision.excluded_columns)
     excluded = tuple(column for column in columns if column in excluded_set)
     missed = tuple(column for column in columns if column not in excluded_set)
+    applicable = bool(columns)
     identifiers = IdentifierUptake(
         columns=columns,
         excluded=excluded,
         missed=missed,
-        all_excluded=not missed,
+        applicable=applicable,
+        all_excluded=None if not applicable else not missed,
     )
 
     traps = _data_traps(packet)

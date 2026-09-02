@@ -169,6 +169,52 @@ def test_run_suite_records_failed_case_without_deleting_completed_sibling(tmp_pa
     assert (tmp_path / "suite" / "suite-index.json").is_file()
 
 
+def test_suite_case_id_rejects_values_outside_case_config_pattern() -> None:
+    from pydantic import ValidationError
+
+    from dsx.experiments.data_access.suite import SuiteCase
+
+    with pytest.raises(ValidationError, match="case_id"):
+        SuiteCase(case_id="has space", freeze_directory="freeze", order_seed=1)
+
+
+def test_run_suite_records_case_id_mismatch_as_failed(tmp_path: Path) -> None:
+    from dsx.experiments.data_access.suite import SuiteCase, SuiteConfig, run_suite
+
+    source = write_csv(tmp_path / "data.csv", _eligible_rows())
+    freeze_case(
+        dataset_path=source,
+        output=tmp_path / "freeze-a",
+        case_id="case-a",
+        target_column="label",
+        source_id="src",
+    )
+    pricing = _pricing(tmp_path / "pricing.json")
+    config = SuiteConfig(
+        study_id="data-access-luna-realistic",
+        model_identifier="gpt-5.6-luna",
+        pricing_path=str(pricing),
+        cases=(
+            SuiteCase(
+                case_id="case-b",
+                freeze_directory=str(tmp_path / "freeze-a"),
+                order_seed=7,
+            ),
+        ),
+    )
+    index = run_suite(
+        config,
+        tmp_path / "suite",
+        client=_scripted_client(),
+        limits=_limits(),
+    )
+    assert index.cases[0].status == "failed"
+    assert index.cases[0].error is not None
+    assert "case-a" in index.cases[0].error
+    assert "case-b" in index.cases[0].error
+    assert (tmp_path / "suite" / "suite-index.json").is_file()
+
+
 def test_run_suite_refuses_existing_output(tmp_path: Path) -> None:
     from dsx.experiments.data_access.suite import SuiteCase, SuiteConfig, run_suite
 

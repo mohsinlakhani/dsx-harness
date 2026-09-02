@@ -163,6 +163,39 @@ def test_inspect_rejects_unsupported_format(tmp_path) -> None:
         inspect_tabular_source(path, target_column="label")
 
 
+def test_inspect_wraps_duckdb_failures_as_value_error(tmp_path) -> None:
+    from dsx.experiments.data_access.realistic import inspect_tabular_source
+
+    with pytest.raises(ValueError, match="could not inspect"):
+        inspect_tabular_source(tmp_path / "missing.csv", target_column="label")
+    garbage = tmp_path / "bad.parquet"
+    garbage.write_bytes(b"not a parquet file")
+    with pytest.raises(ValueError, match="could not inspect"):
+        inspect_tabular_source(garbage, target_column="label")
+
+
+def test_review_classifier_task_prompt_is_locked() -> None:
+    from dsx.experiments.data_access.realistic import (
+        REVIEW_CLASSIFIER_TASK,
+        REVIEW_CLASSIFIER_TASK_PROMPT,
+    )
+
+    assert REVIEW_CLASSIFIER_TASK_PROMPT == (
+        "Recommend a classifier for a 5% manual-review budget. "
+        "Return the required structured decision. "
+        "Use factual_claims only for facts you can cite exactly."
+    )
+    first_sentence = REVIEW_CLASSIFIER_TASK_PROMPT.split(". ", maxsplit=1)[0] + "."
+    assert REVIEW_CLASSIFIER_TASK.objective == first_sentence
+    assert REVIEW_CLASSIFIER_TASK.module_types == (
+        "profile.dataset",
+        "profile.columns",
+        "profile.target",
+        "risk.data_traps",
+        "risk.features",
+    )
+
+
 def test_packet_module_content_rejects_missing_module(tmp_path) -> None:
     from dsx.experiments.data_access.realistic import packet_module_content
 
