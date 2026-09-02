@@ -210,3 +210,123 @@ def test_evaluate_eligibility_rejects_too_many_target_classes(tmp_path) -> None:
         evaluate_eligibility(
             _rebuild_packet(packet, "target-profile", content), target_column="label"
         )
+
+
+def test_freeze_case_writes_builder_bundle_and_metrics(tmp_path) -> None:
+    from dsx.experiments.data_access.realistic import (
+        REVIEW_CLASSIFIER_TASK_PROMPT,
+        freeze_case,
+    )
+
+    source = write_csv(tmp_path / "data.csv", _eligible_rows())
+    ticks = iter((1.0, 1.25))
+    result = freeze_case(
+        dataset_path=source,
+        output=tmp_path / "freeze",
+        case_id="case-a",
+        target_column="label",
+        source_id="datascibench:example-a",
+        clock=lambda: next(ticks),
+    )
+    freeze = tmp_path / "freeze"
+    assert (freeze / "packet.json").is_file()
+    assert (freeze / "build-record.json").is_file()
+    assert (freeze / "case.json").is_file()
+    assert (freeze / "packet-build-metrics.json").is_file()
+    assert (freeze / "freeze-note.json").is_file()
+    assert (freeze / "data.csv").is_file()
+    assert result.packet_build_metrics.elapsed_seconds == 0.25
+    assert result.packet_build_metrics.estimated_cost_usd == 0.0
+    assert result.case.task_prompt == REVIEW_CLASSIFIER_TASK_PROMPT
+    assert result.note.inheritance == "datasets_only"
+    assert result.note.license_accepted is True
+    assert "likely_identifier" in result.note.eligibility_signals
+
+
+def test_freeze_case_refuses_existing_output_and_missing_signals(tmp_path) -> None:
+    from dsx.experiments.data_access.realistic import freeze_case
+
+    existing = tmp_path / "freeze"
+    existing.mkdir()
+    source = write_csv(tmp_path / "data.csv", _eligible_rows())
+    with pytest.raises(FileExistsError):
+        freeze_case(
+            dataset_path=source,
+            output=existing,
+            case_id="case-a",
+            target_column="label",
+            source_id="src",
+        )
+    balanced = write_csv(
+        tmp_path / "balanced.csv",
+        [{"label": 0, "noise": 1}, {"label": 1, "noise": 1}],
+    )
+    dest = tmp_path / "rejected"
+    with pytest.raises(ValueError, match="no eligibility signal"):
+        freeze_case(
+            dataset_path=balanced,
+            output=dest,
+            case_id="case-b",
+            target_column="label",
+            source_id="src",
+        )
+    assert not dest.exists()
+
+
+def test_freeze_case_rejects_oversize_sources_before_build(tmp_path, monkeypatch) -> None:
+    from dsx.experiments.data_access import realistic
+    from dsx.experiments.data_access.realistic import (
+        MAX_COLUMNS,
+        MAX_ROWS,
+        MAX_TARGET_CLASSES,
+        freeze_case,
+    )
+
+    def boom(*_args: object, **_kwargs: object) -> None:
+        raise AssertionError("build_packet should not run")
+
+    monkeypatch.setattr(realistic, "build_packet", boom)
+    too_many_rows = write_csv(
+        tmp_path / "rows.csv",
+        [{"label": 0, "noise": 1} for _ in range(MAX_ROWS + 1)],
+    )
+    dest_rows = tmp_path / "too-many-rows"
+    with pytest.raises(ValueError, match="row_count"):
+        freeze_case(
+            dataset_path=too_many_rows,
+            output=dest_rows,
+            case_id="case-r",
+            target_column="label",
+            source_id="src",
+        )
+    assert not dest_rows.exists()
+
+    wide = write_csv(
+        tmp_path / "wide.csv",
+        [{"label": 0, **{f"c{index}": index for index in range(MAX_COLUMNS)}}],
+    )
+    dest_cols = tmp_path / "too-many-cols"
+    with pytest.raises(ValueError, match="column_count"):
+        freeze_case(
+            dataset_path=wide,
+            output=dest_cols,
+            case_id="case-c",
+            target_column="label",
+            source_id="src",
+        )
+    assert not dest_cols.exists()
+
+    many_classes = write_csv(
+        tmp_path / "classes.csv",
+        [{"label": index, "noise": 1} for index in range(MAX_TARGET_CLASSES + 1)],
+    )
+    dest_classes = tmp_path / "too-many-classes"
+    with pytest.raises(ValueError, match="target_distinct_non_null"):
+        freeze_case(
+            dataset_path=many_classes,
+            output=dest_classes,
+            case_id="case-t",
+            target_column="label",
+            source_id="src",
+        )
+    assert not dest_classes.exists()

@@ -381,3 +381,62 @@ def test_cli_failure_boundaries_cover_directory_and_dataset_tampering(
     monkeypatch.setattr(Path, "mkdir", denied_mkdir)
     with pytest.raises(typer.Exit):
         cli._create_directory(tmp_path / "denied", "destination")
+
+
+def test_freeze_cli_writes_exclusive_directory(tmp_path: Path) -> None:
+    from tests.builders.helpers import write_csv
+
+    rows = [
+        {
+            "row_id": f"r{index}",
+            "label": 1 if index == 0 else 0,
+            "nullable": None if index < 2 else index,
+            "noise": index,
+        }
+        for index in range(20)
+    ]
+    dataset = write_csv(tmp_path / "data.csv", rows)
+    output = tmp_path / "freeze"
+    result = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(dataset),
+            str(output),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "datascibench:example-a",
+            "--license-accepted",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    assert "Frozen Data Access case" in result.output
+    assert (output / "packet.json").is_file()
+
+
+def test_freeze_cli_aborts_when_output_exists(tmp_path: Path) -> None:
+    dataset = tmp_path / "data.csv"
+    dataset.write_text("label\n0\n", encoding="utf-8")
+    output = tmp_path / "freeze"
+    output.mkdir()
+    result = runner.invoke(
+        app,
+        [
+            "freeze",
+            str(dataset),
+            str(output),
+            "--case-id",
+            "case-a",
+            "--target",
+            "label",
+            "--source-id",
+            "src",
+            "--license-accepted",
+        ],
+    )
+    assert result.exit_code == 1
+    assert "Error:" in result.output
+    assert output.is_dir()

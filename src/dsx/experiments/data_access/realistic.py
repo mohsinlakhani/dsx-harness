@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import shutil
+import time
+from collections.abc import Callable
 from pathlib import Path
 from typing import Literal
 
 import duckdb
 from pydantic import BaseModel, JsonValue
 
+from dsx.builders.build import build_packet
 from dsx.builders.models import (
     COLUMN_PROFILE_MODULE_ID,
     DATA_TRAPS_MODULE_ID,
@@ -18,11 +22,13 @@ from dsx.builders.models import (
     DatasetProfile,
     DataTrap,
     FeatureRisks,
+    PacketBuildRequest,
     TargetProfile,
 )
+from dsx.builders.profiling import sha256_file
 from dsx.packet import DsTask, DsxPacket, TaskPacket, assemble_task_packet
 
-from .models import DataAccessContract, DatasetFormat
+from .models import CaseConfig, DataAccessContract, DatasetFormat, PacketBuildMetrics
 
 MAX_ROWS: int = 20_000
 MAX_COLUMNS: int = 40
@@ -172,3 +178,135 @@ def evaluate_eligibility(packet: DsxPacket, *, target_column: str) -> Eligibilit
 def require_review_classifier_task(packet: DsxPacket) -> TaskPacket:
     """Assemble the shared review-classifier task view over a builder packet."""
     return assemble_task_packet(packet, REVIEW_CLASSIFIER_TASK)
+
+
+class FreezeNote(DataAccessContract):
+    case_id: str
+    source_id: str
+    license_accepted: Literal[True]
+    inheritance: Literal["datasets_only"]
+    packet_digest: str
+    dataset_file_digest: str
+    module_ids: tuple[str, ...]
+    eligibility_signals: tuple[EligibilitySignal, ...]
+    target_column: str
+    row_count: int
+    column_count: int
+
+
+class FreezeResult(DataAccessContract):
+    directory: str
+    case: CaseConfig
+    note: FreezeNote
+    packet_build_metrics: PacketBuildMetrics
+
+
+def _reject_oversize(inspection: SourceInspection) -> None:
+    column_count = len(inspection.column_names)
+    if inspection.row_count > MAX_ROWS:
+        raise ValueError(f"row_count exceeds maximum: {inspection.row_count} > {MAX_ROWS}")
+    if column_count > MAX_COLUMNS:
+        raise ValueError(f"column_count exceeds maximum: {column_count} > {MAX_COLUMNS}")
+    if inspection.target_distinct_non_null > MAX_TARGET_CLASSES:
+        raise ValueError(
+            "target_distinct_non_null exceeds maximum: "
+            f"{inspection.target_distinct_non_null} > {MAX_TARGET_CLASSES}"
+        )
+
+
+def _write_indent_json(path: Path, contract: DataAccessContract) -> None:
+    with path.open("x", encoding="utf-8") as artifact:
+        artifact.write(contract.model_dump_json(indent=2))
+        artifact.write("\n")
+
+
+def freeze_case(
+    *,
+    dataset_path: Path,
+    output: Path,
+    case_id: str,
+    target_column: str,
+    source_id: str,
+    packet_id: str | None = None,
+    clock: Callable[[], float] | None = None,
+) -> FreezeResult:
+    """Copy a dataset, build a packet bundle, and write an exclusive freeze directory."""
+    output.mkdir()
+    try:
+        return _freeze_into(
+            dataset_path=dataset_path,
+            output=output,
+            case_id=case_id,
+            target_column=target_column,
+            source_id=source_id,
+            packet_id=packet_id,
+            clock=clock,
+        )
+    except Exception:
+        shutil.rmtree(output, ignore_errors=True)
+        raise
+
+
+def _freeze_into(
+    *,
+    dataset_path: Path,
+    output: Path,
+    case_id: str,
+    target_column: str,
+    source_id: str,
+    packet_id: str | None,
+    clock: Callable[[], float] | None,
+) -> FreezeResult:
+    inspection = inspect_tabular_source(dataset_path, target_column=target_column)
+    _reject_oversize(inspection)
+    copied = output / dataset_path.name
+    shutil.copy2(dataset_path, copied)
+    timer = time.perf_counter if clock is None else clock
+    started = timer()
+    built = build_packet(
+        PacketBuildRequest(
+            dataset_path=copied,
+            target_column=target_column,
+            packet_id=case_id if packet_id is None else packet_id,
+        )
+    )
+    metrics = PacketBuildMetrics(
+        elapsed_seconds=timer() - started,
+        estimated_cost_usd=0.0,
+    )
+    (output / "packet.json").write_text(built.packet.canonical_json() + "\n", encoding="utf-8")
+    (output / "build-record.json").write_text(
+        built.build_record.canonical_json() + "\n", encoding="utf-8"
+    )
+    require_review_classifier_task(built.packet)
+    eligibility = evaluate_eligibility(built.packet, target_column=target_column)
+    case = CaseConfig(
+        case_id=case_id,
+        task_prompt=REVIEW_CLASSIFIER_TASK_PROMPT,
+        dataset_path=str(copied),
+        dataset_format=inspection.dataset_format,
+        target_column=target_column,
+        oracle_version="v1",
+    )
+    note = FreezeNote(
+        case_id=case_id,
+        source_id=source_id,
+        license_accepted=True,
+        inheritance="datasets_only",
+        packet_digest=built.packet.digest(),
+        dataset_file_digest=sha256_file(copied),
+        module_ids=eligibility.module_ids,
+        eligibility_signals=eligibility.signals,
+        target_column=target_column,
+        row_count=eligibility.row_count,
+        column_count=eligibility.column_count,
+    )
+    _write_indent_json(output / "case.json", case)
+    _write_indent_json(output / "packet-build-metrics.json", metrics)
+    _write_indent_json(output / "freeze-note.json", note)
+    return FreezeResult(
+        directory=str(output),
+        case=case,
+        note=note,
+        packet_build_metrics=metrics,
+    )

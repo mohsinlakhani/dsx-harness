@@ -291,3 +291,43 @@ def reveal(
         _abort(f"could not reveal Data Access run: {error}")
     typer.echo(f"Data Access reveal published: {blind_bundle / 'reveal'}")
     typer.echo(f"Revealed outputs: {len(report.raw_judgments)}")
+
+
+@app.command()
+def freeze(
+    dataset: Annotated[Path, typer.Argument(help="CSV or Parquet dataset to freeze.")],
+    output: Annotated[Path, typer.Argument(help="New exclusive freeze directory.")],
+    case_id: Annotated[str, typer.Option("--case-id", help="Case identity for CaseConfig.")],
+    target: Annotated[str, typer.Option("--target", help="Target column in the dataset.")],
+    source_id: Annotated[
+        str, typer.Option("--source-id", help="Provenance identifier for the source.")
+    ],
+    license_accepted: Annotated[
+        bool,
+        typer.Option(
+            ...,
+            "--license-accepted",
+            help="Confirm the source dataset license is accepted.",
+        ),
+    ],
+    packet_id: Annotated[
+        str | None,
+        typer.Option("--packet-id", help="Optional packet identity; defaults to case id."),
+    ] = None,
+) -> None:
+    """Freeze a builder-generated Data Access case from a tabular dataset."""
+    try:
+        from .realistic import freeze_case
+
+        result = freeze_case(
+            dataset_path=dataset,
+            output=output,
+            case_id=case_id,
+            target_column=target,
+            source_id=source_id,
+            packet_id=packet_id,
+        )
+    except (FileExistsError, ValueError, OSError, ValidationError) as error:
+        _abort(f"could not freeze Data Access case: {error}")
+    typer.echo(f"Frozen Data Access case: {output}")
+    typer.echo(f"Packet digest: {result.note.packet_digest}")
