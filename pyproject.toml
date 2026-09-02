@@ -20,6 +20,7 @@ dependencies = [
 dsx-data-access = "dsx.experiments.data_access.cli:app"
 dsx-context-lift = "dsx.experiments.context_lift.cli:app"
 dsx-pilot = "dsx.experiments.context_lift.cli:app"
+dsx-packet = "dsx.builders.cli:app"
 
 [dependency-groups]
 dev = [
@@ -36,7 +37,7 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["dsx.packet", "dsx.experiments.context_lift", "dsx.experiments.data_access"]
+source = ["dsx.packet", "dsx.pipeline", "dsx.builders", "dsx.experiments.context_lift", "dsx.experiments.data_access"]
 
 [tool.ruff]
 target-version = "py312"

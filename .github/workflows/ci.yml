@@ -29,6 +29,8 @@ jobs:
         run: >-
           uv run pytest -m "not live"
           --cov=dsx.packet
+          --cov=dsx.pipeline
+          --cov=dsx.builders
           --cov=dsx.experiments.context_lift
           --cov=dsx.experiments.data_access
           --cov-branch

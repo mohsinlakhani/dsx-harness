@@ -20,10 +20,12 @@ artifacts where changing them would break reproducibility.
                  dsx.packet
           stable product contracts
                     │
-          consumed by applications
+                    ▼
+       dsx.pipeline     dsx.builders
+     transform history   packet assembly
                     │
                     ▼
-       future packet builders/routers
+       future packet routers
 
    dsx.experiments.context_lift    dsx.experiments.data_access
           frozen study                    active study
@@ -59,7 +61,8 @@ contract and deterministic fallback.
 | Change | Location |
 | --- | --- |
 | Packet envelope, modules, task projection | `src/dsx/packet/` |
-| Dataset profiling or packet generation | a future `src/dsx/builders/` package |
+| Transformation manifests and graph validation | `src/dsx/pipeline/` |
+| Dataset profiling, trap detection, packet generation | `src/dsx/builders/` |
 | Task classification and module routing | a future `src/dsx/routing/` package |
 | Experiment-specific arms, ledgers, scoring | `src/dsx/experiments/<experiment>/` |
 | Generated inputs, runs, and blind bundles | ignored `artifacts/<experiment>/` |
@@ -71,9 +74,6 @@ can be named independently of either study.
 
 ## Next increments
 
-1. Add typed validators and builders for the first earned module types while retaining the
-   arbitrary JSON envelope.
-2. Generate DSX Packets from CSV and Parquet with dataset fingerprints and evidence refs.
-3. Define a small data-science task taxonomy and a deterministic task-to-module policy.
-4. Compare full versus task-scoped packets through configuration in a new experiment.
-5. Add post-decision checks that resolve claims against the exact task packet used.
+1. Add a small data-science task taxonomy and a deterministic task-to-module policy.
+2. Compare full versus task-scoped packets through configuration in a new experiment.
+3. Add post-decision checks that resolve claims against the exact task packet used.

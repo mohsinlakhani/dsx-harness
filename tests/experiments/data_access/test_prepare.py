@@ -140,3 +140,35 @@ def test_prepare_manifest_commits_the_default_limits(tmp_path: Path) -> None:
     )
     assert manifest.limits.repetitions == 3
     assert manifest.packet.value["schema_version"] == "dsx-packet/v1"
+
+
+def test_prepare_manifest_accepts_generated_dsx_packet_without_changing_it(
+    tmp_path: Path,
+) -> None:
+    from dsx.builders import PacketBuildRequest, build_packet
+
+    source = tmp_path / "source.csv"
+    source.write_text("label,value\n0,one\n1,two\n", encoding="utf-8")
+    result = build_packet(
+        PacketBuildRequest(
+            dataset_path=source,
+            target_column="label",
+            packet_id="generated-v1",
+        )
+    )
+    packet_payload = json.loads(result.packet.canonical_json())
+    manifest = prepare_manifest(
+        case=_case(source, DatasetFormat.csv),
+        packet=OpaquePacket.from_value(packet_payload),
+        model=ModelConfig(model_identifier="offline", system_prompt="return JSON"),
+        pricing=PricingSnapshot(
+            input=TokenPrice(usd_per_million_tokens=1),
+            output=TokenPrice(usd_per_million_tokens=2),
+            source="test",
+            effective_date="2026-08-26",
+        ),
+        database_path=tmp_path / "generated.duckdb",
+    )
+    assert manifest.packet.value == packet_payload
+    assert manifest.packet.digest == result.packet.digest()
+
