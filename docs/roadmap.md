@@ -446,11 +446,14 @@ This is the fastest way to turn the pilot into feature evidence.
 
 The first history-aware builder is available as `dsx-packet build`. It profiles a CSV or Parquet
 file, optionally consumes a declared transformation manifest, and writes an immutable packet
-bundle with dataset, target, history, and data-trap modules.
+bundle with dataset, column-cardinality, target, history, data-trap, and feature-risk modules.
+Exact likely-identifier detection is implemented on that builder: a fully populated non-target
+column with `distinct_count == row_count` is reported as a warning-only `likely_identifier`
+finding.
 
-Further builder work can still add likely-ID detection, review-budget calculations, and open
-questions, then use module-ablation cases to assess whether generated packets preserve the useful
-parts of a hand-authored packet.
+Further builder work can still add near-unique identifier detection, semantic leakage checks,
+review-budget calculations, and open questions, then use module-ablation cases to assess whether
+generated packets preserve the useful parts of a hand-authored packet.
 
 ### Increment 3: equal-discovery and workflow experiments
 

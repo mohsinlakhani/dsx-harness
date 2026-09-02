@@ -14,7 +14,14 @@ from typing import Any, Literal
 import duckdb
 from pydantic import JsonValue
 
-from .models import ClassCount, ColumnSummary, DatasetProfile, TargetDistribution
+from .models import (
+    ClassCount,
+    ColumnCardinality,
+    ColumnsProfile,
+    ColumnSummary,
+    DatasetProfile,
+    TargetDistribution,
+)
 
 SupportedFormat = Literal["csv", "parquet"]
 
@@ -88,17 +95,42 @@ def profile_table(
     format: SupportedFormat | None = None,
 ) -> DatasetProfile:
     """Profile row count, types, and missingness for a CSV or Parquet table."""
+    dataset_profile, _columns_profile = profile_table_and_columns(
+        path, snapshot_id=snapshot_id, format=format
+    )
+    return dataset_profile
+
+
+def profile_table_and_columns(
+    path: Path,
+    *,
+    snapshot_id: str,
+    format: SupportedFormat | None = None,
+) -> tuple[DatasetProfile, ColumnsProfile]:
+    """Profile missingness and cardinality from one opened CSV or Parquet table."""
     dataset_format = format or detect_dataset_format(path)
     connection = _open_table(path, dataset_format)
     try:
-        row_count = _row_count(connection)
-        if row_count == 0:
-            raise ValueError(f"dataset is empty: {path}")
-        columns = tuple(_column_summaries(connection, row_count))
-        return DatasetProfile(
-            current_snapshot_id=snapshot_id,
-            row_count=row_count,
-            columns=columns,
+        try:
+            row_count = _row_count(connection)
+            if row_count == 0:
+                raise ValueError(f"dataset is empty: {path}")
+            summaries, cardinalities = _column_summaries_and_cardinalities(connection, row_count)
+        except ValueError:
+            raise
+        except Exception as error:
+            raise ValueError(f"could not parse {dataset_format} dataset: {path}") from error
+        return (
+            DatasetProfile(
+                current_snapshot_id=snapshot_id,
+                row_count=row_count,
+                columns=tuple(summaries),
+            ),
+            ColumnsProfile(
+                current_snapshot_id=snapshot_id,
+                row_count=row_count,
+                columns=tuple(cardinalities),
+            ),
         )
     finally:
         connection.close()
@@ -191,19 +223,25 @@ def _column_names(connection: duckdb.DuckDBPyConnection) -> tuple[str, ...]:
     return tuple(str(item[0]) for item in connection.execute("DESCRIBE dataset").fetchall())
 
 
-def _column_summaries(connection: duckdb.DuckDBPyConnection, row_count: int) -> list[ColumnSummary]:
+def _column_summaries_and_cardinalities(
+    connection: duckdb.DuckDBPyConnection, row_count: int
+) -> tuple[list[ColumnSummary], list[ColumnCardinality]]:
     description = connection.execute("DESCRIBE dataset").fetchall()
     summaries: list[ColumnSummary] = []
+    cardinalities: list[ColumnCardinality] = []
     for item in description:
         name = str(item[0])
         duckdb_type = str(item[1])
         quoted = quote_identifier(name)
-        missing_row = connection.execute(
-            f"SELECT count(*) FROM dataset WHERE {quoted} IS NULL"
+        counts_row = connection.execute(
+            f"SELECT count({quoted}), count(DISTINCT {quoted}) FROM dataset"
         ).fetchone()
-        if missing_row is None:  # pragma: no cover - count always returns one row
-            raise RuntimeError("missing-count query did not return a row")
-        missing_count = int(missing_row[0])
+        if counts_row is None:  # pragma: no cover - count always returns one row
+            raise RuntimeError("column-count query did not return a row")
+        non_null_count = int(counts_row[0])
+        distinct_count = int(counts_row[1])
+        missing_count = row_count - non_null_count
+        uniqueness_rate = distinct_count / row_count
         summaries.append(
             ColumnSummary(
                 name=name,
@@ -212,7 +250,16 @@ def _column_summaries(connection: duckdb.DuckDBPyConnection, row_count: int) -> 
                 missing_rate=missing_count / row_count,
             )
         )
-    return summaries
+        cardinalities.append(
+            ColumnCardinality(
+                name=name,
+                duckdb_type=duckdb_type,
+                non_null_count=non_null_count,
+                distinct_count=distinct_count,
+                uniqueness_rate=uniqueness_rate,
+            )
+        )
+    return summaries, cardinalities
 
 
 def rates_by_class(distribution: TargetDistribution) -> Mapping[str, float]:

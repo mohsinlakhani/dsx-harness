@@ -12,7 +12,11 @@ from pydantic import ValidationError
 from dsx.packet.models import DatasetRef, DsxPacket, PacketModule
 from dsx.pipeline import DatasetFormat, TransformationGraph, TransformationManifest
 
+from .feature_risks import detect_likely_identifiers
 from .models import (
+    COLUMN_PROFILE_MODULE_ID,
+    COLUMN_PROFILE_SCHEMA,
+    COLUMN_PROFILE_TYPE,
     CURRENT_SNAPSHOT_ID,
     DATA_TRAPS_MODULE_ID,
     DATA_TRAPS_SCHEMA,
@@ -20,6 +24,9 @@ from .models import (
     DATASET_PROFILE_MODULE_ID,
     DATASET_PROFILE_SCHEMA,
     DATASET_PROFILE_TYPE,
+    FEATURE_RISKS_MODULE_ID,
+    FEATURE_RISKS_SCHEMA,
+    FEATURE_RISKS_TYPE,
     TARGET_PROFILE_MODULE_ID,
     TARGET_PROFILE_SCHEMA,
     TARGET_PROFILE_TYPE,
@@ -27,8 +34,10 @@ from .models import (
     TRANSFORMATION_HISTORY_SCHEMA,
     TRANSFORMATION_HISTORY_TYPE,
     AugmentationDistribution,
+    ColumnsProfile,
     DatasetProfile,
     DataTrap,
+    FeatureRisks,
     HistoryStep,
     ModuleDescriptor,
     PacketBuildRecord,
@@ -42,7 +51,7 @@ from .profiling import (
     SupportedFormat,
     count_table_rows,
     detect_dataset_format,
-    profile_table,
+    profile_table_and_columns,
     profile_target,
     sha256_file,
 )
@@ -161,7 +170,7 @@ def build_packet(request: PacketBuildRequest) -> PacketBuildResult:
         )
         manifest_digest = request.manifest.digest()
 
-    dataset_profile = profile_table(
+    dataset_profile, columns_profile = profile_table_and_columns(
         dataset_path, snapshot_id=current_snapshot_id, format=dataset_format
     )
     current_target = profile_target(
@@ -197,6 +206,16 @@ def build_packet(request: PacketBuildRequest) -> PacketBuildResult:
 
     dataset_evidence = (snapshot_evidence_ref(dataset_digest),)
     history_evidence = () if manifest_digest is None else (manifest_evidence_ref(manifest_digest),)
+    findings = detect_likely_identifiers(
+        columns_profile,
+        target_column=request.target_column,
+        evidence_refs=dataset_evidence,
+    )
+    feature_risks = FeatureRisks(
+        current_snapshot_id=current_snapshot_id,
+        target_column=request.target_column,
+        findings=findings,
+    )
     traps = _collect_traps(
         current_target=current_target,
         graph=graph,
@@ -208,7 +227,9 @@ def build_packet(request: PacketBuildRequest) -> PacketBuildResult:
 
     modules = _assemble_modules(
         dataset_profile=dataset_profile,
+        columns_profile=columns_profile,
         target_profile=target_profile,
+        feature_risks=feature_risks,
         traps=traps,
         graph=graph,
         manifest=request.manifest,
@@ -357,7 +378,9 @@ def _collect_traps(
 def _assemble_modules(
     *,
     dataset_profile: DatasetProfile,
+    columns_profile: ColumnsProfile,
     target_profile: TargetProfile,
+    feature_risks: FeatureRisks,
     traps: tuple[DataTrap, ...],
     graph: TransformationGraph | None,
     manifest: TransformationManifest | None,
@@ -374,6 +397,13 @@ def _assemble_modules(
             module_type=DATASET_PROFILE_TYPE,
             schema_version=DATASET_PROFILE_SCHEMA,
             content=dataset_profile.model_dump(mode="json"),
+            evidence_refs=dataset_evidence,
+        ),
+        PacketModule(
+            module_id=COLUMN_PROFILE_MODULE_ID,
+            module_type=COLUMN_PROFILE_TYPE,
+            schema_version=COLUMN_PROFILE_SCHEMA,
+            content=columns_profile.model_dump(mode="json"),
             evidence_refs=dataset_evidence,
         ),
         PacketModule(
@@ -426,6 +456,15 @@ def _assemble_modules(
                 *(trap.evidence_refs for trap in traps),
                 extra=dataset_evidence if not traps else (),
             ),
+        )
+    )
+    modules.append(
+        PacketModule(
+            module_id=FEATURE_RISKS_MODULE_ID,
+            module_type=FEATURE_RISKS_TYPE,
+            schema_version=FEATURE_RISKS_SCHEMA,
+            content=feature_risks.model_dump(mode="json"),
+            evidence_refs=dataset_evidence,
         )
     )
     return tuple(modules)

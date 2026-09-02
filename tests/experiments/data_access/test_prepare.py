@@ -157,6 +157,14 @@ def test_prepare_manifest_accepts_generated_dsx_packet_without_changing_it(
         )
     )
     packet_payload = json.loads(result.packet.canonical_json())
+    module_ids = [module["module_id"] for module in packet_payload["modules"]]
+    assert module_ids == [
+        "dataset-profile",
+        "column-profile",
+        "target-profile",
+        "data-traps",
+        "feature-risks",
+    ]
     bundle = tmp_path / "generated-bundle"
     write_packet_bundle(result, bundle)
     on_disk = json.loads((bundle / "packet.json").read_text(encoding="utf-8"))
@@ -174,5 +182,6 @@ def test_prepare_manifest_accepts_generated_dsx_packet_without_changing_it(
         database_path=tmp_path / "generated.duckdb",
     )
     assert manifest.packet.value == packet_payload
+    assert manifest.packet.value["modules"] == packet_payload["modules"]
     assert manifest.packet.digest == result.packet.digest()
 

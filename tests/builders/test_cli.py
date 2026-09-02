@@ -45,7 +45,12 @@ def test_cli_builds_csv_and_parquet_end_to_end(tmp_path: Path) -> None:
     assert csv_result.exit_code == 0, csv_result.output
     assert parquet_result.exit_code == 0, parquet_result.output
     assert "packet_digest=" in csv_result.output
-    assert "module_ids=dataset-profile,target-profile,data-traps" in csv_result.output
+    assert (
+        "module_ids=dataset-profile,column-profile,target-profile,data-traps,feature-risks"
+        in csv_result.output
+    )
+    assert "column-profile" in csv_result.output
+    assert "feature-risks" in csv_result.output
     assert (csv_out / "packet.json").is_file()
     assert (parquet_out / "packet.json").is_file()
 
@@ -92,6 +97,11 @@ def test_cli_manifest_previous_bundle_and_error_categories(tmp_path: Path) -> No
     )
     assert first.exit_code == 0, first.output
     assert "revision=1" in first.output
+    assert (
+        "module_ids=dataset-profile,column-profile,target-profile,"
+        "transformation-history,data-traps,feature-risks"
+        in first.output
+    )
     second_out = tmp_path / "second"
     second = runner.invoke(
         app,
@@ -140,7 +150,31 @@ def test_cli_manifest_previous_bundle_and_error_categories(tmp_path: Path) -> No
         ],
     )
     assert missing_dataset.exit_code == 1
+    assert "Error:" in missing_dataset.output
+    assert "Traceback" not in missing_dataset.output
     assert "does not exist" in missing_dataset.output
+    assert not (tmp_path / "out-missing").exists()
+
+    empty = write_csv(tmp_path / "empty.csv", [])
+    empty_out = tmp_path / "out-empty"
+    empty_result = runner.invoke(
+        app,
+        [
+            "build",
+            str(empty),
+            str(empty_out),
+            "--target",
+            "label",
+            "--packet-id",
+            "train-v1",
+        ],
+    )
+    assert empty_result.exit_code == 1
+    assert "Error:" in empty_result.output
+    assert "Traceback" not in empty_result.output
+    assert "empty" in empty_result.output
+    assert not empty_out.exists()
+    assert list(tmp_path.glob(".out-empty.tmp-*")) == []
 
     missing_target = runner.invoke(
         app,
@@ -155,7 +189,10 @@ def test_cli_manifest_previous_bundle_and_error_categories(tmp_path: Path) -> No
         ],
     )
     assert missing_target.exit_code == 1
+    assert "Error:" in missing_target.output
+    assert "Traceback" not in missing_target.output
     assert "target column" in missing_target.output
+    assert not (tmp_path / "out-target").exists()
 
     bad_id = runner.invoke(
         app,
@@ -234,3 +271,5 @@ def test_cli_manifest_previous_bundle_and_error_categories(tmp_path: Path) -> No
     )
     assert graph_error.exit_code == 1
     assert "Error:" in graph_error.output
+    assert "Traceback" not in graph_error.output
+    assert not (tmp_path / "out-graph").exists()

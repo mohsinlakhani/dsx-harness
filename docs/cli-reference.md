@@ -35,6 +35,20 @@ module IDs. The bundle contains `packet.json`, `build-record.json`, and `manifes
 manifest was supplied. Builds write into a temporary sibling directory and rename it only after
 every artifact validates.
 
+The packet always includes these modules, in order: `dataset-profile`, `column-profile`,
+`target-profile`, `data-traps`, and `feature-risks`. When a manifest is supplied,
+`transformation-history` is inserted between `target-profile` and `data-traps`.
+
+`column-profile` (`profile.columns/v1`) records every current-dataset column, including the
+target, in source schema order. Each column has `name`, `duckdb_type`, `non_null_count`,
+`distinct_count` (distinct non-null values), and `uniqueness_rate` (`distinct_count / row_count`).
+
+`feature-risks` (`risk.features/v1`) reports exact likely-identifier candidates: a non-target
+column that is fully populated (`non_null_count == row_count`) and unique (`distinct_count ==
+row_count`). The target is never emitted. When no candidate exists the module is still written
+with `"findings": []`. Findings are warning-only and advisory: they never exclude features or
+block persistence.
+
 Expected user errors exit nonzero with an `Error:` message and no internal traceback. Destinations
 are exclusive: a second build to the same path is refused, and a failed build leaves no partial
 output directory.

@@ -8,7 +8,7 @@ import pytest
 
 from dsx.builders import PacketBuildRequest, build_packet, write_packet_bundle
 from dsx.builders.build import load_previous_bundle
-from dsx.builders.models import PacketBuildRecord
+from dsx.builders.models import TRANSFORMATION_HISTORY_MODULE_ID, PacketBuildRecord
 from dsx.builders.persist import _validate_bundle
 from dsx.packet.models import DsxPacket
 from dsx.pipeline import (
@@ -255,6 +255,11 @@ def test_relative_historical_path_resolves_from_snapshot_root(tmp_path: Path) ->
             snapshot_root=tmp_path,
         )
     )
-    history = result.packet.modules[2].content
+    history_module = next(
+        module
+        for module in result.packet.modules
+        if module.module_id == TRANSFORMATION_HISTORY_MODULE_ID
+    )
+    history = history_module.content
     assert isinstance(history, dict)
     assert "raw" in history["accessible_snapshot_ids"]

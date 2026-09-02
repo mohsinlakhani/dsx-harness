@@ -88,7 +88,11 @@ uv run dsx-packet build data/train.parquet artifacts/packet-bundle \
 ```
 
 The command writes an exclusive bundle containing `packet.json`, `build-record.json`, and a
-copy of the normalized manifest when one was supplied. It does not copy the dataset.
+copy of the normalized manifest when one was supplied. It does not copy the dataset. The
+packet always includes `dataset-profile` (`profile.dataset/v1`), `column-profile`
+(`profile.columns/v1`), `target-profile` (`profile.target/v1`), `data-traps`
+(`risk.data_traps/v1`), and `feature-risks` (`risk.features/v1`). A `transformation-history`
+(`history.transforms/v1`) module is included when a manifest is supplied.
 
 ## Experiments
 
