@@ -116,3 +116,8 @@ DATA_ACCESS_LIVE=1 OPENAI_API_KEY=... MODEL_ID=... \
 
 It prepares a tiny deterministic case, executes one real three-arm repetition, and verifies
 that every arm leaves typed terminal and append-only request evidence.
+
+A follow-on study on three frozen DataSciBench tables, builder-generated packets, and Luna
+is documented in [Data Access Luna realistic slice](data-access-luna-realistic.md). It reuses
+this v2 runner, freeze, suite, and post-reveal uptake; it does not change Terra artifacts or
+the semantics above.

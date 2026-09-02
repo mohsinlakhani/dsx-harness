@@ -70,18 +70,37 @@ prepared dataset, and `packet_and_full_data` receives both. Its inputs, run, bli
 reveal artifacts are independent of the frozen Context Lift (`dsx-context-lift`) artifacts below.
 
 ```text
+dsx-data-access freeze DATASET OUTPUT --case-id ID --target COL --source-id SRC --license-accepted [--packet-id ID]
+dsx-data-access suite SUITE_CONFIG OUTPUT
 dsx-data-access prepare CASE_CONFIG DSX_PACKET OUTPUT --model MODEL --pricing PRICING_JSON
 dsx-data-access run INPUT_DIRECTORY RUN_ROOT --order-seed SEED
 dsx-data-access judge RUN_ROOT BLIND_BUNDLE --blind-seed SEED [--judgments FILE]
 dsx-data-access reveal RUN_ROOT BLIND_BUNDLE
+dsx-data-access uptake RUN_ROOT OUTPUT
 ```
+
+`freeze` copies a local CSV or Parquet file, times `dsx-packet build`, and writes an exclusive
+freeze directory (`case.json`, `packet.json`, `build-record.json`, `packet-build-metrics.json`,
+`freeze-note.json`). `--license-accepted` is required. There is no `--manifest` flag: do not
+invent transformation history. Optional `--packet-id` defaults to `--case-id`. Freeze fails
+nonzero if the table exceeds 20,000 rows or 40 columns, the target has more than 10 distinct
+non-null values, task assembly fails, or no eligibility signal fires.
+
+`suite` takes a JSON config (`study_id` must be `data-access-luna-realistic`) and an exclusive
+output directory. It requires `OPENAI_API_KEY`, sequences existing `prepare` and `run` over
+each freeze directory, and writes `suite-index.json`. A failed case is marked ineligible; other
+case artifacts are kept. `judge` and `reveal` remain unchanged per-case commands: one blind
+bundle per run root.
+
+`uptake` writes an exclusive post-reveal diagnostic (`uptake.json`) for completed arms in a
+private run root. It is not part of the public blind bundle.
 
 `prepare` is local and exclusively writes a materialized DuckDB database and an immutable
 manifest. It accepts CSV, Parquet, and pilot-case JSON as configured in `CASE_CONFIG`. Packet
 JSON remains opaque to the framework. The manifest commits source and materialized dataset
 digests, packet, task/configuration, pricing, oracle version, limits, and query tool schema.
 
-`run` is the only command requiring `OPENAI_API_KEY`. It revalidates every prepared digest
+`run` and `suite` require `OPENAI_API_KEY`. `run` revalidates every prepared digest
 before a provider call, writes an exclusive private run root, randomizes all three arms inside
 each repetition from `--order-seed`, and records raw model/tool events append-only. The data
 tool is restricted to one `SELECT`, `WITH`, or `DESCRIBE dataset` query per call; results are
@@ -95,8 +114,10 @@ complete judgments JSON array, it revalidates the source and public commitments 
 the judgments exclusively. `reveal` requires that freeze, then exclusively joins qualitative
 judgments with official arms and the private objective/operational report.
 
-See [Data Access](experiments/data-access.md) for the full protocol and claim boundary. Destinations are
-exclusive; malformed or tampered inputs fail nonzero without overwriting evidence.
+See [Data Access](experiments/data-access.md) for the v2 protocol and claim boundary, and
+[Data Access Luna realistic slice](experiments/data-access-luna-realistic.md) for freeze, suite,
+and uptake. Destinations are exclusive; malformed or tampered inputs fail nonzero without
+overwriting evidence.
 
 ## Context Lift
 
@@ -370,4 +391,5 @@ exclusive publication.
 - [Context Lift](experiments/context-lift.md)
 - [Evidence boundary](evidence-boundary.md)
 - [Data Access](experiments/data-access.md)
+- [Data Access Luna realistic slice](experiments/data-access-luna-realistic.md)
 - [Project introduction](../README.md)
