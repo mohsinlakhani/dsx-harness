@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9f63863ba9b7ab19523d3a989ae829b78b2b16fd853fc1def411fe6b16572a50",
+  "claims": [
+    {
+      "id": "claim_bca1618f41a74a6bb61375a2f2869eba",
+      "statement": "Context Lift is a frozen, deterministic one-case packet-on versus packet-off information-availability pilot whose claim label is explicitly limited to a one-case unscored pilot, rather than a general or causal comparison against an agent with data-discovery access.",
+      "evidence": [
+        {
+          "resource": "repo://docs/evidence-boundary.md#L3-L11",
+          "version": "repo-lines-v1:sha256:fb6e53c0b9de6cb0dcd5bedfe046256e291c32514caf200c3461f226fff57c67:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGJhOGQ3YmJkMTcwZTUxNzE0ZWE0MDMwOGJiMWY1Y2EyYTRlNTJkZDI1YTkxOTRiNDE0ZGYxODUxN2Y3NjgzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2QzOWE3Nzc0OWRiNDE1ZTExZDQ5NjI1MWQ1YTc5YzdmMjM2ZmQ1NmJhZmJiNzNlYjgyYjI5OTVlZjAxOWI4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWM4MzA2NTY1NDZlMTZlZGRlMTVlMGJlODM2OGU0NzUyYzQzYmQ2NmIyZWE0ZTEzODVhYjg2OTU0NjRiODg5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZmNGQ1NDAxMzg5OWQzNjg5ODFjNTk4YTgyMDZhYzllYmFlZDRhNzBhOGUzODM1YzE5NzA4OTg5YWQ0ZTg4OSJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/models.py#L74-L90",
+          "version": "repo-lines-v1:sha256:4dacec9a1b1a67ad5fb6bdcfd9ae5b15e30425bb6d6d9d433992cefd17e8ec39:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4MjdiYjUyMWI4ZmM4NmUzNWQ2OTExZGVkNzIyZmMzZTg0YTVmYjZlNzIwNzA3ZmU2Y2E2MDU2NzJkN2RmNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4ZWY4MzI1MWIyNDEzYzRiYTdiOGFmMDU0N2MwYzZiZTk2NWY0ZDIxNWI1MjQ4ODg0MGE2OTlmYWEzZTcxZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2ODllOWU4ZDMzNmVmMmZmZTQ0NTU1OWVmYjRhMzJlMTA4MWNkYjlkMGZlZmM5NzJjNDkwOWM5NzRhZjI3ZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c28c598ea3a646fe876c5a1676f74cf9",
+      "statement": "Generation deterministically constructs a 5,000-row synthetic case and a fixed hand-authored packet, and persists the case, packet, shared request configuration, and rendered request pair as strict frozen contracts.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L305-L362",
+          "version": "repo-lines-v1:sha256:db0b5a3435780901299c1f7d2b6663535736707dca437447d43f74bb8c776f6b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1NTc4MTcxYTM5NWRkNDNhOTM5ZWIyOGJkNzc2NzkyYmY0YTRhMjMzZDMxYWQ4NzBjMDZhMTc4MTkzMGY5ZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3ZTA2NjViNjZmY2JlOGQzYTA1NjM1ODA1ZWQxYzllNTVlN2M4NDUwNGU3MThjMGUyNTY3MDJmN2UxZmZkZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljNGFmNjIwOTFjNDJkNzg3NWViYjJmOTg2MWYzMGQ4OTlhZTczYTM4OTU1MWM2NWUwNDFlOWM1YjYzYTNlNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyZDRmOGFiYTE3MWEwN2Y1NmZkZjA4ZGJjOWQwMWM2NmU4ZTU5OGIyM2FkZjc4OGZmZDM3NDJmODk0NTMzOGEifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/models.py#L143-L209",
+          "version": "repo-lines-v1:sha256:5735aff30391143290eb4358ff016acdf288a8270a8844c4db9a93988da27a8b:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkODJkZjg3ZDIwNjE3NTY5YTg4ZDZkYjkwZmJhNDAxYmYzMmVlZGQyOTVmM2M1ZjRhZjc5YzU5ZDY2MzQzY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNGI4MDRhYWM4M2E1M2MxNGFkZTdiNzI3ZjQxYTUyZDVkODE2YjVmNTU1YzNlMmNjNTMyMzM1ODA2NTgzZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1YjlhZTRhNzZlZTY0NDIzMmUwNDVmNmYyYTQ4NzJlNThiM2E2ZmEzODY3Mzk2NTI3ZGUyN2IxZmY3Y2Y1MjIifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/models.py#L65-L71",
+          "version": "repo-lines-v1:sha256:2a8a009673300317eef0a21e54e15570912ad35f329ac49baf64b4b57a173c1e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY1ODk1Njk1YjYyOGMyZmJiNjk5OTBlZWQ4NGY4NWIwZWQ5NWIxMGZiY2ZkNDhkZmFlZmQ5MTI3MzQyOTdlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDgzZWY1MmRjMzNlM2Q5NDBkNDMwM2YxMWI2ZWRlMGJmOTY0ZjdlYTI1OWM1N2Q5NzUxZWYxNjg2MjliZjQwMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTFiNThkZDdlOGE3NTI4OTc2NTJmYjMzMTM2ZmQzYjY2NzU4ZjY4Yzk0YTExOTFkYzEzZTAwZTNjZGEyODYyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWMzOWFlN2M5MDRiZjI2ODA4YjIwOTEzZmRjNDMzYTM4YzdkZmVmNzIwMmVmODM3MWE4NmQxNWVjOWE1ZTA5MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f6601bb95534e70a21cf904b0efbd80",
+      "statement": "The controlled-delta proof requires packet-off to explicitly contain a null context.profile_packet and packet-on to contain the expected packet, rejects every other structural request difference, and commits the shared projection with canonical SHA-256 JSON digests that reject non-finite floats.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/render.py#L143-L180",
+          "version": "repo-lines-v1:sha256:b45ce20b9be104681f2e576061726b2fea2213c0bfb55ef83e5d60b711206a62:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiMzIwNTEwNDkxNmFiMzU1MWNiYjY2YzM1YjA1YWI1NTg5OTcyNDE5ZWJkZWE1ZTUyNzM5NzE1ZTc1Mzg2NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1ZDkzYTE0YzMyM2Q4ZGIxZTA3ZjA0ODAyMTc0Mzk3ZjQ0YWExZWQ4YTQ0ZjNlMGFhYjJiYjYxMmU5MjYwYWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1NjFiNmMyYTZlM2Y5NDc1YjU2ZWQ3YmM1ZDM5ZTQzNzcxZjU5ZWZiMDc3MmY1N2MxOTViZjIxOWUwZDM3MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3MzFmNmZmMzU4NTJiN2IyYTFkODBmMTI2OWM5ZDQ5NmM4YTFkYWQ4M2NlMjczYmQ3YTgzZTUwOTUwOTlmZWIifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/render.py#L183-L220",
+          "version": "repo-lines-v1:sha256:2914f5a331468dabe3323323b1be737894563d4f046a066fe595d38abf4566f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlMGI5MWY1ZGUzODI2ZTRlNGM2ZTNkOGI3N2I0ZGMxODk1Y2JlNmFhZDYxYzIzOGZkZmViNTlkZWNiNjA2NGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3ODI4OGUwNDFjNTE3OTA3YTdmMmFmMGY1ZjlmYTAzOGYzMjc2NzY4M2Q1MWYzODgzZjk1ODU0M2ZiNWYyNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/render.py#L76-L93",
+          "version": "repo-lines-v1:sha256:762b77614c10d47e6a4372b1c33071d080c8cd47296061f543c456d4ff78ca9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4MzRmZTY3MDQ2MDg0OTg4NDUwYmY5ZTU5ODAyMTZlNTlmMzljNGRkZTUzNzkxOWMyMTUyNmUzMWQwMDUxZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyMGE4MTVhYmNkMTM1ODEzNmNiNGRkZTBiYTUyODY4MjFjMjYxMjNmM2M1ZDU2ZTliMDkzYzRmYTkzZTA1Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZWUxOTMyODRlODJmYjc2YWY0ZjRmNTgzZTQzZjA1MDdiNWYxMzJiMTY0ZTZkMzUyM2JhZmI5NGMwYzdiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1MGNmYzdlZTgwOTRiZDNhNDI4NzRhNTQ2MmJhY2VkOWIyMDNjMDI0NmU4ZTVmOWIxZGE5MzI2MzI1MjhhNGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_37070769bc944854975c37dff60656c8",
+      "statement": "Before live execution, run reparses generated artifacts, regenerates and digests the seeded case, checks the fixed candidate packet, re-renders the requests for equality, and stops before client construction on a mismatch.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L126-L156",
+          "version": "repo-lines-v1:sha256:29b549e589718d2b6c3dd6fb19404623184b2fbed0afb896f8baa3d2f687777c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNzQzMzU0ODhhMTlkMDJiMjYyOGY2ZWRiZWY0ODc3ZGI4YjY4OTU4ZWExMWRlNWYzZWMzZDY3MWQzODY4ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZmMyOTk4ODVhMmZiZGYxY2RiYTM1YjlkZjc3MDkxYjI3YzNmNTAyYTQzNWQzOTBmZjlkNGM0MzViNGI2NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0MjQ4YTE5OTQzYWQyNGM2OWU0YWFiYzE3MTE4MmFlM2YzMDZlYWJjODhmY2JhYzM4NDhlZjFiMWZhOWRiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNzdlOWUyZDRmMDMyMjc4MmFkYzdmNTk0OTIxNmRlYWU4N2Q3OGViZjE4NjFkYzQ5ZjJhMWFmODkxM2YzYmUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L379-L387",
+          "version": "repo-lines-v1:sha256:626fcc404ecf26f00e714a449bf811bff8cbf0e8750565049db0a5b1c677eb43:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQwNGJhYWRjM2E1OTAwNDRmMmY4MzA2YmI3NDIxMjEzODJiZGQ1ODFjZGNmOGJjNWJjMjc0MTdmZDg4Y2YyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNiODUzNmYwM2VhOGU4NTdlMjEzMzMxZjUxNmZkNzgxNDkzMDQ0MzQ2YmU3OTNjZmZjYzAxMzZkOTU5MjBkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWVkZjg1MzMxYTJjMGI1OTcyNzQ4ODRlNmFiZGMwMGU3NzM4ODdmZjgyMmM2OWMxNjkyMzUwNGYyNTlhNzdkZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGZmZjU0MTBiODQ3MjU0OWExY2VlZTQwODYwNGU5NTg2ZDc2ODJiNjQ2NmM3OWEwMmZkYTMzMzUyNjg4ZjY1YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9abbc30a4154485a16e241d09846311",
+      "statement": "A new run root writes a manifest before any pair execution that commits the case, packet version, model, seeds, exactly three pair identities/order seeds, and request/common-projection digests.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L389-L429",
+          "version": "repo-lines-v1:sha256:2ff3d1456639c4415127bac8751c6f709d3891792796238bf2a81cefdfe8ccf8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YTVjOWQ0ZmZmZTNjZWM0ZjMzY2U0ODYyNWM2NWYxZjA1NTE3NjVjZTEyMzExOWMxZjk4N2Q3NTUxYTAzY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlOGY4NDExMWM1YmZlNzQ3NGU3YTYzZmI5ZWExMjY2NmY5YTgwNTBkYzFmOTY2ZDVkMmEwMjU5NTA3ZGY1ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2NjJkYmIwZDM4MzIzYjE2OTFiZGU2MWY3ODIwNDdjMTM1OTYxOWRiMjc1OTE0NjYyOGJmMWZjMDE2ZjBlOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhOGQ0NDFmMTVjNjc1OTFmZTVmNjFmYjNmNTA3MmVkMzYxMjE5MjM4ZjdjNzgwYTAwZDVlYWRlNWNiODQ4OTAifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/models.py#L74-L90",
+          "version": "repo-lines-v1:sha256:4dacec9a1b1a67ad5fb6bdcfd9ae5b15e30425bb6d6d9d433992cefd17e8ec39:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4MjdiYjUyMWI4ZmM4NmUzNWQ2OTExZGVkNzIyZmMzZTg0YTVmYjZlNzIwNzA3ZmU2Y2E2MDU2NzJkN2RmNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4ZWY4MzI1MWIyNDEzYzRiYTdiOGFmMDU0N2MwYzZiZTk2NWY0ZDIxNWI1MjQ4ODg0MGE2OTlmYWEzZTcxZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2ODllOWU4ZDMzNmVmMmZmZTQ0NTU1OWVmYjRhMzJlMTA4MWNkYjlkMGZlZmM5NzJjNDkwOWM5NzRhZjI3ZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_181a2c46519e4bbab1e173b836fbb98e",
+      "statement": "Each pair attempt records rendered requests and an attempt start before the first provider call, appends one outcome file per request, then writes append-only attempt and terminal pair summaries.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L231-L275",
+          "version": "repo-lines-v1:sha256:80cf808ed3d93995f7ee27ecd8c544c66ad8cb0ad30ee0d7daa971d96ff857a2:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjYzc5MGQ1ZGIwZGQzZDRlYzUyM2FjMjQ5MTVjNTc3ZWQzNTc2NzIxNDFjNWU2NDBlOTcwZjczN2RhMDY5ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMTFhN2VlYmQyMzk0NDJlMmNjYjVjMjQ0N2I3NzRiNWNiNTM0ZDAxZTcxZTc2NjIyZGQwNjRkY2JkYTk3ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1NzQ5YzIxZTYyYzJmYzg0NGEzYmRkZDQxYWFiZDMxYTEwODhiZTFmZTczNjBmNGYzYjc4MTFkMDNlMDI1YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5ZDRlMTNiYzJmNzc2Y2Q3MDBjMWYzNDMzZTVhNmJiNDMxOGI2YTA0YjZhNTc2MmZlYzhjNWZiZmNhZTVlYjMifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L311-L337",
+          "version": "repo-lines-v1:sha256:db51e19a6bf09b73ec251a8bd4cde6d2ab1e8c1b1620980833acb8f6eba0bc0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1NGI0Zjc3YzQ3ZDJhMTUxOTBiMjkzMTlkY2Q0ZjNiODhkYmFkOGZmN2IwNWMxZTQyNDJjNzg2ZmZlYjgxYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNzFlN2Y4YTQ4NzUwODYzMmQzMGVmYzRlOTRlMDlkMWRiNWQ4YjI1M2U4ZmY2Mzk1ZWMwZjJmNzBiOGE4MzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzMTJiYjRkZmE0NGQ3NWVjYmE1Y2M0ZjNkNzY3YjQ3MmMwYzI4YzBjNzU4OWM1YTAxZmJlODA5MTQ0ZmNiYzQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L340-L408",
+          "version": "repo-lines-v1:sha256:2aa8dc4d4729ac8fe72bb543d037c31aa199dc9b639fd4d1628ff7b8f33c757c:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyNjkxMjllMjZiNWRmZjJiNTY5ZTE2ZThmZjVmNjUwYTJlODIyZWFlOTg3ZmYwNWVlNDU4YjJmZTJhZjEyMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMjQwNDdjNjA0ZjUwOGMwOWUxNDIzMzgyNjg2MjBmNmU3OTZkMGM1Mzg1NTIzNzg0MDhlMTIzZDM2NTdmNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzZDUzMWNkNjBiYjllYTk4OWMwNWI4ODQzOWU4NGRiYjAzNDgyZjA2MDA3OTQ1ZjVhNDUwNDAxN2NlNmNjOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b7b39feae31d47abbbbabdcb44a493e6",
+      "statement": "Arms run sequentially in a seeded recorded order; only transport and provider failures receive up to three exact-request attempts with one- and two-second backoff, while refusal, provider-declared incompleteness, invalid output, and completion remain terminal observable outcomes.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L194-L228",
+          "version": "repo-lines-v1:sha256:7948889fe06fd6714aba6c51e296626c161f0cf0139dc51f6e5dc62ac1862a10:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkZjI0ODQ3NmVhNTg5ZjhiZDllMGFiMTIyNzVlNGExZmQxN2JiYmE4ZmIwNTFkZmY1N2EzODAxNzliNzA1ZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNGVhM2UxNGFjZTVhYzJiYTI5YmRhZDNjZDJkZTg1NDNhYjFkZjdjMDkwODc4ZGM1YTQ5YzM2YzUyNTc5NzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MDE0OWUwNjlhZDY3ZWNjZjQ3MzY0NmZmMWM3NTAwNTBkMzI5ZDExMDAxOGRjNTc2Njg3OGVhZmExZDYwN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkOTVjZjk3YTcxZmQ4MTQwOTk0YmZmYThhZWQ5MjA0MGJmNzAyNDc1ZjI3YmIxNGVhNWM5MmZmZWViYmQ5ZGMifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L311-L337",
+          "version": "repo-lines-v1:sha256:db51e19a6bf09b73ec251a8bd4cde6d2ab1e8c1b1620980833acb8f6eba0bc0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1NGI0Zjc3YzQ3ZDJhMTUxOTBiMjkzMTlkY2Q0ZjNiODhkYmFkOGZmN2IwNWMxZTQyNDJjNzg2ZmZlYjgxYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNzFlN2Y4YTQ4NzUwODYzMmQzMGVmYzRlOTRlMDlkMWRiNWQ4YjI1M2U4ZmY2Mzk1ZWMwZjJmNzBiOGE4MzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzMTJiYjRkZmE0NGQ3NWVjYmE1Y2M0ZjNkNzY3YjQ3MmMwYzI4YzBjNzU4OWM1YTAxZmJlODA5MTQ0ZmNiYzQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L351-L391",
+          "version": "repo-lines-v1:sha256:2b661d0dba597598a49f67045501e3d2ff16f6b9f343d4588fef47956d3de2eb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNDcyYmI1YzgyYTU2Y2Q0N2ZkMGRiN2NmYmZjYjBjMmY3YjdkNjI0Zjk4ZThkY2ZhOGFhZWFkMmJlODJhOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjZmQ0ZjAxMGU5MjEzYzgxNWEwZjdhZDhkYjVkZmVkMzY3YjkwYzc4MDIxODg5NGVlMjdkYjg5MzZmYjlkZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwZmI5NjdlOTUzNzRlNWNhNWU3ZWM4MDhiMjFkYzgyZTYyMzFjMTRhM2NkNzNjM2MzNzgyNDRlZjE0NTc2OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhOWFjYmZlNDQ3MzJjZWY5ODQ0MjBiODg1NDFiZmMzOWFjMmU1NDY3NzY4ZmMyMzkzYzYzMTVhMjA2ZTEyYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e1555ba7dfea4c42910478f388bdd04b",
+      "statement": "Infrastructure exhaustion invalidates a pair attempt and triggers at most one fresh paired attempt that reruns both arms; no prior successful arm is reused, and a second exhausted attempt becomes infra_incomplete.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/models.py#L359-L400",
+          "version": "repo-lines-v1:sha256:cda572e612233f9d60fca6059c3a2163d3995245108ce3943d9737c5a05732b7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiZDQ1MWVlMGQ3MjkzNWI0NzRhOGNjYzNlN2Y1NjJiNjYxNjViODVhMjFiNGZlYzRlYjMzYmFiNWMwNzdmOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWIwOTBiY2QxNjIwZmE2MmVhZWUxNTdhNzRmY2E2MzVhYTI5ZTEyY2JmZmQ2MThiNTc5MmQ4N2JjMDNhM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyMjUwOTJmZmRlOWNmODU3ODI0NTlhMzkyYmM3OWY4ZDY5NDFkNTFhN2M0ZGY0NGUzMzJiYzQ5NWRiZmIyZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4ZDk2MjBmNTNlNTU0YTUwYjAxOWFiMzVhYTlkMzU4ZDE1YjhlZGJiMzg5OGU4ZDc0NGJhMzZiNzk4ZWY3MTQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L351-L408",
+          "version": "repo-lines-v1:sha256:9d16969b400a2552df7ad37f7e98fbcea01e228593159c71c4fd114f034cce35:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNDcyYmI1YzgyYTU2Y2Q0N2ZkMGRiN2NmYmZjYjBjMmY3YjdkNjI0Zjk4ZThkY2ZhOGFhZWFkMmJlODJhOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmMjQwNDdjNjA0ZjUwOGMwOWUxNDIzMzgyNjg2MjBmNmU3OTZkMGM1Mzg1NTIzNzg0MDhlMTIzZDM2NTdmNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwZmI5NjdlOTUzNzRlNWNhNWU3ZWM4MDhiMjFkYzgyZTYyMzFjMTRhM2NkNzNjM2MzNzgyNDRlZjE0NTc2OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/context_lift/test_runner.py#L243-L300",
+          "version": "repo-lines-v1:sha256:ad6e99333b8199d892ee73ba0ca4b1eb89241bf3b554dc0265344062f107bf06:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzZDFhZTM1NTYwZmMzYTZhMTYxN2RhZTQwMjJiMTEzYmQwNjIwMGNlOTc5MGY1M2JkNTEzMDVlMjM5NjE2NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkODZjNTZkMDE5NjA2NjFjODQwYjk3YjQ2ZDM3YmJlNDI4MjJjMTY2YjVhY2U3YTExMzY1NmEyMjZiMGUwMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhYWMzMjU3YmQ1OWFiYzA5OGRiZWNkZWUyMjk2NDI0ODQ5MmFjZjQ5MWE3NGNiZDQ3ZDNjNzMxNTg1ZmYzMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyNjIyZWUzOWU3NmVjZTlmNTk5MThiMGIxMDFkZGE1NTk4NmIzNGU1OTVjYzhjZjdlYzJjODMzZWRhNjM0OTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_55554aaf255a4f92903edfe99bef3c88",
+      "statement": "Private-run validation reconstructs manifest-declared pair IDs and seeded orders and reconciles each summary with starts, rendered requests, per-request outcomes, controlled-delta proof, and digest commitments before blind export or reveal.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L176-L295",
+          "version": "repo-lines-v1:sha256:3af12abc2462dee245e816c44a2e0d159ba62154ec7b5f949e85a68211f8ccfb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyZTg1M2Q0NWE0NDliNzY4MzI3MWY3MzlmZTYzYTc3NWQ2Njc1ZDhhMjU0ZDNiYTVkMGI1YjFiNzNmNzY3OGNkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5OTE4NDcxNjUzYTYxNmMwM2E3OWFmYjYzMWVjMmYwNzRmODRlNDk3M2Y1OTAzNmU5MmYwZWM2ZTcyMWNjYWQyIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1NzgyNTkwNjFjOTVhMTQ3YjdmNzRkOTVhMjY1OTZjNjQyMGNiMWRhYzlmNmMxOTI1YWViMWE1NjFjZGU1YWI3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkZDg1YjgxNjQ5MTdhNzNmZDA3MWZhZjRmN2M2ZWE3MTFlYzVjM2RjZDMyZmJhZjRiZmU0MTNmODZmNzg1YzE1In0"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L465-L470",
+          "version": "repo-lines-v1:sha256:57d97254da02907541d6fdf2110f2b6874148355cdc0716dc12c625965ac8b95:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTUyOTE5Y2QyNjY4Yjc3NWVhNjJlOTA4ZmUyODlhZDMzNThhNzFiNDFiODBiYjJjYzFhZTgyMDZhYjg4NTczNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODllMmVkZWQ2NmJiN2NkMDNhZTVkZGIzN2M3M2YwY2M4NDM5Njk1ZjIxOTRhYWYwYWE0YzkyZGFkMWVmZWViYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWNkZTBkYjBlOWI0OTM2M2NjODFiMTE0MzVkZDFjNGU0NzA2YTFhNjdhY2ZhYjM2YWUxMTFkODQ2NjYwYjYwZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjE3ZjZlYzlhMDM1MjA0NTNiNjM2MmViODdkMjA1ZDIyNWJjN2ZjYWM1MzZiMjU3NzU2MGQ3ZjQ4ZWY1Y2VkNyJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L523-L528",
+          "version": "repo-lines-v1:sha256:61663ddb31353c1e26129c387f365a4098660f1787a5be519749de6d35d6c200:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjk4NGY5ZjIyZTQxZTI4Y2Y1YTg4ZGZkODQ0YmNiYTdkN2I1YzE1NmY3YzdhNmI2OTVmNzU3YjEzMmJkOWQ3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODllMmVkZWQ2NmJiN2NkMDNhZTVkZGIzN2M3M2YwY2M4NDM5Njk1ZjIxOTRhYWYwYWE0YzkyZGFkMWVmZWViYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDBiMjQ2MTMwNGEwYzdlMTUwYWJiMDNiODBmZTJkYzEwMmJkZGY1YzhlNWQ3ZmNmMWFiYmU4ZTkyMzBlOTA4NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2EwMzI0NWFmYjgyNWQxODRkMWQ0ZTVjZWUwZDMyMzk4Y2MzMzNkZTU4NjY0MTBjMmFiODVhNTk5NjExNWI4MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e550649417554c8b8e701944f2bb1467",
+      "statement": "Blind export admits only pairs whose final attempt has completed parsed decisions for both arms, derives 32-character opaque IDs from the public seed and private identity, publishes a shuffled manifest plus digest-bound decision-only files, and records excluded pairs only as non-identifying reason/count data.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L179-L224",
+          "version": "repo-lines-v1:sha256:937dc5db34e370c96477643bf7eb39a729955115a5abd3d0740910e56a069109:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhZDM0ZWNhZDFmMzcxZGJhN2Q2NGU3ZWE2NzllZGQ2NDU1MDdjYjUzNzE3NGIxODZmM2EzM2M0ZDk4NGMwYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZDI2ZWY1MjZlNTdhZTc0ZDEwZDY1YTJmNWIzMjY3MTVhOGM5ZDNmNGE0MWE1NWJmZjZiODFiZDE2MzlkMDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2OTgyMWFlYTIzM2UxYTkwNjBkNTJjZTUyNzZlNWQzN2I3OTc1OWIzNjY3YjE4MTk5NmIzYTVhMjI5M2MzZmUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L53-L56",
+          "version": "repo-lines-v1:sha256:00a0ebe670605266f82e816f972f98bb3fbce8dfd66f3e1a0877311bfcfa793e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQzZTY4NGQ0M2NkOTEyMDdlMDVmMDk0ODBjMzIzYTFkMWFjOGFiMmJhYjg4MzA0OWIyOTBiNjA3YWZiNTU3OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTAzNjRhN2FmNDZkOTUzNzZmYmVhYWZmNzdmMjc4MTNiM2Y5YmZjNWQwODgyMzhkY2Y3Y2JhMTQ2MzE4MWVjMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGY3M2U1MTNjMGIyYWU5YjJkMTQzYmM3Y2M4MDE1MDA2OTI3YmQ1YzdkMTczOGY4NjVkYzk2YWY5MDA3ODZmOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTg2YTQzYzVjZDU1NGQyNTRkMWZhNDFjMzU1ODczMmVjNmFlZjQwYmE4ZDA5NDg2MjUxYTg2OGNmZjM0YzA4ZiJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L84-L156",
+          "version": "repo-lines-v1:sha256:efc3b658e40d83420482dfb588ad9b5954e89968e09b5d3b4ec4ce074d80aeaf:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwZjU5NGUwNjJlZWI4OTUwNTU5ZDBiMzk0OWFkZTQ0MTkwZDY2NmQ5M2RhNGM2Nzk0MTFhOGI4YjY2ODEwZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkOTFlMDM2YWNmMmQ3YTRkNjI0ZDRlMmU5MTk1MTAzYmRhNWIyNmVhNmRhMWQ5ZTRlZGI1OWI5NDE1YThhZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxNDUxMTY1MWU1YTI2MjRmZDllYzVmYjA3MGYwY2Q3Zjk5ZDZlOGNmMmQzNzc0ZjAwNmQ5YjJlY2IzOGQxNzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e31a463057654a159cc8befd19efa8ae",
+      "statement": "Blind bundle and reveal publication use private staging plus exclusive directory-symlink publication, validate staged/public artifacts, and clean uncommitted stages so partial or competing destinations are not accepted as valid evidence.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L159-L203",
+          "version": "repo-lines-v1:sha256:2b004e5133af2136a6f6e7ddb8c9ad961664db032ae4e7be9402a3b349d82aba:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMjU4ZmM3YjA2NTQyYTE3NWQ3ZjY5ZDA0YjExNTk0NTdiMjk2MjNmOTIxODg1ZWFjMzg4ZDY0ZTdhYTE5OWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkN2ZhNWI1MDVlYTNlNWFiMTc0YjU4MDg2M2FkODlmYWNkYzIyMTM4NGY2NTBjZmZlNmJmMTFiOWM5MDI5ZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhYTMyYmU1YWYwMWY5ZWViZTE3MzgyNTg4NTAyYTU3YzM5YjhlMTcwMGJmNjY3NDg2MTVhM2I0ODU5YzE2MjgifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L404-L448",
+          "version": "repo-lines-v1:sha256:fd191faed0e6fc35f4a4d02c261aee41e4c247d1956d4366af108840b674acc5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3MTc1NDc1NGQzY2Q5NGFkOTJiZGQ2NGI3YmM5N2M2YjA1YTNlZTA2MzU4NjlhOTg1NWU3Mjc5NzcyMDFiNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5OTdlZDk2OGM1ZmVjYWRlNDVmZTE2NmI1MDZjM2VmMjg0ZjI5NGE0YjMxOTcwNzNmMjljYjY4NjA1MGNlNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2ZTZiMTUxNWExZDQ0M2I3NTgzZjFmY2NlNTAzYTE4MDU0MTVkYjk1NjQwYzVkYzM4Y2Y0MDczOWY2ZDUxNDQifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/context_lift/test_blind.py#L342-L451",
+          "version": "repo-lines-v1:sha256:d5902d7e3110fbfa97b54d683b4bba4039f9ca27d00bcb2e231879c4d0d7ece5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjOGM1ZDcxYTFhMDdlYmU1MjIwZTA0NDQ4ZDQyOTU5ZDA2MTg2YWQ1MmJkYjlkNDVlNzJiMWZlZWZkYzc2NjhjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmOWIwOTE0N2UxMTY5YTMyNGRlNDgyYWUzMTI1NDdmNzkwMzA2YWNhMjZhZDI0MDAzZTY5OGY2OWUwODA5YTI5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyZDc4MTU2ZmVkNGE3ZmE2YzU3ZDdkMGU3MDViNGViYjA1YTMwNTQ4OTY5ZDJhNjFmNTljMmIxNjg3NzRiZTI1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjYzVkODQ1YmM5NjA5ZGVjYTdmMTBlNTdjN2NhYmRmYTg3ZmExOGRlYWUzNTBjMjgxYTg1NGM3NDIyYjJjNjdiIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_a307c4a9408d4f28bf8a7008ef210b24",
+      "statement": "Freezing rederives the manifest from the verified source run, validates public output digests, requires each opaque ID exactly once, canonicalizes judgments into manifest order, and exclusively commits both manifest and judgment digests.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L227-L236",
+          "version": "repo-lines-v1:sha256:9f7991730774eb00d342664f94839b9333719c18a1dc71b598c1722b8c016240:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYjcxMDE4OGVmN2NkZTVlMGUwMzQ5ZGM3NDI2Y2I5NjljYmU4NDk1ODY1NjY1YmMyMzA1YzZlYzQxZTkyOWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxODNhYWZmYmExNjY0ZGUzZmYzOTkwMzczY2ZjNGQzNjM2YTZhYTIwNTA1ZGUxNzNlMDI2ZmZmZWQ5YmEzOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhYTk2NGQwMGUwODIzNTllYzhhMTU2MDk0ZGE0MWJiNTA0MTUwYWUyZTBjMDhjNjFmMDY2MzVhNjBkOGRkN2MifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L257-L320",
+          "version": "repo-lines-v1:sha256:e01fa8f51e3088add307e250757931a76925a4fa64f7cc18e5c222cc144f8269:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlNzk0ZjE0NmM2YmU3Yzk1MDY4M2NjY2UxNWZlYTQ3OGQ2ZDI5Y2RmYjUzOTcwMzc1YTZkYWUyODE5YTM2YmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhN2YwYmIyZWEwM2VjMzJmZDk3ZjliMGJmMTZmNjllNjdjMDBlZTZjZmE5YmRkZTVhMjE5OTU3NzBjNWExMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZDJkMGQ0ZDcxZjEyNTRjMDQ3NTQ4NDRiY2UwN2I4NGIwNWRiZjhjNDg0ZWNhYWU0Y2FlMDcwNWY4ZWU0ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhZDc1MjljNWIxOWJlZjYxMTMzNzBiZWRkYWNlM2M3ZGRhODZiMTQ5MzY3YWFiYjkzMDUxNDY5YTA1NzllY2YifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/models.py#L445-L469",
+          "version": "repo-lines-v1:sha256:22f05ea254904a1f5eb5388a35e28aa1db3ed60a9281e0ff8a5cfda98b537eb5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjMjEzNDhhY2U2MGU5YTgxMzQxZjVmNDVkMDcyNjcxNmI2MDNkYmNmNzBkMWExNmYyMGM4OGJjYmFlNTQ5NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjOGIwOWIxNzlmNjdlYjQxMzU5YWVkYmM4NjZiZjZmZTE5NzE2M2RmODY0OTE0OWVhMDhiNGEzMTA5YmQyNjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhNmY3MWY1YzAxNDJkZGYyNDUyMTA3ZDA2ZGU4ODRhZjc5OTA0MDU2YTIwYmE4ZjBmMzRhYTA2YTQ4NDMwNDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2NzFhNDQ1Yzg0ZDY0MzgxNzI0M2ZhYTA4ODBlZGI1OWViMzBjODkzODYyZDFiNTk0NTBiMTBjZDQ1NzkyNzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b32aa6404ab04b19a6e27ea65ef5b674",
+      "statement": "Reveal revalidates the private source, frozen judgment gate, and public outputs before reconstructing official assignments; its report keeps comparative ratings, packet-uptake diagnostics, and arm-guess results as separate sections.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L341-L401",
+          "version": "repo-lines-v1:sha256:6bf3f79badb47ea0a5b607b5974e1da467396906c9b85a5d5c5320e9ce7ab339:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYWQxMjY0MTBhODRlZWQ5NWE0NmIxMjEyYWVlMTc2NTczOTk1ZTMzYjc0YTY5ZWIwNmY4ZmNhNjlmMmJmNmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5ZWU5M2NiZDMzMDg4MTg0ZTNkYWQ2ZmVhZmNjNDVmNjZmMWVkZjZiYjAyNWFhZDJhOTNmNDlhMWIzMTA0ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmMjczNzBkYTIzM2UxY2RiNDVkMTdlN2NmMzkyY2U5NTA4ODdhYmEzY2Y5ZjkyYWI0YjJmOTFlN2UyODE0MmMifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/blind.py#L404-L449",
+          "version": "repo-lines-v1:sha256:6d0cf83a61df676678fcd983cdde11085a0f077f960b5eca45f964e44b886c07:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3MTc1NDc1NGQzY2Q5NGFkOTJiZGQ2NGI3YmM5N2M2YjA1YTNlZTA2MzU4NjlhOTg1NWU3Mjc5NzcyMDFiNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZTZiMTUxNWExZDQ0M2I3NTgzZjFmY2NlNTAzYTE4MDU0MTVkYjk1NjQwYzVkYzM4Y2Y0MDczOWY2ZDUxNDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/models.py#L488-L539",
+          "version": "repo-lines-v1:sha256:93e69b4c63af51af8e6803d1ce413f9d8d42114f420f384c3c48b173069d0b35:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiODU1MTkwOWFmOGM4MmU1N2UyOGUyYTUyYzYzOWExYTk3YjM1NDNjYjUxYTZkY2MzYmNiOWU2ZWMxNGViZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiNjIyNGJiNjUyZmM0N2RiYjQ2ZTYyMWM5NTMzOTQyNzdkYjRmZTIwYzg5NTU3OTMxODgzMjc2YzY0MzliMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwZjM1NzIzMGE4ZWU4MmEyMjg1ZDgwNDhkZmFlMjEzNDBhNjU3OWE1OTcxYWUyMjM2YTU4NDYxZjg5ZWEyNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7848511c9ebc4371a0d71e9d9414f917",
+      "statement": "The production OpenAI adapter sends non-streaming structured Responses requests with the rendered schema name, serializes context and task prompt as canonical content, sets store=False, and disables SDK retries so retry history remains in the runner ledger.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/runner.py#L72-L114",
+          "version": "repo-lines-v1:sha256:cc9576937d7cc48da67254fe0f04034546210cdbd115c1955c696d1e036be1b3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyM2U1YzgxYjFlNTEwNzljMGY2ZDgwMjJkM2QyMWU2ZDRhZTY2YmY0NDg5MTBmMjQyOTRjZDZiZGZiZWIzYmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5MmY5OGFmMTkwNzk1NTJkZmQxYzg0NzUyMGE0OTJjMjRiOTQxM2M1MzdkOWU4MTcwYjg4ODcwZTA1ZTNkOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlNzk3N2U5MGM3ZDcxNDYxZGY4ODJjNDlhZmU0OTJiNDg2MzU2NWM3M2VmYTVkNzJkYTk1NzMzODYzZDFhYmQifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/context_lift/test_runner.py#L465-L553",
+          "version": "repo-lines-v1:sha256:25933903cb00a98cf64ce1680573a435725277c6b6029732ba591e76c920ef32:eyJzZWxlY3RlZExpbmVDb3VudCI6ODksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNzI1NGUxNDUwYzViNTBkN2VkMjRkMTM1NDI3MGVkOGViMWVkNGVlYTFhOWJkNWNhZjc1MjBjNjcyOGYwNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YTYwNDc2ZjYyMTQ5NTE4NGU0ZDMzM2Y5ZDJlMDQ2MGNiMjI4OWM2YjAzMDVhZmE3N2Y5MDJhOTU4MGJiYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmZTI1MTQwOWQ1NDEwZDQyMTg2OTExOTdiZmE4ODcxNWIwZThkZDY0MDhmYjNhOGEzMDc0MTlhMzljYzNlZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmZDQ2MzVkYmEzZjE5MjM4NjEwNjIwY2ZjZTI2MzM1MjJlMjYzOTA2NmJiOTRjMjVmN2VhZDI4OTFhMzA2MmEifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/context_lift/test_runner.py#L781-L798",
+          "version": "repo-lines-v1:sha256:a2a682309097c9f664c9ec808923e89fbe85925f2d6adda470d623c8b2977554:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjNzBjZTliYzQwZTFhOTQzM2NiYzg0ZDk4NWNhNTUyMTNmZDllMzg2ODc3NDAxYzFjN2E4NjUwZjc3NjcyNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkZmM2M2YxM2Y3MmU3ZjZhMDI1MTkyZjY1MTI4ZTQ3ZDdhZDBlN2UxMjZkODRhN2MzNDU4Yzc5MmQwODNiZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2MGM3MzBiMTliNjE3NjE2ZTdlZDJhYzJmYzRmN2Y1YTA4MjgwOWNhNTIyMDAxOTMyYzYzZWMwNDZkNGVhOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkYjMzNDk4MGQ1NWI1N2JhZTQzZTQ4ZWJlZjI0Nzc2NDZkNmViOTYyZjM3NjdhNjViN2E4YTg4MjdmYmM0MmUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-02T23:04:01.230Z"
+  }
+}

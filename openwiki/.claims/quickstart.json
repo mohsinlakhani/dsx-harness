@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a30dea410fa495ec226f77ab6392a2c3e619c73e415fd7d66be7c8525659b7ca",
+  "claims": [
+    {
+      "id": "claim_bccbe4d545184acb934fff20cabddf58",
+      "statement": "Reusable packet work is separated into `dsx.packet`, `dsx.pipeline`, and `dsx.builders`, while Context Lift and Data Access are distinct experiment packages; product packages must not depend on experiment runners.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L6-L25",
+          "version": "repo-lines-v1:sha256:a04d597fbc0df5b1551fe9435de3559d79cbe77e28deaf65e180a001d3915ff2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5MDJjZTNjOWI4YWMzMDQ1MmQ2ZWZhYWNjODczNzkzNjUzZTFkMzA3OTVkZTM5ODlhYmNmNGUwNmIxZTFkYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlYzgxNjMyNWZhNmFkZDk2MmNkNTc1Y2M2MThjOTY2YzYwZmUxOTIzYWFjYWJlN2E5ZWE2Zjc3ZjRjMmM4OGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlMjgwMjJlMWQ1NDU1ZjBlYjNjZTUxZjhjODhlYmFmMDAzNzRjNzU3NGRjM2Q2ODJiZDk3NGY4N2U0Y2ZlMTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwY2QwNGM1OGRiZmFlYzAyOTk3MTM0N2FjODNkMDUxOTAyZDIzYzdlMDNlNmRiMDMyOTA3NmRiMzVhNjE0MTEifQ"
+        },
+        {
+          "resource": "repo://docs/architecture.md#L17-L38",
+          "version": "repo-lines-v1:sha256:f37b77ce1f87ba45e863dfab08c442a8e2a7e3318f759e67a3656a9b0b3d04ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3OTVkN2Q1MDIyNjFhNDEzN2I0MGVlMWI5MDhiMGU0MWZjNzI3YTgyZDYzZjA5NzNlZjY1Njg0ZGExOTExNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlNjgyOGRlMzdmOWUzYTkyZmZmYWU2MmIzNzc0YWJkYmNhODY4OWYxOTQ2NDhjNDA4Y2E3ZWMyYWY0OGM0MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5ZDc0YTE0ZGNjYzZkMzEzZjBjYzA1OGRhMWViMWQxYmQzYjdjMjQxY2M5NmNlMGFmMjdlNzEwOGYzODM3MmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0ODJhOTI5MWRmOWEzYzMwNjJlZjhmNGZhNmRhMzcwNDAyOGE0ZDc4MjNjNTMzODEwYzE4NzM2MDY0ZmYyZDMifQ"
+        },
+        {
+          "resource": "repo://tests/builders/test_isolation.py",
+          "version": "repo-file-v1:sha256:a6a85742db8977542e264163a57808efc95a5becd7e074ecd0e97f8f839ee2ea"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb7a007cb605405fb29370e9e1acd15c",
+      "statement": "A DSX task projection declares required module types and binds selected modules to the source packet and dataset commitments; assembly fails rather than emitting a partial projection when a requested type is unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/packet/tasks.py#L19-L60",
+          "version": "repo-lines-v1:sha256:4550e613d15f2acfc93cb28a4eadb611043b8f9925e37bd89cdfcd96e7a49a4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhY2M4MzIxMjIxMTI4ZjM3MDhlNDdhY2JiN2ZiOTBlMzIxNzRiNTFhMTRjMzk0NzgwODM5ZjI3NGVjY2NlNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/packet/test_tasks.py",
+          "version": "repo-file-v1:sha256:1366e72944f8bbf580ddc4806c9cff6f8bf63bad7ccab09223944f77604c1a6d"
+        }
+      ]
+    },
+    {
+      "id": "claim_5673d95f2c9c42a8a29c9ff6406f2e3a",
+      "statement": "`dsx-packet build` builds a packet from a CSV or Parquet dataset and optional transformation manifest or prior bundle, then reports packet/dataset digests, revision, and module IDs.",
+      "evidence": [
+        {
+          "resource": "repo://pyproject.toml#L19-L23",
+          "version": "repo-lines-v1:sha256:7a9b7e772b961f4b7cda5162552d0c20c2544577ab356345706dc9185004f4f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVhYjRlYzYzZGU1MTdkYTRjZDhlNWM4MzA3ZmIyYzc3MzdkMzkxOTBhYjY5ZjMyYTVlOWVmODFlYTQ0MTZkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQyZDNhMjVmNTMwOWY1MTNjYWU1ZGIzMDU0ZjQzMTJhZjMzZTQxNWIwZWU1M2RlMjlmOTYxZTkxZGRkNGZlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTZjYWZhYzgzYTVkMDk4MjJmMWEzYTRjODgzNWM4NGY1MzdlMDU4MTFjNDJkYTQ0MDFkZDkxOWY0OTJiMTI0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjg0Yjg2YjYyMTI4YjZiYmQ0YTUyZDRkMzg2NjNhNmY3OTc1YzAwM2Y3YWZlNTc3MTAwNDc1OWY1OWVhYmZkNCJ9"
+        },
+        {
+          "resource": "repo://src/dsx/builders/cli.py#L43-L115",
+          "version": "repo-lines-v1:sha256:d34d2844cf7f696c7c93a61b36eb2940d6530c0804cd24c867900a359aded33a:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkOTE0ZjQyMGNjZmE4NmUxZWY2N2M0NTI4YzlhNWNiNzQzMDlmMjJkODlhZWNlYzJmY2YzNzdhY2E4ZWUxMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1ZDFjZDY4YzVlYTlmODdlNDY1ZTdhNDJiMmNlMTBkMTI2N2QzOWZhNGY5ZWRmZjMwYzM4Y2FiZTQxOWJkZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNTRkY2M5NzQzNzhlNmEwMjdjZjU1NjllZTNiNmQyYWEyM2Q1ODg4YTY4ZGVkOTcxZTk0N2Q5Y2M5N2U0ZTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3f774a1dbb514db39d370001d0baa422",
+      "statement": "Packet bundle persistence is create-only and validation-first: it reserves a new destination, stages canonical artifacts in a sibling temporary directory, reparses and checks commitment linkage and expected files, then renames the stage into place.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/persist.py#L15-L87",
+          "version": "repo-lines-v1:sha256:e1dc498abd9aa784c5ee436747e350c6cf65d351dc3006b06288267e188512c5:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0YWI2Y2FmZGUwNzNhNWQxMTNkMWQxMzMwZTg0YTYxNDg0YTU3NjhlYTk1OWE4ZjE3N2I0NGE5MmY2ZmFkMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjZWYzOGRiNTNkNjJlYmI5ZDU2NWQyNjM4ZWEyNTdjMzMwZDIxOGRlNWM0ZjZmMGZhYjQxMWJhNGFlZmU5ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhODU3OThmN2UyYjkyNjc1NjU1MjQxNDZkZjY2NTAyNjFhMjgzMmE2YmQ2ODM1OWUxMzUwNWUwNTg1ZjQzNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/builders/test_persist.py",
+          "version": "repo-file-v1:sha256:355aee6ed366ddb1fbb627768dc695ebe1ec95dff8a419083dc087a27f5e9891"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d8f3f0801884d0a9ff55610f02732f9",
+      "statement": "Context Lift is a frozen two-arm packet-on versus packet-off pilot with generation, live run, blind judgment, and reveal commands; `dsx-pilot` remains an alias for its CLI.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L97-L128",
+          "version": "repo-lines-v1:sha256:3ee5ec30ad075afc047a0234e7abc9148423583138cc417958825d825448b1f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MDljNzFiODQ3MjljZGJmMWRlYzdjMTFjNjRjZGY0OGNlZGFhYWI2OWIzY2UyMTU4NjU3ZGJhYTVlZjM2NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWExYThiY2NlNGZkN2JjZDY2NzA4OGQxMGM2MjgxYzk1MDEwNTVmMDVjMDQ1NDFjM2JjOTM2ZWU5ZDVhZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxNGU0YTMyNjdkZmM5YzM1ODhiODA4MzUzMzU0NzkzOWMxNDdjODgwMzQxMjAxZTgyZTk3YjM3ZjkyNTUzYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3ZjMyMDE4MmVhOWIxMGEzYTUxNDk5ZDliNWM2NzM5MWExNWNmYjVhZjQyMTkwZjFhY2I1NjIyNjU1YWFiMDkifQ"
+        },
+        {
+          "resource": "repo://docs/cli-reference.md#L122-L131",
+          "version": "repo-lines-v1:sha256:cec97f4df381bfe94fe7dd1bb2d15bd6e17886122ba614a337c9025218716f05:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNWI0NjgyMDI0NWIxZDFlM2MyZTBhNWZiZTUzYjRhZDIzNTBkMzA5NzUzMDdmOTExNmZkZmM0NmYzM2I4ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYjhjODBmZTAxYjkzNTQ3MTY5ZGU5NTQ5ZjgyMjRkNzg1YTFlMDY2MzRmYjA3OGNiZTg0MmZlNTZmOWY3MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMwOTg3MTlhNDBhYjM2MWJmYWZkM2Y2YmRlZjYwYjI1ZjljZDA2Y2IyNGUwMTdhNjFkYjc2YzFmMmJjOTE1ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4ODNmOWI3NDE1MTcwZTZkYTI0NGQ1ODJjZmYxNjM1NWYzNmNkZWZiZTM1ZWQ2ZmZjOTAxN2ZkNDEyZDYxZmIifQ"
+        },
+        {
+          "resource": "repo://pyproject.toml#L19-L23",
+          "version": "repo-lines-v1:sha256:7a9b7e772b961f4b7cda5162552d0c20c2544577ab356345706dc9185004f4f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVhYjRlYzYzZGU1MTdkYTRjZDhlNWM4MzA3ZmIyYzc3MzdkMzkxOTBhYjY5ZjMyYTVlOWVmODFlYTQ0MTZkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQyZDNhMjVmNTMwOWY1MTNjYWU1ZGIzMDU0ZjQzMTJhZjMzZTQxNWIwZWU1M2RlMjlmOTYxZTkxZGRkNGZlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTZjYWZhYzgzYTVkMDk4MjJmMWEzYTRjODgzNWM4NGY1MzdlMDU4MTFjNDJkYTQ0MDFkZDkxOWY0OTJiMTI0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjg0Yjg2YjYyMTI4YjZiYmQ0YTUyZDRkMzg2NjNhNmY3OTc1YzAwM2Y3YWZlNTc3MTAwNDc1OWY1OWVhYmZkNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2629ab76010a448c9d06539c486e9743",
+      "statement": "Data Access is an independent three-arm experiment in which opaque packet context, bounded direct data discovery, or both are the treatments; its `run` command revalidates prepared commitments before provider execution.",
+      "evidence": [
+        {
+          "resource": "repo://docs/cli-reference.md#L65-L120",
+          "version": "repo-lines-v1:sha256:ab4aaa498d28ce55c29b266fa392f10eef4912467d18fa35795fe1f0b955a089:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5YzNkODk3N2QxM2NmZTVhYWI3YmQyODRjNTM0OTFmYTYzMDE3YjQ1MmFmMjdkNmUxNDQ5NmRiOWUwYTUzNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyN2VjMjcxMzVkYzM2MjM5MWIyNzEwOTVkN2VmYzdiNjIwZmVlN2I1NmRlNDA5NzBmNzg2OTJmMWNhOWY0OGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlZGE5ODk4MTAxODFiMjgwYjVlZGE3MzU1NjNkNzFhYThiYmMyZGM5ZjdhYWQ1Y2Y4N2NkNDJkZmE3OGE2OTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4YmE4YzI4ZGIwZTQ2MWQ4YTUzNWEyNDJkNjM0ZDM2MWY4MmQ4YWFkOTAyZDc1NTAyYjU4MTgyN2RjNzI5OTEifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/cli.py#L92-L130",
+          "version": "repo-lines-v1:sha256:ef54ad00222523bee20708c33618b03e16c093e6488f5cbff18ffa77b4ff81e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MjY2ZDIzNWVmYTk4MzVhMTUxYTA0NTkxNzZhZDc5NGM2NDJjMGIwYzI0ZGJiMTRmNjdkNzNjYmVjZWM4ZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwZWY0ZDE1ODU3OTc0MDc4Y2YzYTBhNDY4M2M4N2Y1ZDMzZjc5YmMyYThjYWViZjk4NTg4NTM1NDJiMmJkNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MDJhMjJmZTZmMjYzNDgyNzgzNGI4NmVlM2Y0N2Y4MWJjOWFhNDFiMTlhYzU4NTQwN2QxMWRmMTYxNjM5ZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhNzY5YjdlNjZhNWIwN2NkYWUzOGM1ZWZiZTg2NWVhZjQyM2EyMGIwMTNmZjk4Yzc1ZDYzMjM4ZTZlYTM4ZjgifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_execution.py",
+          "version": "repo-file-v1:sha256:50af67d2f0fcb527781a73cd132796ce83dcc2da185d870eb909ce421ef0bb07"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9fcaf61c53c4fe186a957f1cf3abeb3",
+      "statement": "The Data Access SQL tool exposes `query_data` as a strict single-query read-only discovery interface over the `dataset` table and has explicit forbidden external-reader, metadata, and settings functions.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/sql_tool.py#L17-L61",
+          "version": "repo-lines-v1:sha256:b42870ad10e7cbecc6cc7b8c8cc06164c7243fea1a476b1e912f66dbee050ace:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3YjViYTliYWFiNmE3ODc0NGYzOTY1MjA1OGQ4MmU5ODI5NTIxOGRiZTE3YjIyMDQ3MmFiOWI5N2YyOTk5OWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwYzAyYzczYjU5MDY1ZmQwMjAxZjFhYTEzYWY0NTk5YzFkNWY5NTk2Mzc0ZWYwMGY3N2JjNDFiN2VjOTBmNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZGU2ZTMyYTQ1Yzg1ZWUxOWQ1YjRiNjJkMjU2Nzc3OGM2MmUzMzdlYTY2OGI1NzVmMjYzYzU5NDFkZmE1MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_sql_tool.py",
+          "version": "repo-file-v1:sha256:e0506a5999cdab1a0e74ffe95dfd19be1489d72fedfd373c588908590ed1c6fa"
+        }
+      ]
+    },
+    {
+      "id": "claim_56c26e65be4c446e832d881e6260b959",
+      "statement": "The normal quality gate excludes `live` tests, collects branch coverage for packet, pipeline, builders, and both experiments with a 100% threshold, then runs Ruff, strict mypy, and a build.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L130-L144",
+          "version": "repo-lines-v1:sha256:c247585ee0deef82fab1d813dc058b9cff5070bc8183b27eb30417713c07172c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzYTE2NTU1YjZkZWFkZDI2MGNhNzJjOTJiZDc0NmY2YjBjOGY2OGJiMTY5ZGFkYzQ1MWI3NjUxNGIyM2JkNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MDcxNjY4ZjI1ZTc4NTRlODhkZmQ4MDYyODBmZWZiZmNkMmU5MzQ2YTY1YzRhODgyZmE4NDdiMzBmOTU5YTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4Mzk2ZTQ2ZGE1MmJlOWYwOGY3YzUyODRjNDc4YmU5MzU5Nzk4ZWJhMmE2OTA1MzMwNzA4Y2U2YzVlODBjMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2NjgxZDYwN2Q5ZGI0MDExOWEyYjMzMTZjZjRjMWE0MzdlOWY1YWRlMTJhMWY3OWNlNGZmZDJkN2RjMjY4YWIifQ"
+        },
+        {
+          "resource": "repo://pyproject.toml#L34-L52",
+          "version": "repo-lines-v1:sha256:fa43bf9f1a0688bef3ca8a268cf0dffad7ad672ca101d3b6fa6c9d7a4e388a09:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2NzZlNjQxNDY1YTY1NTFlOWU5Y2ZmZDdmYWExZTZhNDJmOWI3MjQ4MDk4MTNjOTAzZDdlZGNiNTJmMzAwNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmOTFmYjExYmVhMTAzOWVlNzRmNmQ4MjJhMGY5MDNjYmE0OTFiYWJmOGUxOGY2MGYyNTRjZThmYmJhY2QyMzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyMTE3YWRhMmE0MGMxYmRhZjExOTM2MmZkZjg3ZjNjNDQ1YTNmZDQ5NmZjYWYzNzYzNDYwMDgyNDY4MDVmNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2NjgwNWU1MTRkZjI0MmNlMGFjNDMxNzM3MTk2OGM0OTA5Nzk5Y2ZlMGRmNjVhMzE1OTU5ZDM4YTFlODhkNjEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-02T23:04:01.230Z"
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fd81f150a4463e86614983869c23f4ce46c4319c1bc94c8470085124cd6225bd",
+  "claims": [
+    {
+      "id": "claim_f65212ce7b0d457bb462ab3529184c0e",
+      "statement": "`dsx.packet` defines strict immutable Pydantic packet contracts: a `dsx-packet/v1` packet has a SHA-256-bound dataset reference and one or more modules; module IDs are unique, module payloads must be standard JSON, and duplicate evidence references or tags within a module are rejected.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/packet/models.py#L25-L93",
+          "version": "repo-lines-v1:sha256:dc2e5957e86a6560aa965e5568361ac32b797c384b1c4f25fc383c3aa9f68111:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmRkMjA1MzIzZGI0M2ZjMzgwZDI0YmMzNjFhMzMwOWY0OTlkNDEzYmViMDhlMDFmZTFhMDFhMTc0N2IzZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzM0ZDE0ZGU0OWIxOGMwY2UxZDgzMWQ0MGVlNDhhNmQxNDU3MjUyM2RmOGRiZTk3NmIwYWVjNzU1NmJkOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzZDE3MWRlNzU0MzFhMDIxYTBkOTRmYTc2ZmFiZjBkNzEzOWM4OThjMWEwYjQ0YjQzY2E2MDkwM2ZhMWI4NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/packet/test_models.py#L53-L83",
+          "version": "repo-lines-v1:sha256:40d3894701b8871ad7f245bb1623e4ed344a84f1666210ddf99593eeec1f9e43:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDU2ZGZmMmExMDgzNDdkZDdlYTVhNjI0NjYyMDkxNTk1NTc0ZTYzM2FhZTlhZGE1MzRlNTYwZDRjMTA5MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NmMzMGViYjQ5YTk5NjYxZDdhMGU3NDkxNzgxZGE2Mzc4YmY1ZjZkNDFmMGE5MjE1NTRhYzQwODgzM2MyOTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxODJkOWVjZGU5MWRlM2NlNDYzM2VmOTRhNWJlZWRkNTE3YWRjMDMwMmVkYTkzZmJiNWY4M2IwOGQ2MGNhYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c67b736e01d54432858b71b0cd4c9157",
+      "statement": "Packet canonicalization serializes JSON-mode packet data with sorted keys and compact separators, and `DsxPacket.digest()` returns the SHA-256 of that canonical UTF-8 JSON, yielding deterministic commitments for equivalent ordered packet content.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/packet/models.py#L81-L93",
+          "version": "repo-lines-v1:sha256:b42cfae231587c3d38f3ace4a37b609fe3d4b91a2ef127d7beaac5c32f1cc735:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMWMzMmNmNGUyOGM4YWM0OTYwMmU4ODk5NTlhZDY1NDZiZmFiMDVlMTFmYmY1YzM2OWM4YWExMTJiMDRlMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzM0ZDE0ZGU0OWIxOGMwY2UxZDgzMWQ0MGVlNDhhNmQxNDU3MjUyM2RmOGRiZTk3NmIwYWVjNzU1NmJkOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjMGQzNTFkYmU5M2NkNDQzNTBjYWI0YWI3MGUzMjA3NjZjYjNhM2NhZGQ2NDkxZjcyY2M2ODFkZTMzNTVjNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/packet/test_models.py#L53-L59",
+          "version": "repo-lines-v1:sha256:71fc8e51d0896c0847126da0e4152488e2c206edfe287d6837cc5e9c8e96fdec:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE0NTZkZmYyYTEwODM0N2RkN2VhNWE2MjQ2NjIwOTE1OTU1NzRlNjMzYWFlOWFkYTUzNGU1NjBkNGMxMDkxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTk2MjRkMDQ2MGExZDIyYjVlNjI0NDQxYTlkMjA0ZmViOGE0NjZlYzkwNzBhNmM0OTFkNjM1ZmYwNDA1ZmNjOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzE4MmQ5ZWNkZTkxZGUzY2U0NjMzZWY5NGE1YmVlZGQ1MTdhZGMwMzAyZWRhOTNmYmI1ZjgzYjA4ZDYwY2FhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTY4MGIwZjI5MjhhYzBkYmYzZGQ0YTMxZDVjMTZlOTE5OGEyOWE2MDg2ZDM5Y2ZiNTdjMjBmNjBiZTMzYTY1ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8e8617e1a8bd433887c12ebe504c9817",
+      "statement": "`assemble_task_packet` is an all-or-nothing declarative projection: it de-duplicates requested module types for availability checking, selects every matching source module in packet order, raises `ValueError` for missing types, and binds the resulting task packet to source packet ID/digest and dataset digest.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/packet/tasks.py#L19-L60",
+          "version": "repo-lines-v1:sha256:4550e613d15f2acfc93cb28a4eadb611043b8f9925e37bd89cdfcd96e7a49a4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhY2M4MzIxMjIxMTI4ZjM3MDhlNDdhY2JiN2ZiOTBlMzIxNzRiNTFhMTRjMzk0NzgwODM5ZjI3NGVjY2NlNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/packet/test_tasks.py#L43-L73",
+          "version": "repo-lines-v1:sha256:07056ab346481a2bebb055c6c112ef20015717221fb1d39c64dbc3541506cbaf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNzFlODFmZTc3OTg5NTdiMTVhNDZiNzhlNmViOGU1ODA4ZGNjMzRjMzRhYWVlYzE4MTdjNDYyMWRkYWJkNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MTNhMzQ1MjM1MjgzN2M1ZmU4YTQzOGM3NTU3ZTU0MWI5M2Q3ZTIwYWJlN2E4ZTQ4Y2NmY2VkZmY5ODE3YmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6dbd0574545451aa849d26245bfd48c",
+      "statement": "A `TransformationManifest` is an immutable, canonicalizable `dsx-transform-manifest/v1` declaration of a current snapshot, digest-bearing snapshots, and optional transformation steps; paths require a dataset format, and step parameters must be standard JSON.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/pipeline/models.py#L19-L105",
+          "version": "repo-lines-v1:sha256:11c8f12dae8ed8e96e7213c59776eb1992eeb6d6e65d2f2af4df5eccf9188afb:eyJzZWxlY3RlZExpbmVDb3VudCI6ODcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkN2M5YTkyMzg5YjBlMGMzYzgzYjc5MzE5M2NiMDg1NTVhYzFjNmFiZjQ4YTk0MDk3ZGMxMjMwYjU3MjY2YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzM0ZDE0ZGU0OWIxOGMwY2UxZDgzMWQ0MGVlNDhhNmQxNDU3MjUyM2RmOGRiZTk3NmIwYWVjNzU1NmJkOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2NGJlYzJjZjhkMTY3MDJlMGRlMGYzZWFjZmZmYmFlNDYwYTYwZDc3MTZlZTEzNGEwNmNkODY1NzZlM2RmZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/pipeline/test_models.py#L32-L103",
+          "version": "repo-lines-v1:sha256:3b92c5de857c707fa3da7499d31d5745c81db252f1ff9d2ea5eea4c0a3de2e0f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5OWY5NmI5NDJjMzRhZmMzMjcyZjlmNmE1MmEyYjhlZDU2MTRlOGVjM2QwN2UwOTJiNTdkN2NlMGE3MjhiYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxOTY0N2Q2NDFkZGEwYWUzNjQyZjZmOGZmNDFkYjAzY2IyMGZkMjhkNTk2MmViNDMzNjJkNGIwOGY4MzgwZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4YTQ1Mjk3YWVjNTlmYzA3NmMwYmM1ZjFmNzQ0M2M4NDk3Y2UwMWRkOTNkMDZhM2ZlNDdmMGNkZmJiNjUwNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4MDNjYjRmMjUxZjcwMmIxNGEzZTY2NTQyYWY3MmMxNGRiNTM3ZGNiMzA0MGExOTMxN2RmMGFmZjQ0YjE3NTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0503e191bacf46fe8512a4977aa96333",
+      "statement": "`TransformationGraph.from_manifest()` validates and indexes a bipartite snapshot/step lineage: it rejects duplicate IDs, missing current or referenced snapshots, multiple producers, produced source snapshots, orphan non-source snapshots, cycles, and a current snapshot not reachable from a source.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/pipeline/graph.py#L147-L263",
+          "version": "repo-lines-v1:sha256:ebf967b8bf1857ee2f091508a23477928012d7645e467eff4685476c9a0c9698:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjM2RjMDIyMTVkYzY0YWUzMzQ1M2M0MTlmZjVmNGU1MTA1ODRkZTk4ZmM2NTQ5ZGNhMmY1ODIyMmE4MDRhNzg5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiOTdjNzEyNDdhZjNjZDFlZGY1NTVhN2QxMDc1OTMxNTdmNmRjMmEyMmFmMGRlODJlNzc3NGFiZjEwZjhhZGUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNGRiN2FlYzVmYzk4YWE4ZTZiNjIzOTJkM2ZlZjIxOTAyZDdjYWEzNTQ3M2JmMDhjZTg4MTMxMmY2ZTYyNjJmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://src/dsx/pipeline/graph.py#L16-L36",
+          "version": "repo-lines-v1:sha256:5a5a4ba022d87abf829a498f607720b877ed9ed8e2f2d16e76e9a90d4b58a656:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjg2OGE4ZGEyNTM5YzNmZGIxYmU4MDk3ODJlN2Q1Y2E1YjZhMDM4MTgwYmRiMWQwN2Y4Yjk0NGY1NDNhODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MTRlZDE2YjNmYTlhODc4Zjk2YmNmOTYzYTY3MzAxMTg5N2ViZDliNjBmOTdjNWFmZjFlNTkxYTk1OGU3NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1OGI1ODA5OGE2MGE2NWUwN2RhNzFkY2FmODhmYTM3OTVhNzRlZDdhMDFlMmIwM2VmMWU4ODgxNWJjNmMwMTUifQ"
+        },
+        {
+          "resource": "repo://tests/pipeline/test_graph.py#L57-L161",
+          "version": "repo-lines-v1:sha256:822214f4effa309c4c701c77bf75322ddbd3b29bd9b88009bdc7c191bcb8feba:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjY2JkOWU1ZTEyN2YyZThlYzYyMmFjYzAyNWYxNGE2NzhkYjcxZjFjZGQzYzk3N2FiN2NhMDUyNjJiZmM3ZjQ2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1OTA5YTUzYTYxOGQwMjhlMWQzMDAwYzBhN2FiY2VlY2JlNWZiMzdmNGU1MTFlZmU0NjY0M2ZhZDZlNjY4NzJmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1NTdjNWZhYjRiYzRlNWU0ZDBlNGUwNWJlMDA3NmEwNmZiMGQ1ODBmOGVkODcyZWMyNTY5ZGFkM2M1MzJmMWM2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5M2NkOTA2OWNmZTM1M2Y5MmFjZjg4ZjEzOTExNWVkOTg4MDQyZmQxZTVjZGYyYzhmYTJlOGMxYTY4Y2ZhYTdjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_785a3fcc343f44a29a030f32cb52d035",
+      "statement": "A validated transformation graph supports stable topological step and snapshot orders plus ancestor, lineage, precedence, producer, and role/operation queries; lineage queries exclude unrelated branches and unknown query IDs fail with `KeyError`.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/pipeline/graph.py#L38-L145",
+          "version": "repo-lines-v1:sha256:b51df834fc9746dfb97ff513d81209c9aa4513c7fe936e3f5556d0806c298028:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwNjBjZDQwOGRjOWRmNWFmMTllYjM4YzExZWRhNDQxNzJiZjg1MDU0YmI1YzAzOGQ0ODY2NGJlZDY3ODdmNTYxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1OTA5YTUzYTYxOGQwMjhlMWQzMDAwYzBhN2FiY2VlY2JlNWZiMzdmNGU1MTFlZmU0NjY0M2ZhZDZlNjY4NzJmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1NDU5YzQ2YzE2MzQ0ZmMxNWY1NmU0MjJlOWNhOGMxMGZhYzIxYTdkYjYxMGVhY2FmN2IyM2RlMGZiMjUzZTUxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjZWYzNGJlM2NiMDFhNWU1NmQxNzY2NjI4MGUzY2Y5MzcyN2U5NWQ1YzNlNDdjNTljNjQ2NzViNGY0ZWQ1NWRjIn0"
+        },
+        {
+          "resource": "repo://tests/pipeline/test_graph.py#L164-L262",
+          "version": "repo-lines-v1:sha256:aaee4882622b86cae26c62d9220e05ca54f9b9fa8b61c742a87f72d20bdfd02f:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwODY2YTExNTY4YTQ5YjYwN2RlZDFhYmVkYzJiMjBiYjA5OGNkOWQwMTI2MTY3N2E2MzdmMGU1MzFlNWE5M2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwNDcyYWMzNmIzNDAwMGQzZDcyZmJhMjVkZWU3YTViNmM4N2VlNmZiOWNkZmM2YTQ4OTM3YzYxMzhhZjY2ODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzZGYyYWNmMDZlOGMzZjAzYzcxMzVjNmU4YWM1YTljYTU0MzJhYmUwNmE3NGFjYTBmZGQ5YTUzYTAwOGY5ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a5919e2c3d5f46ceacb7c2bec0112e5e",
+      "statement": "When a builder receives a manifest, it validates the graph and requires the current dataset digest to match the declared current snapshot; it then emits a transformation-history module containing only current-lineage steps and records accessible versus unavailable historical snapshots.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/build.py#L146-L171",
+          "version": "repo-lines-v1:sha256:a89b4ba7c90cb9fd40aeed343c51b4920929d53b956817460a0c97bfee36c5c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzNDlmYzkxYTM5MDc5NzNlYmMyYzliMGI1YzlkNTFkM2Q2MDgxMjBmZmM1YTQ3YWRkMmU3YzM4NDVkMmNhNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzA2OTNiMmQ1MjY1Yjk4Zjc3MDZhYmY5YWE0ZThiMjMxZmU0ZGZkZGQ5M2Q3NjA3YWQ5NzIyMmRjMWVkZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4Y2Y4NzdjNjFiZjZlYWY4YmEzZDdmNzFkZmVmMDM4NWU1YzcwYmUyNDFlNDE5ZjE4MTliZDhiMTI3ZTllMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmYTNjZDk5NjBkNWZlNDhlMzcxNTRmMjQyZWFhMTJhNmUxYTRlZGQzMzcyY2IyNWVmZDMxYjYzZjVlNGU1M2IifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/build.py#L421-L470",
+          "version": "repo-lines-v1:sha256:7019d815735a95e58760a22fa951c05c2e41b9d78578690c9836960949dbc3ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2YjgzM2U3MzUxNmNlMDAxNjk1OGJiNWI4NzA1OTkyNWNmNGQ4OTViYTBiMTkxNDFhZTdmNTQ4OGJkYTUwNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkY2VmNmVjZWUyY2ZiYmEwZjVkZWQ3YTI0NjIyNGQzMWI5YTdlZGVhYjdhZGEwYTFmYmI3YTM4M2UwNzU4YzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ZGE1MDVlYWVmMGUyMTlmZDRmYWMyMjE2ZjQ3OTIxN2IwMGJiZWU2ZWQxMDM4ODcxN2E0ZTlhZWY0MDJlNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkOTQ5YmM2NThlMDM1YmEzOWQyMWUxOGU0NWY0MjAxYjQ5NzI3OTcxMDU3NmY1MjUyNzgyMjRhNDM2YzQ4MjcifQ"
+        },
+        {
+          "resource": "repo://tests/builders/test_build.py#L123-L258",
+          "version": "repo-lines-v1:sha256:1d5d4b9425fde48e04e064376d2823577e5a91402a6ab3021966e1969f0589df:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4MjVmMzBlZTFkYzcxZjMxMTIwNTIwNTViZTBkMDBlODI0NTJhMmU2NmZmZDNkMWE1YjAxMTVkYjFiMmJjNWYxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2M2JiNTQyN2QyNDE5YTY0YmRmNGJkODYzM2QxNGQxYjgwMTQ4MzJiYTQwZTM1ZGE3YTFmZWEzNDBhNzNjNWNkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNTI1M2NlYmM1ZDE4YWI3ZTFhNTU4ZmZiMTdkNTUwZDRhYTQ2Y2QwNjllY2ZmMjk4NzM1OTgxMzAyMzE3OTRjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhNDFiZmVjNjIzOWQzY2U2ZjUyZTM5ODE0MTY5MGI3YTg4NmQ4Yzk3MWVmNzQ4ZTMwNGJlYjI3NTFjYTk5NzBjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_744b1106610d4b2aa289564c3f5adf0a",
+      "statement": "Builder history analysis uses graph lineage and operation/role queries to detect augmentation before a current-lineage split, augmentation reaching evaluation data, and material target-distribution changes where comparable historical distributions are available.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/build.py#L340-L375",
+          "version": "repo-lines-v1:sha256:2a66994ac6f84b4d396acee5c1984fdbf94e63860ba919e63627b096398d6a82:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1OGVjYzY4NDJhZGU1YzYzNzYzMjNjMTkyMjQzOWEyMjUwMThhYzExNGY2Y2E5ZjQ5YmUwZGIyM2UwMWYzMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkZjRmZjA4NmUxMWY0NDVhNGM2YzEyNmY2NGMwNDg0ODYwZDJhODRmYTEwM2NiZDBjMzI3ZjJiMjk3Njg3NmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5NDMzMGY4N2U0NGI1MmVkMGMyZTBhODIxZGE4MGM2NGU3NTdiZGJjNGMxNjg1Y2U3ZGU5ZGE2NTBmY2IyMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3NTAyNjQwM2NiMDczZTk4N2E4YjNkYTQ3NTFjMTdiN2FjYzhhNWM2YWZkZTM3MTkwMTY3OTQxOWNhM2I3YzQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/traps.py#L57-L189",
+          "version": "repo-lines-v1:sha256:3a9bc5aa0f7710de5c399b5a761f7118e2289dd1a96e40bdd2f815b1fc633abf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMDQ0ZjgyMzUyMjMwZjJjNGRlNTM1OTZlNTY1ZTBiNzYyOWIxNTUxNTlmNWU1OTBlM2Y4ODdlZWE3ZDZhNjg1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIxZTk0MTYzZjljZTFmZTM0ZWZmM2NhOWIyMDg5NDU0NzE2NjFjZmI5Zjc0NGUxNWI3NjM0NmY2Yjg5OWIzMGMyIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNzAxNDllMDY5YWQ2N2VjY2Y0NzM2NDZmZjFjNzUwMDUwZDMyOWQxMTAwMThkYzU3NjY4NzhlYWZhMWQ2MDdkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwNTBmMzBhODcwMTkwZmVhZGY1YWI0YzE3ZDkzOTJmNWE0NjM0NzM4NDY2MWJhNTMxNWZlYjIwODIyNDlkYmI5In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e4a9d8b111c4f488d5df2c0f55630d8",
+      "statement": "The Data Access realistic workflow defines a fixed review-classifier `DsTask` over profile and risk module types and obtains its task-specific context by calling `assemble_task_packet` on a builder packet.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/realistic.py#L181-L183",
+          "version": "repo-lines-v1:sha256:91fed504d178dcf2181329f7f8cc1370b0e346191baa73786bddbdc81cc4a338:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZjZjhlOWJiYzMyYzVhNWUyODZhMGQ1ODVmYzNhMzM4ODRiNzcxYmJlNDU3ODVlMDA1MDM0OTNhNWZlYTA0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhiZWMyNjc1YjZiYjMzNzI0Y2FkYTZlNmMxNzNlNTE5NTgxYmM4MmIxNmViMWY4ZWFjOGI3ZmJmMGJmNmYxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGNjNGE3ZDFjYzc5NmFiYTNlNDY3MjMzMjdmNTE3ZTlmODExOTgyZDI1MGYwNzAyOTg2ZTRiNTc2NGFkOTU4OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg5N2YyNzU3MjkyMTcwYzFkODdmZTI1NGU4YTkzOTY3Y2M2Y2JiM2U5YjFjZmJlNzRhMGYxZDc5MTEyZWRkNyJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/realistic.py#L37-L53",
+          "version": "repo-lines-v1:sha256:370feb78360a217c3da9ba4b2800f335f22494a3ac5d3f4899995726539a39ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjODRiZTBmMjNmMmY5NTZjZDc0MjkwNGEzMTNkYjZkZWRmOWY0NDZjM2RlOWJmMTZiOGJmNTUyOWZhMjVjMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZmJhMDUyN2MzOTUzYzRiNmUwZTViNTczOWJhODM2MTJmODA1M2JjZGM5NDY2NzMwMTkzY2QxZDU5MGI0MDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2NmNiMTc4NTQ3MjA5MzJmZDIzNWUxMzYyYzY5ZDRhNDk1YWNjZGEzOWEwNTlhYzc1YTk4ZGVjOTk4YTNmOWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmMzAxOWQ4Zjc3ZGVjZjk5YjY1OTU2MDBmMzBlMWIzZTljODBhNGNiNTcyMDYxZGMyMjFjZGE5Nzg3NTk5MDQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-02T23:04:01.230Z"
+  }
+}

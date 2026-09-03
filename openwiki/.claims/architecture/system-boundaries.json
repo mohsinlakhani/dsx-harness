@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:445cb3b1e76eb07a577432514b6b889ea7df470b455f4d4e91ad474be237445a",
+  "claims": [
+    {
+      "id": "claim_937d32d7215440c18d720ff587906c7d",
+      "statement": "The reusable product packages are `dsx.packet`, `dsx.pipeline`, and `dsx.builders`; an AST-based test scans all Python files in those packages and fails if they import `dsx.experiments` or an experiment subpackage.",
+      "evidence": [
+        {
+          "resource": "repo://tests/builders/test_isolation.py#L8-L36",
+          "version": "repo-lines-v1:sha256:52c48d019702d586428713b17b63306805c2552807c6c0048dfd02099b4d08bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkODVjMzFjMGU5ZmJmYjQyZDUxM2ZiMmRlYTFiYTNlZmU5OWIwZGJlM2M3Y2NkZDkyN2E1ZjE0YmQyMzBhNmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkNTllMzIzZjQ4MGQ3ZmIzNDU2ZTIwOGEyYzRiNjU1ZGVmMjRjNDZhODllMDM4Y2IzZDliNjI0NzIwMDczOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzYjFlOTM4MzYyZjdjYWVjYWE3OTE3MzA1MjAwNzE4MzQ4OThjNWU3MmI2Zjk2NWVkZjlkNDE5ZmMwOTQ4OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlYjFiMGNkZWMwYzZhYTk3NWIyYmQxODFiOTUyZDRjZWE5Y2QzYTY3NTU1MTA1MjlkYmY4Y2I3YTVmMDM3YjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_55c8614928f4450f973bed15eb1423c9",
+      "statement": "`dsx.packet` provides strict immutable packet contracts: a `DsxPacket` has a versioned envelope, a SHA-256 dataset reference, at least one uniquely identified module, canonical JSON serialization, and a SHA-256 content digest.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/packet/models.py#L25-L28",
+          "version": "repo-lines-v1:sha256:87b65b8889e19dc5de16eb10397d00d0e1ba819a8cb2341314f48894da672e4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjYyZGQyMDUzMjNkYjQzZmMzODBkMjRiYzM2MWEzMzA5ZjQ5OWQ0MTNiZWIwOGUwMWZlMWEwMWExNzQ3YjNmYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzM4ZDM4Y2VmMjIyNmVlOTBlYWJmMzgwMDZmYWE2ZTZjYThjYWRlYjVlYjk5MmE4NmQ1ZDQwMmI0NzI0NDhjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDNkMTcxZGU3NTQzMWEwMjFhMGQ5NGZhNzZmYWJmMGQ3MTM5Yzg5OGMxYTBiNDRiNDNjYTYwOTAzZmExYjg0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzMzNmQ4NWJhOTYxNTI4NDUzZTNmOTgwZWE1ZjE2Mzc1MmE5MThhYWFiMDhlYWZmYTljOTQ0NzhhYjZhMDhlMiJ9"
+        },
+        {
+          "resource": "repo://src/dsx/packet/models.py#L31-L36",
+          "version": "repo-lines-v1:sha256:76deb0ddd0893dc33aa2df99d913ab0829d23e6cbc1723f77682f68757bdcf32:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzRlY2VkZWM4NWM2ZmFiM2U0NDY3YTRhNDE1YjBiZTM5NTY0NzBjNmJjYjAxODVhOWIwOWRmYzUwYTZhYWU0OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNmNDFlNDYzYzg0NDI1MWM4MzNmMTg0NmJmZGQ1YjgzYWViNTZmNjBiZTJiNmI5M2VkNWE3ZTg0NDE1MGJkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJmMzdiYTVhMGMwYjhmNjI1ZmQ0MDI1ODNkM2Y5ZDkyN2IxZDA2ZDNmYzJhZWM5NjJjMzQ3MWQwNWQzMjdkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmNmMGExM2I4MDhiMzI0NzcyYzk1M2NkNmE0ZjFlY2E5NzYyZTg1ODI4NmMyMDM5OTg1ZmNkN2Y4ODQxNDhiYyJ9"
+        },
+        {
+          "resource": "repo://src/dsx/packet/models.py#L66-L93",
+          "version": "repo-lines-v1:sha256:4c10acec14ff9c83f58e7f47fa473983223d2e5e6447c5a9775686571b6fdd56:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MzczMWViMWNiMDE2OTdhNGY5ZjFjODY0ZWY3YjY0Mzk4NjBlYmE2ODZmMjk5YjJkNDc1OTcxNzAzZmQyZWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzM0ZDE0ZGU0OWIxOGMwY2UxZDgzMWQ0MGVlNDhhNmQxNDU3MjUyM2RmOGRiZTk3NmIwYWVjNzU1NmJkOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiNTMwZWRlNGYzZTg4MmQ2ZTg1ZTllNmE3N2JiYTI5NTk5OTk3MWU2NTk5NGU0ZTA0MWJjMDAzYjE1NzhkMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c0c8a2643634ff4a6de518a22779748",
+      "statement": "Task-scoped packet use is a projection over a source packet: `assemble_task_packet` selects requested module types, records source packet and dataset commitments, and raises `ValueError` if any required type is unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/packet/tasks.py#L19-L60",
+          "version": "repo-lines-v1:sha256:4550e613d15f2acfc93cb28a4eadb611043b8f9925e37bd89cdfcd96e7a49a4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhY2M4MzIxMjIxMTI4ZjM3MDhlNDdhY2JiN2ZiOTBlMzIxNzRiNTFhMTRjMzk0NzgwODM5ZjI3NGVjY2NlNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_084cb0b84d714268a0252388a1017b5c",
+      "statement": "`TransformationGraph` validates a manifest-derived snapshot and step graph, including unique IDs, valid references, single snapshot producers, source roles, acyclic ordering, and reachability of the current snapshot from a source.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/pipeline/graph.py#L147-L200",
+          "version": "repo-lines-v1:sha256:6000fd39ff66296f693012ff79ee17a5b199cddd4f238dd341097e54528e5421:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzZGMwMjIxNWRjNjRhZTMzNDUzYzQxOWZmNWY0ZTUxMDU4NGRlOThmYzY1NDlkY2EyZjU4MjIyYTgwNGE3ODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2Nzc0YmJlNzQ0NmZmODAyNTZlOWYyZTVhY2M0ZjNiMjlkZmYzZDcwZjA5MGYwZmZlNDFiYTAyYmViYzY4OWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZGI3YWVjNWZjOThhYThlNmI2MjM5MmQzZmVmMjE5MDJkN2NhYTM1NDczYmYwOGNlODgxMzEyZjZlNjI2MmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmOTc2YzJjZTEzNTEwM2Q3NDg1YTdmYWQ3NGQxMDdmYTQ3MmVjNjE5ODY5OWM1N2UzMjZmN2Y3MWM2MWFjMGMifQ"
+        },
+        {
+          "resource": "repo://src/dsx/pipeline/graph.py#L16-L36",
+          "version": "repo-lines-v1:sha256:5a5a4ba022d87abf829a498f607720b877ed9ed8e2f2d16e76e9a90d4b58a656:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjg2OGE4ZGEyNTM5YzNmZGIxYmU4MDk3ODJlN2Q1Y2E1YjZhMDM4MTgwYmRiMWQwN2Y4Yjk0NGY1NDNhODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MTRlZDE2YjNmYTlhODc4Zjk2YmNmOTYzYTY3MzAxMTg5N2ViZDliNjBmOTdjNWFmZjFlNTkxYTk1OGU3NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1OGI1ODA5OGE2MGE2NWUwN2RhNzFkY2FmODhmYTM3OTVhNzRlZDdhMDFlMmIwM2VmMWU4ODgxNWJjNmMwMTUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/pipeline/graph.py#L202-L263",
+          "version": "repo-lines-v1:sha256:a98da1da632e4c4b10f7d801bb9a45181c08d80bc53dbbe11fe2e4dfb2ecea05:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NTkyNjNmMjBiOGI5MTZiNDU2YjFiZjdlNGUyYjgwOWYyZDI4ZjYwY2M4NGYyYWNjZThiNDkyYjA3Nzk1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNTAzYzY1YTk5YTllODllNmUzNDU5ZTE5N2UwZjdkNzMyNDU2NzYxYjhjOGI2ZmRjOThjZDRmYjM3MTgzMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a0a6623a41e4879ac720117dd118ef5",
+      "statement": "The public builder API exposes in-memory packet construction, prior-bundle loading, and bundle persistence; its CLI is registered as `dsx-packet`.",
+      "evidence": [
+        {
+          "resource": "repo://pyproject.toml#L19-L23",
+          "version": "repo-lines-v1:sha256:7a9b7e772b961f4b7cda5162552d0c20c2544577ab356345706dc9185004f4f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVhYjRlYzYzZGU1MTdkYTRjZDhlNWM4MzA3ZmIyYzc3MzdkMzkxOTBhYjY5ZjMyYTVlOWVmODFlYTQ0MTZkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQyZDNhMjVmNTMwOWY1MTNjYWU1ZGIzMDU0ZjQzMTJhZjMzZTQxNWIwZWU1M2RlMjlmOTYxZTkxZGRkNGZlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTZjYWZhYzgzYTVkMDk4MjJmMWEzYTRjODgzNWM4NGY1MzdlMDU4MTFjNDJkYTQ0MDFkZDkxOWY0OTJiMTI0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjg0Yjg2YjYyMTI4YjZiYmQ0YTUyZDRkMzg2NjNhNmY3OTc1YzAwM2Y3YWZlNTc3MTAwNDc1OWY1OWVhYmZkNCJ9"
+        },
+        {
+          "resource": "repo://src/dsx/builders/__init__.py#L1-L14",
+          "version": "repo-lines-v1:sha256:947e790a2bfaab9c8d971760070caf392d49579bfad0d0b3f744f8d5f69c9471:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4OWM0MTU0YzQzYmY3ODBmMTkyMTM4ZWU5MjJhNTBlM2I4M2EzZTEyNDk5OWQ3NzUyZDczYTliNjk3ODU0OGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NDE2ZTA5Zjc4YmEzMTZjMDMyNTY4MjEzYjg1NWVlNzU2ZTQxNTY1ZDkxOGYwOTUxOWM4MWZkNjIwZjQwNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a23400d390774ab988b100c74c369b9e",
+      "statement": "`dsx-packet build` optionally validates a transformation manifest and prior bundle before building, and writes an exclusive immutable bundle rather than overwriting an existing output.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/cli.py#L43-L109",
+          "version": "repo-lines-v1:sha256:92bf0072944e6704e40a21cb72593a3e54a9b158a9553b858300493421be8eaf:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkOTE0ZjQyMGNjZmE4NmUxZWY2N2M0NTI4YzlhNWNiNzQzMDlmMjJkODlhZWNlYzJmY2YzNzdhY2E4ZWUxMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyYjYxODBkZWY4NWExMDBkYjk1YzZjMDFhZGQ5ZDJiNjgxMmUyYWY3OTllNmNmYjY5NzljYzU5MjZhMWVkNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1ZDFjZDY4YzVlYTlmODdlNDY1ZTdhNDJiMmNlMTBkMTI2N2QzOWZhNGY5ZWRmZjMwYzM4Y2FiZTQxOWJkZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwYThkOGM0ZDQxZGEzZjIwNTM0ZDE3MjdkNTI5NGJmZTQwYzRjYWU0YjQwNWY5MWEyYzc2M2FkZTM0NjU0MWQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/persist.py#L15-L45",
+          "version": "repo-lines-v1:sha256:8459758262b6d2afda7a661029b0e4f320e5859af5a78bb9a2f4f510658d01b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0YWI2Y2FmZGUwNzNhNWQxMTNkMWQxMzMwZTg0YTYxNDg0YTU3NjhlYTk1OWE4ZjE3N2I0NGE5MmY2ZmFkMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjIyMzQzZTljNzU1OTIzM2RjNDZkY2VhNTg5OTY1OGY2Yzg2YTczMTRmYTQ2MjA5OGYyOTI4YWY2YWQzZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhODU3OThmN2UyYjkyNjc1NjU1MjQxNDZkZjY2NTAyNjFhMjgzMmE2YmQ2ODM1OWUxMzUwNWUwNTg1ZjQzNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzY2UxZTVkMmQwNzRiNTc2OGFlOTU0NGY3Y2RiNGJlMmYyOWIxODEwNDMwOTQ4NWFkMjNlYjI4YjdkNTJmYTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb4f6ebd11204931a1e882c92c1834e9",
+      "statement": "Builder persistence stages artifacts in a temporary sibling directory, validates written packet, build record, and optional manifest commitments, then renames the staged directory to the reserved destination; the bundle contains only the expected JSON artifacts.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/persist.py#L28-L45",
+          "version": "repo-lines-v1:sha256:c31db11cda5a502480eab0fd1f7ed6c8483c5819794f9c860181d824e52edc6d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTVjNjZlMTdiMTQ1Mzk3ODM0YjhjODU0ZGM0MTkzZTIxMjUxODBhODk5NmExNGMzMTg4MzMyNmIyZWZiY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjIyMzQzZTljNzU1OTIzM2RjNDZkY2VhNTg5OTY1OGY2Yzg2YTczMTRmYTQ2MjA5OGYyOTI4YWY2YWQzZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNjAyM2QyZjVhMDdmNDg0YWU1MWI4MDFkNWMzMjUwNzNkNTE5NDhiMWJjMzk2ZTg1MTBmYzA2M2Q0OTI4NTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzY2UxZTVkMmQwNzRiNTc2OGFlOTU0NGY3Y2RiNGJlMmYyOWIxODEwNDMwOTQ4NWFkMjNlYjI4YjdkNTJmYTAifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/persist.py#L48-L87",
+          "version": "repo-lines-v1:sha256:312254c837c40d029c28e766c9d59acb81d49f98e69ae1623fc6274c2b6d92aa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNWQ5ZmI4ZTU1ZmRiMDcyYTI1ZmIxZmE4MmFiYTcwNmQ1NzdjZThlMzMyNmY4NWVjZjI5YzdhZTUyYTI1MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjZWYzOGRiNTNkNjJlYmI5ZDU2NWQyNjM4ZWEyNTdjMzMwZDIxOGRlNWM0ZjZmMGZhYjQxMWJhNGFlZmU5ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZWZkOWUxNzJlNTE2NDhjYzY1N2RiZWEwNDYxM2ZiNzc5M2Q2ZjZjYmViOTIyZjE2YWVkYTZmZDRhMTlmNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a17a4a8f0167464bb8d95b22d5ee3f37",
+      "statement": "When a builder manifest is supplied, the current input digest must match the declared current snapshot, while inaccessible or empty historical snapshots are tracked as unavailable and digest-mismatched historical files cause failure.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/build.py#L146-L171",
+          "version": "repo-lines-v1:sha256:a89b4ba7c90cb9fd40aeed343c51b4920929d53b956817460a0c97bfee36c5c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzNDlmYzkxYTM5MDc5NzNlYmMyYzliMGI1YzlkNTFkM2Q2MDgxMjBmZmM1YTQ3YWRkMmU3YzM4NDVkMmNhNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzA2OTNiMmQ1MjY1Yjk4Zjc3MDZhYmY5YWE0ZThiMjMxZmU0ZGZkZGQ5M2Q3NjA3YWQ5NzIyMmRjMWVkZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4Y2Y4NzdjNjFiZjZlYWY4YmEzZDdmNzFkZmVmMDM4NWU1YzcwYmUyNDFlNDE5ZjE4MTliZDhiMTI3ZTllMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmYTNjZDk5NjBkNWZlNDhlMzcxNTRmMjQyZWFhMTJhNmUxYTRlZGQzMzcyY2IyNWVmZDMxYjYzZjVlNGU1M2IifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/build.py#L88-L124",
+          "version": "repo-lines-v1:sha256:71169a320fbb7c2aebf321eb3303d8bd68fc19c93abcf227b524d8c5cd8691ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNmU3MzFjY2MyMDNhYTg1NjI4Yjk5OWU4NmNkOTAwM2U3NjdkZDNlZTVlNWVhMjU3ZGVhNWI5YTNhZTYzYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiZWM5ZjMwMzI1YmViYzdhODQ4ZDgwZDg1ZDgxN2M2MWFhMzljNWY1MGVlOGU2ZTJmZjExMGYyMWVlMjZjYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2YWI2M2ZmZGE3OWMwYTYwMjRkYTJjZjI3OTYzMjVjOGU0ZGIzMTM4ZDYyOTk5YjdhYzA0NzdlMDQ4OWY1ZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOGFhZjVkNDNmZDUyMTE2ZjE3ODhhM2U0Y2I3MzZiYWNiZWJjNThhY2YyOWU5YTBkYjJhMGM0NzZjZDNjNmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c280e32b78cf4016ad5708cc06bd6043",
+      "statement": "Context Lift is exposed through `dsx-context-lift`, with `dsx-pilot` registered as a compatibility alias, while Data Access is exposed through `dsx-data-access`.",
+      "evidence": [
+        {
+          "resource": "repo://pyproject.toml#L19-L23",
+          "version": "repo-lines-v1:sha256:7a9b7e772b961f4b7cda5162552d0c20c2544577ab356345706dc9185004f4f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVhYjRlYzYzZGU1MTdkYTRjZDhlNWM4MzA3ZmIyYzc3MzdkMzkxOTBhYjY5ZjMyYTVlOWVmODFlYTQ0MTZkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQyZDNhMjVmNTMwOWY1MTNjYWU1ZGIzMDU0ZjQzMTJhZjMzZTQxNWIwZWU1M2RlMjlmOTYxZTkxZGRkNGZlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTZjYWZhYzgzYTVkMDk4MjJmMWEzYTRjODgzNWM4NGY1MzdlMDU4MTFjNDJkYTQ0MDFkZDkxOWY0OTJiMTI0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjg0Yjg2YjYyMTI4YjZiYmQ0YTUyZDRkMzg2NjNhNmY3OTc1YzAwM2Y3YWZlNTc3MTAwNDc1OWY1OWVhYmZkNCJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L63-L67",
+          "version": "repo-lines-v1:sha256:1f17e01c14ca4f7fa454308c3192fe7f7c419ac62a088019bdab064a240d118d:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzc0MTM0MjEyODdhNDM3ZTdhZWU1OTNlYTE4MzRhYTljYTNiOGRlMzRmZTFiOGY5ZTU0ZmZkYTU1OTNiN2I4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjk4YjRkMmExNmQ1M2QxMDE5MWU5ZTQ2ZWRmMjQyNDI2ZmFlZDk3ODE5MmVhMDU5NDU1MjM3ZDViYTNlOThiNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzI3YzgzN2RkN2RhNDI5N2QwNmU0MGM5N2IxMjljZjNlNmY2ZGYwODY4NjM2MjhkNTE2ZjFjNDNlMWJlYTZjMiJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/cli.py#L32-L36",
+          "version": "repo-lines-v1:sha256:fb4afa78fa9ba267f7940672791d09d566786f382dbc5434a162b4078abd813a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzc0MTM0MjEyODdhNDM3ZTdhZWU1OTNlYTE4MzRhYTljYTNiOGRlMzRmZTFiOGY5ZTU0ZmZkYTU1OTNiN2I4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzA3Zjg2ZGMwZTQwNjgxYjc2YjUxNTVlZDNmZDdiNzVjNmNjMjlmMGE0ZDgzNDlhZjBhNDMxZTk2OTQwYmU1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzI3YzgzN2RkN2RhNDI5N2QwNmU0MGM5N2IxMjljZjNlNmY2ZGYwODY4NjM2MjhkNTE2ZjFjNDNlMWJlYTZjMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f1de00d10ae48f0a125750e633ddcce",
+      "statement": "Context Lift preserves a fixed experiment flow: it generates and verifies deterministic case/packet inputs, requires `OPENAI_API_KEY` for live execution, commits a run manifest before client construction, and executes three sequential pairs.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L126-L156",
+          "version": "repo-lines-v1:sha256:29b549e589718d2b6c3dd6fb19404623184b2fbed0afb896f8baa3d2f687777c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNzQzMzU0ODhhMTlkMDJiMjYyOGY2ZWRiZWY0ODc3ZGI4YjY4OTU4ZWExMWRlNWYzZWMzZDY3MWQzODY4ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZmMyOTk4ODVhMmZiZGYxY2RiYTM1YjlkZjc3MDkxYjI3YzNmNTAyYTQzNWQzOTBmZjlkNGM0MzViNGI2NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0MjQ4YTE5OTQzYWQyNGM2OWU0YWFiYzE3MTE4MmFlM2YzMDZlYWJjODhmY2JhYzM4NDhlZjFiMWZhOWRiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNzdlOWUyZDRmMDMyMjc4MmFkYzdmNTk0OTIxNmRlYWU4N2Q3OGViZjE4NjFkYzQ5ZjJhMWFmODkxM2YzYmUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/context_lift/cli.py#L365-L429",
+          "version": "repo-lines-v1:sha256:6a27b880cdb40068bcce6f9a9438db48d1ddbf7e7fa83eba2315f0847b75ff18:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyYzI0NzJiYjkzOGYxZWU3NWY2ZDBkNDIzYjRlN2ZiZThlZjliNjM4NTY2MWY0ODlhNDUyMDA1NTk4ZDlkY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlOGY4NDExMWM1YmZlNzQ3NGU3YTYzZmI5ZWExMjY2NmY5YTgwNTBkYzFmOTY2ZDVkMmEwMjU5NTA3ZGY1ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkMTE4OTM5ZGY0NTFhNzdmZTc0Zjk5MGMwN2M0ZjZlNmRlMDk4NjY4ZGQwNmRmNjU4ZGQzMmU5MjllZjQwYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhOGQ0NDFmMTVjNjc1OTFmZTVmNjFmYjNmNTA3MmVkMzYxMjE5MjM4ZjdjNzgwYTAwZDVlYWRlNWNiODQ4OTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d64c17b85a64d3baf97f9ede313f6a2",
+      "statement": "Data Access `prepare` accepts packet JSON as `OpaquePacket`, materializes the configured source into a DuckDB dataset, and commits source and materialized digests; `run` revalidates those prepared commitments before lazily importing its live execution client and requires `OPENAI_API_KEY`.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/cli.py#L142-L151",
+          "version": "repo-lines-v1:sha256:da55149617c2bc8bbc67ffa7fdcc463e6936c58a2adae982f882675177c03304:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNzJlNzM0YmE5YzEwMmRhNjM5Nzg0MWQ3YjU4MGFmODA5ZGFlNzBkNTIwM2NlNTU4MTg1OWY4NDQ4NWUwNDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxYWVjMjVkYWZiMTZhZWI1ZGI1ZDBiMjE1YmMwMzQxNDc4YjQ2YTI3ODA3YWY3NzMwMzdkZmNmZTBkZTU4ZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlODA0ZTkzNTM0YWI2ZmYxZjJjNjI5NTBhMmM0YmU4ZjBiMGY1Zjg1ZTE3NGU2OTIzOWRmMmEyNWE2YTg3MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2MzYyOTAxZjU1N2Y4Yzg2OGJhN2IzYjgxYzUzMzc3YWQ3MWI5MTIxOWQ5MGZmZTZkYTY0OTczZjc3ZWNkZTgifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/cli.py#L154-L197",
+          "version": "repo-lines-v1:sha256:77a6bcace07f57df5af4b86f13be0535c85fa8e59493c0c518e5ecdf5c8b560f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0NDhiZGVjZGIwZmVhZDY4M2YwY2I4NjVkNmM5YThiZDcyYTMxNzZhYThjOWY5YWM2ZWU5ZWU3ODhkYjY1NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MmI1MTExYWE1ODc5YTZmYzhjNzYxMjQ3ZDk5MDBhOWRhZjQ5YTllNGEzYzEzMzg4ODc1ODdmOTE1MjUxMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3ZjQwNWNjOGNhODcyMTk1YmMyNWY4MDU5ZjU4NTYyY2IyY2ExZTliNDVmMzgyZDhiODJjN2JiZTEyMzVhN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0MTJkMTQ2YWVmMGY0ZjJjYThlYzJmMWRiMjU1YzZjNDQ0ZTA0YmIzZmViODI2MzkxYzVmOTY2ZWRjOTlmZTEifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/cli.py#L208-L238",
+          "version": "repo-lines-v1:sha256:2a86a001ac1f107cc1cca38f7bc84ccbc2ff0f27f51414b2b4d8a29215374c92:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0NDhiZGVjZGIwZmVhZDY4M2YwY2I4NjVkNmM5YThiZDcyYTMxNzZhYThjOWY5YWM2ZWU5ZWU3ODhkYjY1NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhMTA2ZWEwZmUwNTNjZTk1YmFjNGQ5YjZhOWIzODljOGU0ZGFiOTdkM2JiMThlYmE4ZGU4MTRmZDZjMzljMGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZDE5MzllYmNjOTAzOWYyOTE4NzNlN2MxM2RiMzZlMTI2NjIzMzAyODNmMjk5MWJmMjg0NGI5NGY1NmFhNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjOWM4NTQ5YTA3ZDFiNDc0Y2IyNTRiYTQwN2FlYWQ2ZjUxYmZiYTBmZjZhNmQxZWU4OTg1Nzc2ZDI3ZDFiOTYifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/prepare.py#L132-L162",
+          "version": "repo-lines-v1:sha256:e44d8190d321c6d6d5939988a70e05d93f9859a352ae75810505bd081a615673:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4OTliODljZWM4NWU4YzhjZTA4MTI2YjBlN2YwM2M5OTEyY2M2MjIzNmZkZTliODRhZGNhNDQ1YzRkODAzMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3NDVhM2FjMmM5MDk0Y2MyZDQzNWE1ZjFmYzFlYjc1MmI3YjIyZDc1ZjVkOTIwNWFmZjBjMjVjY2Y3ZDFjYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/prepare.py#L65-L129",
+          "version": "repo-lines-v1:sha256:0c7ae9c9ea9ffab1b952fb101620cda77089acaf995a827aeadbe5dc274cefb0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlYjc2YjlkYmEyOThhZTA1YzNmZDYzMGQ2YWQxYWQ3OTE3MjhkMTk0ZGQ2NGUyZjhiNmNjNjNiYzU4NDdiNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmMDg2OGQ4NjJlNTk2ZTFmYTBhMGE1ODc4YjA1MGVlYWZjNmUzNGQwZTE2MmJlMzhjNmFmM2IxY2JhY2U4ZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhNTg0ODA5MjI5NWJlZjdkNzQwNmI1NjY3YWQ1ZGVlMzg2MTE4MjhkMjYxNmRjN2I5NTYzYjBkN2NhOTQyYzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_02634f38840d4db1a2eed460a22ccce6",
+      "statement": "Data Access's `freeze` workflow is a one-way experiment adapter over product code: it copies and profiles a tabular source, calls the builder, assembles a review-classifier task packet, then applies experiment-specific eligibility caps and signals.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/realistic.py#L14-L53",
+          "version": "repo-lines-v1:sha256:c57b7d28374ddc4f88b766d4433c6851b6b60805499d5b02c3c5db4bdff5c12e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5MjFjYzVlOTdlMDE5YTlhOTc0MDlkOTYwNWU4ZDM4YTQ2ZDNhOTA2YTliNjI4NGMwYThjODFmOGE4OWJhMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZmJhMDUyN2MzOTUzYzRiNmUwZTViNTczOWJhODM2MTJmODA1M2JjZGM5NDY2NzMwMTkzY2QxZDU5MGI0MDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZDA0NjZlOTVjNWRlODBmZWIxYzJkNjc5N2FhZjM5MTAyNjA0ZjMyOGYyZDUzZjE2NjJiOGMxN2RmY2RmOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmMzAxOWQ4Zjc3ZGVjZjk5YjY1OTU2MDBmMzBlMWIzZTljODBhNGNiNTcyMDYxZGMyMjFjZGE5Nzg3NTk5MDQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/realistic.py#L141-L184",
+          "version": "repo-lines-v1:sha256:17580a449a23174c79f3ab8d70a5ff55695881568f53c4f794dba2bafbf57a23:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlMTAxYjBjMTVjZDZjYWYwZjE4ZjcwZWMxYzRmNGIyNGFlYTQxNTEzYTc1NDJhMWIyNmQ5Y2M5ZjNjZjk0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwMDQyOTY4MTdmNTA4MWI5MjA4Mjg1YjI2NGJmMjBkYWIxMjZmMzczZTRjNzM5NWM2NTdjYzk4ZDgyODRhYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExNTFjNGRhNjJkOTVjMzc4NjBjMDE1MDFlZjIyZDQwNDdkMzhiYjM4YWQxMDFlZWNhYWU1ODhhMTliZmMxY2MifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/realistic.py#L226-L285",
+          "version": "repo-lines-v1:sha256:d2c3ab23edbf4dc735d9b58f07b1cbb816fb37a40f755f9d767ab39153289a45:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNTBkMDJjYWZhYzY1MmEzMmIwN2Q0NjUzMzg4NjE2ZWUwYTdhOWYzNmIzNjNkOGIwNGMzZDM2NGYzNWZmMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxOWI4ZDg2YzIzMWYzYmQ5ODEwY2ZjNGYyYzRhNDA5Y2E3ZjM1YWQxZTA4MDI3NjEwYmU3ZTIzMzE3ZGYzNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1ZjU5ODM0MTMzOTlkNWIzOTJlMDE2YWQ4ZWY0NTE0ODRhODMxMDlmZDYyZDNmYjkyZDdiMzJlMzYzNTNiOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNzRjM2YxOTQ2MzI2N2FiNGNkZjZiYjVkNjk1NGVhYTNjYjQzYjQxZDFlMTg0NzgyZjcwYzhiNTg4OGJjZDEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-02T23:04:01.230Z"
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:96ddce72a1da5dea184dd8851cf7e0d5e6bccc924b7e2c121eae6b84952fe60f",
+  "claims": [
+    {
+      "id": "claim_293576a33cfd485e932e6eb751f11472",
+      "statement": "The Data Access runner isolates provider interaction behind `ResponsesClient`, with `OpenAIResponsesClient` as the production adapter and `ScriptedResponsesClient` as a deterministic offline boundary; the production adapter sends non-streaming Responses requests with provider storage and parallel tool calls disabled.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L379-L435",
+          "version": "repo-lines-v1:sha256:63fd4df8c8cc2bd2e102623a65809b4367f0613fad451d49ed181a0c254a3d33:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzMzFkMjdiNzFhZDI1MTUyZDc4ZmIzMjkyMjg3YjQ3NDljZGIwYTJjZmM1NWU3ZWJhMDY0YzI5N2JmNDk0YjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZDMzZTcwMzg5ZWE5OTU4ODA0ZWVmMmQ2NjVlZjQzYWNlZGUxOWZkODM2NmIzY2MzYmMwYmQwNzM5ZGZmOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiNTMwZWRlNGYzZTg4MmQ2ZTg1ZTllNmE3N2JiYTI5NTk5OTk3MWU2NTk5NGU0ZTA0MWJjMDAzYjE1NzhkMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0NDU4NWJkYzJmMjlmMTNiNzc5NzQ5ZjVmMDA3NmFlZWY1ZGUyYzUxZmEwYTZmYzQ5NGI1ZTU4MDYyMDI1ZjUifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_execution.py#L816-L947",
+          "version": "repo-lines-v1:sha256:da4642e54e24978f687edd343a5b44530c4543f27a72c0834ee2eac3205d664e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhMjY0ZmQwMDBjYjlhYTFkYjRjM2EzYmZhOGNmN2E4NDhhMjk2NGEwZmRlNTk2NmMwZmQ2ODUxZDY4NGY2ZWRkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIxZjQwNmNlODQzYmFjZTRlM2M5NGUxOTVkNGViZTQ2NzExZDY4Mjk0ZGUyZTA0ZmMxZTU4OWUxOTU3ZDQ1YjZjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzZDhiNjI1Yzk3Y2RjOTdkNmUxMDVhMjg5YTRlZjRlNjRiMmRlYjU0ZDM1MzdhOTczOWViNTdmOGE4MzRiNGE1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjN2Y2MjMzYjJhYTZkYWFhZDQyNTk1YTRiNTA0OWQ0NzQwZTRkNDc1MjA1NGNiMzgyNmEyMmYwMjU2YTg5MDEzIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_e9dcbad44b4f455f852e8e3aefee20df",
+      "statement": "Data Access enforces a narrow three-arm treatment boundary: packet-only has packet context and no tools, full-data has a dataset descriptor and exactly `query_data`, and the combined arm has both; fairness validation rejects differences in their common model/task projection.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L200-L261",
+          "version": "repo-lines-v1:sha256:c6c359df17e980bfe0bba8995090606040da57d004da8f55f11924258cdac354:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4ZWViYzVlYjM2OGU0YWM0ODQ4Y2NhOTRkMDI5ZTFjMTFiMGY4ZWNmYTAzZjA3NDhjMzI2YzAzZWNlOTQ4OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWIwOTBiY2QxNjIwZmE2MmVhZWUxNTdhNzRmY2E2MzVhYTI5ZTEyY2JmZmQ2MThiNTc5MmQ4N2JjMDNhM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2NWIxOWQ2NGY0NmFhYmYxZWI0ODNhMGIwODFkNWRhOTBmNzViNDQ5MTY0MjM0YTVlNmFlMzgzM2FhOWRhMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2MzgzODEyMDFkNWUxOGZiN2UxNWU1MjMxMjliMjBjOGMyMmFiOTFlMmIwNDRlZDg4MWIzYTg0NWZlYzAyY2EifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L561-L614",
+          "version": "repo-lines-v1:sha256:24f2f19d0bfea6387f4ec0d0ff9768c63f08bfab070dbf41216aa9a04efe800c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTRjYTNjYmY5MTUwMzRmMGFiYzhhMWU2NTVkMTY5N2E5Mjg4YjMyMjFjOGEzMjIwMDQxZDNmMDE3MGU5ZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1MjIyNWExNTE3MTljYmQ1NDRhYjg3YjMxODA5NjMzZjdiYzBkN2YyNmI3MmM5ZWY4YmVhNWEwYjFjNmVlODYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_00d1b535ef8e478ea5147b133f6ed57c",
+      "statement": "The OpenAI response normalization retains canonical raw output, usage, function calls, terminal decision/refusal/incomplete/error metadata, and continuation items with null SDK-only fields removed so output can be replayed as valid stateless Responses input.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L449-L551",
+          "version": "repo-lines-v1:sha256:eaf5c5e91ddd7a3355384a90a54d9444def133d1c7e79174daf452663b962cb2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwODA0ZGQ2MmFjYmVhOTQ2MzA3OWM1YTI0N2I4OTBjYjIyZjRlOWRlZWFiZTQ1ZjYyN2U1OTEzNTFjZDM2ZjBjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzMGMxZjE4OGYxNDJlZDdhODI0NjgwYjIwNzE3MmM1NTE5YmM2MTRhNDhmZGE3Y2YxNjdlZGI4ZGRmNzk5NTZjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1ZDNjM2I5MTM1NzY3M2Q5MDM1YmQ0NmUzZDk2NGNkZWIwZmU5NjNjOWI0ODMyMzUxN2U2ODZjM2JjZDJmN2MwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjNDEwN2EwOWFlZTZmZDQ4MTc2ODEzYzIxN2MxZTI0MWFjNzM2MDc3ZWU2M2U3OGY4MmU5MjUwODRiZDc4MDY5In0"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_execution.py#L816-L910",
+          "version": "repo-lines-v1:sha256:bf3344d2f8635c8b22b7e87482c8da57f7e3c9f3cffadce1f4738b5c90d22bd9:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjRmZDAwMGNiOWFhMWRiNGMzYTNiZmE4Y2Y3YTg0OGEyOTY0YTBmZGU1OTY2YzBmZDY4NTFkNjg0ZjZlZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkOGI2MjVjOTdjZGM5N2Q2ZTEwNWEyODlhNGVmNGU2NGIyZGViNTRkMzUzN2E5NzM5ZWI1N2Y4YTgzNGI0YTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2NjU0MGYwNTMyZmY3M2RlMjc0MjUzOTY3ZmZjZjg0MGRjNDkyYmFkMGJlNDNhNDRmYjNkMDAzODEyNmVkN2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8318829d28da470aa6ef22a96afc7956",
+      "statement": "The runner classifies transport and provider failures separately from refusals, incomplete responses, and invalid output; retryable infrastructure failures retry the same request up to three times with exponential delays, and only exhausted infrastructure failure restarts a whole repetition once.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L1052-L1135",
+          "version": "repo-lines-v1:sha256:b97d8fa55b27bb4e6ed5556b8eab1197fee04a1444666019414da77be9c661b1:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMDcxNTNlOTY4MDRlY2EzOWMwNzFmZjJhMDkxOGZhYjFhYWUxNDg4NWQ3OWExMzFjMTU1ZGE4M2ZmMzNkMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2ZmQwNmZhMzUwNTc3YjJiNDNkOTk3YTBlNjg1ZjFjMzY5ODQ5OTUwYWU2MTRlMWI2MGMxZjcwMDFiYmYxMmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3YzI0NTQyNWUyNWE3NWNhZWMxNzk2MDZiZDJlMmQwMzNhMWY4YjJjYmYzZWQ2ODk5OGU5MjNmM2JhZGU2MWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhNDg2MTI3MDA2YTQzZTM0OGZkNTE0ZjZlZmY0Yzk0ZDQ1Y2Q4NGRhYTFmMDFlZDJhODM3ZTRmZjE0ZTRiNWQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L667-L704",
+          "version": "repo-lines-v1:sha256:5832eec018af24a28fd8095eaf779449ac354903b24c9d219f6e2a5e81526ec5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjQ1NWFjMjhmZmE3YjY1ZmMyY2YyMzAyMWU1MGRlMzg5ZjhmNzZlNjExYTQwZGZkMTNhNmJmODMyMzE3NGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5N2M3MTI0N2FmM2NkMWVkZjU1NWE3ZDEwNzU5MzE1N2Y2ZGMyYTIyYWYwZGU4MmU3Nzc0YWJmMTBmOGFkZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3Y2Q2NmMxMzNjNGQ0ZjM3OGZkZGJmMmU2MjY2NzI0YWZhOTQyNjNhZjRlMzk5ODdlZTFlOTE0YjBkNjYyODgifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L922-L1049",
+          "version": "repo-lines-v1:sha256:41260bd288d4d17477f860ab2c7bc601022d989dffc94ab9a0af05f6bf2659ab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlYmE3ZTdmYjM2ZjIyODY5YjRhOTBlMjNhMDYxMDYzZGI5ODQ3NmQxZWI5OTkyY2Q5ZGI3NTUxZGExM2FiMTZlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzMDRkOGJlMTVkZTE0YjI3ZjkxMjFmNjg2ZjMxNDQ3YmFmYjkyNzI2NTI1OGJhYzQzNDExOTA5NzQyNWQxZDVlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyNDY3ZDZmZjcxZDc1YjlmZmVjNGZiZGIzZThjYmEzOGQ1MGIxOWM0YWUwZDUxZmI1MWVjMzk1MTUwN2M2NzM4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3MzI4OWM2M2RlMjFkODI2NDY0MmIzNTcyOTFkZDk5ODk2ODEwMmM3ODNhNWQ3YmNiZmU3ZWQyZDExOWRkYWQyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f4a72aace94443d380d6ac57b13e6585",
+      "statement": "Per-arm experiment limits bound model calls, SQL attempts, wall-clock duration, SQL execution time, result rows, and result bytes; the defaults are 16 model calls, 12 SQL attempts, 600 seconds, 10 seconds, 1,000 rows, and 64 KiB respectively.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L1001-L1004",
+          "version": "repo-lines-v1:sha256:89eec0b01ff6e920e8bbd0d113fd28ba8774b5a58fb279708f1e77c119bc3fc9:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmZkMDlhZjlhMWExYTgwZjAzNmFkNDgyNmY5MTJmZDkzZjc0YzY4NWZkMTlhZjgyY2I3MDE3YTJjNmM1ODQ5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNhMWViYmUzMjM0ZjAwZThjNDg4NWE0NGQ3YWRiMGU1ZGY5N2M4YjZkYzcxZDBhYmViZjQwNTE5NzNkM2U1NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY2N2QxZmJlM2E5MjBhMTIyMmY5ZmQzNmFkZTdiMjhhOGZjNjZkZDMzYTk2NmFjYTAyM2IzZmUzZTI3M2M0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU2OThiNDY3ZWIwMDE5NWMzNmRhZDg2YzI3MWZmYjgyYTRhYmE3MDlmMWRhMDY5Mzk3YmE3Njc0ZjU1YTk2YyJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L922-L925",
+          "version": "repo-lines-v1:sha256:d9150ca317584887b61f18c811a97423e22234d8dc21ae2ac6b4761bbd34628f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWJhN2U3ZmIzNmYyMjg2OWI0YTkwZTIzYTA2MTA2M2RiOTg0NzZkMWViOTk5MmNkOWRiNzU1MWRhMTNhYjE2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTQxYzMwYTc3ZDY2ZmJlMzA2MzFkZTRjMmRhNDQ4MjgxZWYyM2EzZmRmZWRjZjVmZmJkMTdmYmRmY2MxMmJlOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjQ2N2Q2ZmY3MWQ3NWI5ZmZlYzRmYmRiM2U4Y2JhMzhkNTBiMTljNGFlMGQ1MWZiNTFlYzM5NTE1MDdjNjczOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzJmYWUwMTQ1OGUxYjUzMTM0ZmVkODhkM2Y3YmY2YjQwZTRjM2JmMTEzOTJiNDVmMGVhMzUwZjNmNWZkNmJjMSJ9"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/models.py#L73-L81",
+          "version": "repo-lines-v1:sha256:09234631560241fc0dc54828ef45bc6858f2af57009adf51c39f628cdb40ef38:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2YxYWRjZDYyYTIxYzU5N2VkYmQyMTE3ZjYwZDVhNzEzNGFiYTQzMzY1NGJiZmE2NDRjMzk2MzE0YTY3MDhlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2QzZTlhNDA5ODk0NDE0OTUxMDJlY2Y1MTZiOTliOTRjZjQzNGM4NzliZDE4OTVjMzBjNDYyNTIzMTg4NWY3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzA5NzZlZTQwZTFhNTQ5MzZmYTA3MzNkODQ2NWIzNDQ2NmM4MzU4ODIzZWRiNDg3YjNmYWExOTUwNjMyNGQ0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzgwNzliNWU4NWM0ZmFjMDZjNDc1Nzk2MTUwMTM3YWE0MzM0NTczZWQ4OTBiMWU3ZDA3ZGE5MmQxNTM4Y2U1MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d4c646ff5c442fa87204f31a3584686",
+      "statement": "`ReadOnlySqlTool` accepts only a single DuckDB SELECT statement referencing `dataset` or exactly `DESCRIBE dataset`, rejects forbidden external, metadata, and settings functions, and executes allowed SQL using a fresh read-only connection with external access disabled.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/sql_tool.py#L143-L214",
+          "version": "repo-lines-v1:sha256:a4c64acfea595299c9b68aa63e7d052f8c5b3e46d51bab7a5789f7ad2fbdfa5c:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiNWU1NmQxZTc3M2UwYTEwMTQwMzgwYzFlYWRhY2RjMzFkM2QxYTUxOTliYTJhNTEwZGU3MzYwN2EzNjhkMzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZWU3YWUxZmIwMWQwNjBlMDhjMWQxODc1MThkY2Y0OTc0ZTNjNDkyNWI5M2UyMWQyMWVkM2IxYjlmOWE4ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkZjQ1ZjkzNGZlODhkN2NkZjFhZDNkZDY0ZTMzZDZkNjBhNDQ1Njg2YTNiYjkzMzM5NzI5YzQxMmJlMTg1MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1ZDQzNGYxMGI5NDUwMGEyMDZlNDZjY2ViYTkwYTc5MDljYjdiNDY5ODc0YjhmMzc4YWMyNjgzNzFiZTFiM2MifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/sql_tool.py#L30-L135",
+          "version": "repo-lines-v1:sha256:2a02238d1007ce38a40d86d61e5255e39ea782108193d90ab171945b2d103e0f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxNTMyMzI2MmZiZWYwOTljY2RlZTA5MjhhNzE1YTk4NWJlNmVjYWY4NTVlOThjMTNhNGUwNmQ4ODFjOTYxNWY3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkMGE2YThmM2UzMDU4YTExMmQzODY2OGNkYjM2ZGQyYTU4MjFkODdiZDFhNmZjYjFjOTBjZWFmYmYxODZkZGE0IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2NzZhNTQ0Y2MwMjNlZDQwNWUzYjk4YjhhMzU0MDkwZmFkMTZlOWUxOGQ1ZWU5ZjdiYTZjM2U3MDA1MzAwOWQxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwODQ4YmJjMWM1ZDFlNGE3OTM0MzFkYzM4Mzk3NjQ3M2YxZDVkZGIxMzg3OTc3NGI0MzBhOTQ4NTlmM2Y2NTVhIn0"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_sql_tool.py#L87-L145",
+          "version": "repo-lines-v1:sha256:2f3986a19c8309acdd28ec0da4c6335d2968a42f2e742f9c82294694b6c660d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMzQ1ODNhNTk4NzY3YmY1NmFlZmViNjVlMjAzM2ExNjUxY2M0YzhkN2U2ZjBhZjNlNWNmZDMyOTNmOTMzYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiNjNhZDI3YWJkNWMzNWJkZGFjZDZjNmNlNDcyZWFlNzc3ZDM3OTRiMDNmYjFhMWM0N2MyODJhYTI1ZDI2YmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlOTUxMzUwM2NkODUyOTFmOTEyNjM1YmE3ZmViY2VjZGE3OWJhNjE1MzhjMmZlOTNkNTBkNWY5ZDlhNTUxNDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_92076c30d17640388a8f93d7505c66a0",
+      "statement": "SQL discovery produces typed outcomes for invalid arguments, policy rejection, timeout, execution error, and oversized results; successful results are bounded without truncation, canonically digested, and assigned deterministic evidence IDs based on normalized SQL and result content.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/sql_tool.py#L161-L282",
+          "version": "repo-lines-v1:sha256:d14132b5596d987e3c198528434a2512f81b14f54d1ad9bcd0912b8a2dd6b38f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5OGFkY2JhY2Q5MTI0NDI2ZGZkNmY2NWMzZTFjODA5M2RjNzgyYTY3YTU3N2IzYTUxNTQwNThlYzkwMjRjZGUyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1ZTcyZDJiNTlhYTk0Zjg1YWJiOTRlNjYxMzU4NTM4M2EyOWNjZGI0ZTk1NjJhZGI1YmNjNDUyNWYxYjZmMjY4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiMzUyZWVlMzdmYzE1ZDVmYmZhNzhkZDc3YTIxYzZmMDM5NjRlNzQxNDhhNmIwNTUxMGZmZjNjNGY2OWM2ZjIzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_sql_tool.py#L113-L121",
+          "version": "repo-lines-v1:sha256:4dc3f13a2242e2a0b0b393aa852660b0abfac775fc702ccea9f2463078d590a2:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVmM2UwZWI2MzkyYTUwMzlhMTAxNTQ1ZGIwYTUyODc3MWU3Yjk5ODJmN2MxYjE5MDViZDZiY2NjYzM1MTc1NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBjMWYxODhmMTQyZWQ3YTgyNDY4MGIyMDcxNzJjNTUxOWJjNjE0YTQ4ZmRhN2NmMTY3ZWRiOGRkZjc5OTU2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDI3ZTc3MDJjYThhZjI1MzY0NzMyZDQ5NzY5ZDZhNmQxYjQyZTU3YTMwYTVhMzM5OGM5YTllOGNhNGQyZTI5NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTY0YTExZTkwNDQ5ZDZjZWY0Y2M3M2ZhODM5OGViNjk5NzlhN2I4MzcyMThjYzNhNDBlYmZmNWQ5ZDFmNWI0OCJ9"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_sql_tool.py#L60-L70",
+          "version": "repo-lines-v1:sha256:3febc1196e516b4b1adab9e3a7fd190fafe77babab7ed88de3b8e504aa079a68:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlMDUyNDVmNDE0M2EwMTRiNWQ1MWJiNGYwOTRiNTQyZGEyZDNkMmU1ZjlkN2FmOTk3NDM0ZWZkMmZhODMxMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzNDc4MGQ1ZjUwMWNlN2IyZWYwMWM3NzgzNTBjOGZhNTNmNTc0YzQ1OGNkNDJjZDExNWY2ODkwNWM0MDlkZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1YzliYzY4ZGYwMWM0YjJkOWI0MzZhYmJiMDhkNzFiNzcyMjdmZmZjMzk0YmZlYzI3ZDg3ODg4NjQ3MTYyMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhMjIyNDg3N2VlNWFmMDNlMWRjNWE2ZjcwOWQyOGYzYWEwNzlkZmI0NDFkNGFmNDI0OWMwMjY4MzcxNzg3NzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ae4fd5e2fcf4520a6fa498dfdf1e3d2",
+      "statement": "Each successful SQL result can support a full-data factual claim only through a recorded `tool_call` evidence ID and predicate-specific SQL/result shape; evidence-kind availability is restricted by arm and claims are compared with a frozen-dataset oracle.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/evaluation.py#L593-L675",
+          "version": "repo-lines-v1:sha256:fd1af39dd0ca6376748a03b6482bc4ab44aedfbd763abc3455a4fe15141c9a1b:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwOGQ1NGQ0NzZiNWUxMGE2ODc2ZmI4NDQ1NzU0NDBjYzJjMzEyN2JlMTU3ZTg0M2RiYTJlMDYyZjM1ZGViYWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1YmM0NzExZWNjYTA0NTBhZmM4MzI3NzlhODg2NzZhN2M2OTYwZmEzZGE1YWY0MTBlZTAyZDFlMDE1MTU5MWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0ZDYyMWU1MDA5OWMxZjVhZmNhM2ViYWYyMzM4ZDVmZDVkYWI3MzJiZGI1YzUzZjIwZWE4ZGEzNTcyYzhmNmYifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/evaluation.py#L686-L798",
+          "version": "repo-lines-v1:sha256:951d178b437c0b0fc215cfee21ee93bb0297ddb3523f82110d9e35f9f61c894d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2NmJjYjYxYTI0NDRkNTgyNzE4ZWUzNDA0YzVmOTFhNDAwMjJkOGQ4Zjk5OTkyOTBlNDVlYmYzMjg4MDZlYWJjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkY2ZiNzhmNzAwMzVjY2Q5MDU5NjIzMTI2MzEzOTc3MTg3NWM5MzhiNjZhNTIzYWEwOTc5YmQwMjc0YjUzN2ZkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzYmZiYTBiZWJmYTJiMjk3OGQ3YzY5OGJhODU3ZDg0MWI5Zjk1YzVlODc1OThiZDQwYWRjMDIyZmM5Njc3MDE4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2MzYzZWNiZGYyY2EzMTNiYzhjN2I3Nzc0MzA0YmIzOWUyZjQ1MjNiNDQyNzFlMzZhMmYxYTE0NWEzMGJmYjRkIn0"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L34-L52",
+          "version": "repo-lines-v1:sha256:aac9d3df585ad3398edc032631057b3628f011151a49f5ae4361da3bb5b4fbaa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1ZDNhODIyY2IzYzhkNGI0OGVjNjA0NzQxMDkwYWQxZWJjMjllYjViODc4ZDk3YjRkYjQwYTdlNWNlMTg1MGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwZTAzMmZmYTk4ODIwNmNkMmZjNTI3MjNlMzZhMjA4MjA1NjBmN2UzNjgwMmNlY2NjZTRmNTBhNTUwYWRiMTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlZDdlYjYyMTVlNjE1ODgzYTFkOTg0ZDk4MDE5OWMzZmM1NTA0OWY1NDE3MjY2ZjEyMDA5MjExNTJmMDUzZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7892513a06034e6eb90a59ed21e7bd4c",
+      "statement": "Objective reporting replays each uniquely cited successful SQL query using the committed database and configured limits, then reports matched, mismatched, or replay-failed status by comparing canonical result digests.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/blind.py#L647-L673",
+          "version": "repo-lines-v1:sha256:9924b6348377004b6962b9d6634e3680265c54c1bc3dc4b632b12a43dbd02b3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2ZDAwNjk5OTQ0YWZiZmFlNWJhNzgzNDMyNDMyOTUwMDFkYjk0ODdkZWY0MmRlMDU3NDk5MzU3NjA4Yzc3MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiM2IyODY4MDc5M2E0YTI0ZDc4ODhhNzg2MDhmMzcyYWJkNTkwMmMzODQ1YmRjMGE5NjM5Y2ExOWM0YWI0MjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmMGJiYTYxMjM5OGU2YmIwZDMxNjM5NjU2YmI4ZDE5OTljZGFmNDdmYmMzNzM0NGY0NzZkNmMwMjMzNGEyMGUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/evaluation.py#L801-L873",
+          "version": "repo-lines-v1:sha256:d6f0bd5abdbf2dd75d05b249bb9cb576e75e1a5bcf1d204a15fdddde93d370e3:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NTUzOGZhMTA0NWIxZTUwMTVjOWZkZmJlMmYxMDU1ZWM1OTE5M2QxZTE0YTc4NjY1MDliOTBlZGI2NzE3ZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlODA0ZTkzNTM0YWI2ZmYxZjJjNjI5NTBhMmM0YmU4ZjBiMGY1Zjg1ZTE3NGU2OTIzOWRmMmEyNWE2YTg3MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_evaluation.py#L587-L628",
+          "version": "repo-lines-v1:sha256:f5b30acc3a1d966c52a5ae5ca3df2f0e8bcd3e8c0dffff9728d51f423a10f163:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYTIxYWNjN2U5M2E0ZjRjNzYwMjU2YWE0NDJiZTIzYzc3YWNkZjcyYjhkY2YwOTA1YzdlMmZkZWRmMjI0YzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMTQ5ODcxOGY3MzFmY2QxMTVkYzg0ZTNlMTdiOGQxNjc4NjRmMWMxNzE0MDg1MmJiY2Q4Njc2M2U0MjUzMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlNGFlMTI5YzM4NjU3YzhkN2FhYjZlNDQ2MmZmYjU1MDMxN2VjZjg5NWVmNzA4OThkNTlkZDAyMDc4OWQzZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_deafd026b24140988705131aaca5c248",
+      "statement": "The runner creates append-only request-start, model-call, tool-call, arm-spec, and arm-run artifacts, and transcript validation reconstructs the stateless request sequence to reject tampering and ledger inconsistencies.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L707-L729",
+          "version": "repo-lines-v1:sha256:0013e9cf07f11b10081cdfb4b1a846daebb40d71a401f2564fd6a5d0161f04b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjZTI3NDk5NzhlM2FjYjBjYmViMjYzZjk0YzcxOGUzOGQ0N2Y4ZjE2NmEyMzBmOTEyNzU3NmJjZmY3NTY4ZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwNDNhMTU3OWRlZTAzYTJjODEzNWQxZDc3YTBmZTU5NjBhMDliMWZkNzBlMjUwZGE0OTdkMTc2ZTY4M2NjZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5OWVmZWRmZDJkOTcwNmQ4OTFjN2JhOTgzZTdmODRlMDVhZDBlMDE5MWMxMzI3OThiZTVlM2MxY2M1MzA0MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNDk4Nzc2MjE3NzFhZWU3YTk3NjdjYmI2NzQ2OWQ0NTZlMjZlMWVhZjQ2N2YyNDg0MzNmNjlmODA2NDAyYjAifQ"
+        },
+        {
+          "resource": "repo://src/dsx/experiments/data_access/execution.py#L756-L884",
+          "version": "repo-lines-v1:sha256:c8bb742dbb6ef8b908c3ec101c9d1bb88669e295afcbd75974cf04de2e95d753:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4YjFjN2Q4NWJlODE1YzhmMjY1NjFlNWI1YzhkYjMwNmM4ZDllNzQ5N2RiZGE3ZjY1MjYzMjkxZGY1MzI4MmRjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJjMDk1OWNiMjdiNGUwMWQzYmI4ODIxZTA4YTI4OGViYTA1ZTZkY2M5MzQ5YTliNTAxMDgzNDk1ZDQ2ZjY0ODc5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4Y2M0YTdkMWNjNzk2YWJhM2U0NjcyMzMyN2Y1MTdlOWY4MTE5ODJkMjUwZjA3MDI5ODZlNGI1NzY0YWQ5NTg5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4ZjA0OWJmYThkOGE1MDJmN2E0OGY3ODk1NTgyYzU4MzhmMDc1YTgyNjIxYmE5ZjM5OGZkNjBlNDFhN2ZkMzAzIn0"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_execution.py#L223-L257",
+          "version": "repo-lines-v1:sha256:d0a08fe732652901495eaba1a7fdff48c54c00c659bd6c890646e4a29e9a4ba0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3MzExZDIyNTIyNDEzMWRlOTE0ZTdlMTc3OWQ4YTgyMjMxOGI4MjY5MTM0MDI4NzI1M2JkNzAxMWU0OWZkNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxNWVhZjZlZWY3MTQyNjM5Y2IxNTAwYWUzMDZjYjNiM2IyNzEzNWRlZDllNzc3YzYwNGUzNWQ3OGU0NTQ0M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3NmQ2YTk3YWM0MGFiMTdjYjVjODBhYmY5ZGZjOGQ5ZGNkOGQyZWQwODBmNmVmNzhjMGZmZjU5ODcyZjZiMmUifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_execution.py#L280-L551",
+          "version": "repo-lines-v1:sha256:a489af780caf98c0d89bdb79b1f15f66a62a49c95c15e7ef3432c247a2df7653:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjZjcyZjY1NjczMGM4NzA5ZGVjMjc0NGRlNThmMTAzMjY2NDlmYzk1ODVlYzdhNjUzOGE2NGZiYjk5NTg1MGQ1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ZmZmN2VhNmNhMjVmODEyMzhkMmNkNWQ1MDZlZWMxOGY5ZTEyODFiNTRjNTM0M2VkMjYxYWY1Y2Q3MWE3ZTI4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0Mjk4ZDJlYjFlZDhhZDEyNGM1NzM4ZTMyYTBjMzA1NTRmODQxZWQxYmU3ZjM5MWQxYzRlNjhkYWY3MTI1ZDc3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3OGZmNmE2ZDA3NGRkNTI5MTE4YjlkOWJjMjkxMGIyYjYyZDRjYzBiM2RjN2I3YzY4MGMwNGY0ZDMwNmYzNGZjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_39fa733edcfc4f1b96a8a365d7355ff6",
+      "statement": "The live run command requires `OPENAI_API_KEY` and commits a run manifest before using the OpenAI adapter, while the paid smoke test runs only when `DATA_ACCESS_LIVE=1`, `OPENAI_API_KEY`, and `MODEL_ID` are set.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/experiments/data_access/cli.py#L208-L239",
+          "version": "repo-lines-v1:sha256:7b3f1e5dcf9f3372d1dc3d8d1b2f0f22ed91e377c13cac622a8dc974b67f4896:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0NDhiZGVjZGIwZmVhZDY4M2YwY2I4NjVkNmM5YThiZDcyYTMxNzZhYThjOWY5YWM2ZWU5ZWU3ODhkYjY1NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4NzNjYzdhZGM0NjBiYzA1NzZhZjJjZmI2YmY5OWM4ZDYxZmFkZjViZTgxYzUwZmM1NjM5OWJjMTE5MTVkZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZDE5MzllYmNjOTAzOWYyOTE4NzNlN2MxM2RiMzZlMTI2NjIzMzAyODNmMjk5MWJmMjg0NGI5NGY1NmFhNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2MzYyOTAxZjU1N2Y4Yzg2OGJhN2IzYjgxYzUzMzc3YWQ3MWI5MTIxOWQ5MGZmZTZkYTY0OTczZjc3ZWNkZTgifQ"
+        },
+        {
+          "resource": "repo://tests/experiments/data_access/test_live.py#L29-L46",
+          "version": "repo-lines-v1:sha256:354f85a525f3a31673bb3cfba17f919b942bcaaf7ce5cf0039270bfcc53c23ab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNWE5N2M5NTcwMTczOTU4MDgxMWIyYWNmNmRhZDc3NjgzZGU4NDFiMjI2MzdhN2YwNmJiMDIxOTA3ZmM2NzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGU1ZmM2MmJhMTc5YjcyNGJkODkyZjM3ZmIwZTFiZGU4NDc5ODY0M2FlZWQwMjFjN2FhZWE1ZmQ5MzE1NTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0N2IwYmVkOTU1N2YyODdmYTI5NGQ2YzkxNDg4Njk1ZmE4OWU3MGFjMzc3YTE2YmRjZjk5NTFhMTQ2NDU5MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhZjkzNmFkOTEyYWE2ZTlmMjdhODU4NWQ3ZWRiOTlmYzM5MmNlMDFmZDE0MzEzNWQ2NTczOGRmNmFhZmIyMzEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-02T23:04:01.230Z"
+  }
+}

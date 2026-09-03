@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6afb020befe5aad95d0ec12aa5cb70105d680ad618f0f71919d560115c854365",
+  "claims": [
+    {
+      "id": "claim_a534489db06d4390b6c3f06e96aaf14f",
+      "statement": "The `dsx-packet build` CLI accepts a CSV or Parquet dataset, a new output directory, target column, and packet ID, with optional manifest and previous bundle; it builds in memory, persists the result, reports digests/revision/module IDs on success, and converts handled failures to an error exit.",
+      "evidence": [
+        {
+          "resource": "repo://pyproject.toml#L23-L23",
+          "version": "repo-lines-v1:sha256:5d2d3a25f5309f513cae5db3054f4312af33e415b0ee53de29f961e91ddd4fe6:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQyZDNhMjVmNTMwOWY1MTNjYWU1ZGIzMDU0ZjQzMTJhZjMzZTQxNWIwZWU1M2RlMjlmOTYxZTkxZGRkNGZlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQyZDNhMjVmNTMwOWY1MTNjYWU1ZGIzMDU0ZjQzMTJhZjMzZTQxNWIwZWU1M2RlMjlmOTYxZTkxZGRkNGZlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGNjZDI5YmNmOTAxYzMzMTFkZjg2NWQ0ZWE3ZDcyYTk4YWFhZTE3YzdkMTkyYmI5OWI0MzZjOWQ2ZmY0M2Y1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjg0Yjg2YjYyMTI4YjZiYmQ0YTUyZDRkMzg2NjNhNmY3OTc1YzAwM2Y3YWZlNTc3MTAwNDc1OWY1OWVhYmZkNCJ9"
+        },
+        {
+          "resource": "repo://src/dsx/builders/build.py#L146-L273",
+          "version": "repo-lines-v1:sha256:c8f3c371a3ab41d17e08fda676801f4b44bd001e713a98dc6625aa08d022065b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5MzQ5ZmM5MWEzOTA3OTczZWJjMmM5YjBiNWM5ZDUxZDNkNjA4MTIwZmZjNWE0N2FkZDJlN2MzODQ1ZDJjYTViIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiZGE2MTdiOTVlZDgwZDY1NWY4NTEzMzc5YjU3OTIxMzZkNWQyMzRhZGE1ZGE4ZGIzMTEwMmVkMTgzYTUxNDMwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyOGNmODc3YzYxYmY2ZWFmOGJhM2Q3ZjcxZGZlZjAzODVlNWM3MGJlMjQxZTQxOWYxODE5YmQ4YjEyN2U5ZTBjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2NDQ0MTExNzY0NzU4MjdjYTkyYTE1MjNhZjk1OTg4MzAwYWYwYmIzNjQ2ZGU3Y2Y2MGVjMjFiNDAxODg3ZWQxIn0"
+        },
+        {
+          "resource": "repo://src/dsx/builders/cli.py#L17-L115",
+          "version": "repo-lines-v1:sha256:6a69f8973c81aec940cbb46fed1766c1041631bbed2b9315225416949ea305d6:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3NDEzNDIxMjg3YTQzN2U3YWVlNTkzZWExODM0YWE5Y2EzYjhkZTM0ZmUxYjhmOWU1NGZmZGE1NTkzYjdiOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkZDU5NzFiNmQwZDQ1OTg3NzE0ZjBhY2U1N2RmOTE2MWYwYzhjNDIwNmJiYmY5ODc3NmJhOWUxOTMyYmE1YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNTRkY2M5NzQzNzhlNmEwMjdjZjU1NjllZTNiNmQyYWEyM2Q1ODg4YTY4ZGVkOTcxZTk0N2Q5Y2M5N2U0ZTYifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/persist.py#L15-L45",
+          "version": "repo-lines-v1:sha256:8459758262b6d2afda7a661029b0e4f320e5859af5a78bb9a2f4f510658d01b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0YWI2Y2FmZGUwNzNhNWQxMTNkMWQxMzMwZTg0YTYxNDg0YTU3NjhlYTk1OWE4ZjE3N2I0NGE5MmY2ZmFkMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjIyMzQzZTljNzU1OTIzM2RjNDZkY2VhNTg5OTY1OGY2Yzg2YTczMTRmYTQ2MjA5OGYyOTI4YWY2YWQzZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhODU3OThmN2UyYjkyNjc1NjU1MjQxNDZkZjY2NTAyNjFhMjgzMmE2YmQ2ODM1OWUxMzUwNWUwNTg1ZjQzNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzY2UxZTVkMmQwNzRiNTc2OGFlOTU0NGY3Y2RiNGJlMmYyOWIxODEwNDMwOTQ4NWFkMjNlYjI4YjdkNTJmYTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5701ba3da644106bd9e638b6e5534a0",
+      "statement": "Current-dataset profiling supports only `.csv` and `.parquet`, reads them with DuckDB, rejects an empty or unreadable dataset, and produces row/type/missingness and cardinality profiles plus a target distribution whose class rates exclude nulls.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/profiling.py#L104-L136",
+          "version": "repo-lines-v1:sha256:cf3bf90af1da77b5eadefd6a0b17472c7dbb9ca665dd1d2bb9952be675c5080f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjMmNiOTEwYmZhYjRlODgzZjQ3NzM1YTg2YjJkNzVjYWJkZTFkMmZmZmVmOWZlMzg4ZjNhMTgzOTA3YmEyNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjZmI3OGY3MDAzNWNjZDkwNTk2MjMxMjYzMTM5NzcxODc1YzkzOGI2NmE1MjNhYTA5NzliZDAyNzRiNTM3ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzNTI2YTQyNDY4MzY4YTZjY2QxNDIzNWQ1OTE3YWM3Yzk5ZDZjN2ExNmQ2Nzg5MjNjZGEzMDk0MDg1YzgwMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2MzVjM2JmMGFmNDQzZjEwMzgzYjI0OWFkZjg2MWQ2MTNlZjU3ZDI0ODBhMDQ3MzNlYjI0YmNmZjA2NTc0ZWMifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/profiling.py#L139-L193",
+          "version": "repo-lines-v1:sha256:4994d556392f4a70016faa333aadcad0d0bfb2c0bda1344b1e5ccffab3806453:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZGE5MTMyNDVkMGJiNTg4NzkxZGRlY2IwOGJmNzg3OGMzNjEzZTMwMThlMDQ1NmUwY2NhZGYyOTNjZmNiNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjZmI3OGY3MDAzNWNjZDkwNTk2MjMxMjYzMTM5NzcxODc1YzkzOGI2NmE1MjNhYTA5NzliZDAyNzRiNTM3ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlODA0ZTkzNTM0YWI2ZmYxZjJjNjI5NTBhMmM0YmU4ZjBiMGY1Zjg1ZTE3NGU2OTIzOWRmMmEyNWE2YTg3MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxM2Y0ZTg3Y2QxMTYzNWYyZWRkMGVhMmY0NDY4NGU4ZTEzZDc1NWRkODY0NTRkMTE5MjRhOGQ5Y2E2NjQ2ODUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/profiling.py#L196-L262",
+          "version": "repo-lines-v1:sha256:74bbc0865bb8fc5f9877f1c1927614d8df563c3bc0afb8642b03636dcd419e8c:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5YjM4MDcyYTY5ZDNlZWRlMjI3ZDI5MzdhYTMzNDI5Yjc5ODQ2ODc5NmIyNzQyZjU1MjQ2MjM0ODI0MjMxZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmYWFjNGM5Y2EwMWUzYTU3ODM0MTY2ODViYjQwOTJjZjA0ZGVlZGFjNDk3MTEwNmYxNzVjZGQ2Njc3ODcwNTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlODA0ZTkzNTM0YWI2ZmYxZjJjNjI5NTBhMmM0YmU4ZjBiMGY1Zjg1ZTE3NGU2OTIzOWRmMmEyNWE2YTg3MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxOGQ5NDE4NDllNzlhZmViNmQ4NWMxOTcxYjhkNzg1Mjc4NDBhZmY4MjVhZTE3YWE5MDhjOWE1YjgwMGI3MGYifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/profiling.py#L38-L44",
+          "version": "repo-lines-v1:sha256:3ae08b9aa8acc695e6d1b6072fe01997563b06d576f40df0d43ac57cd4e6497f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM1OWMyNDEwNDllNDkwODUwMjAzYmIyNjRiYmVhYzY3MzExYmQzOGRkZmNjZmRkNmUyMDkxNGRkMmE1ZDJmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjU0MTFmNmEwMGUyMzg0M2VlMzU3NDljZDkzZWNiMzAxZDNhNDQ3NmRkMGMwNWQyODkwMGEyYzcxOTI2MzJmOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDEwNjczNmIyYmUwYjFiNWNkYTg1ZmNmYjBiZWI4ZDgzNGZmYmZjOTJhZjUyNTk5ODIxOGMxMTMxYmFlMDE3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGEyM2ExZmFiZWQwY2VjNzkwOWIzMDBmZWFkNTE1ZjFmYjBmNjQ0MzVmNjQ3NDcyMmUwY2QzNjJhZDk4ODM4YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7de2781032c147cbae4def88dda0f547",
+      "statement": "With a manifest, the builder requires the current file digest to equal the declared current snapshot, records a manifest digest, resolves relative historical paths through `snapshot_root`, marks pathless, missing, or empty history unavailable, and aborts if a readable historical snapshot contradicts its declared digest.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/build.py#L160-L171",
+          "version": "repo-lines-v1:sha256:e0d314c0618b279620cfde1fd5a6beb944b21c4547717e9c947ea2c08451d8ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkYjRhZGFmNGYyM2Y5YjBmMmM1NDE0OTFhNTJjNDQwNGI5ZGQ3MDYzY2U5M2FmNmMzNmQ0OTZlMTc1ZGE0MDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzA2OTNiMmQ1MjY1Yjk4Zjc3MDZhYmY5YWE0ZThiMjMxZmU0ZGZkZGQ5M2Q3NjA3YWQ5NzIyMmRjMWVkZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlYjRhYmE3MTM3NDM3NDFjODViMmM2YzM5NTgzNjEyNjRhYjhiZTkyOTZhZmE4ZDE0NTEzYmExNmQwOGM4M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmYTNjZDk5NjBkNWZlNDhlMzcxNTRmMjQyZWFhMTJhNmUxYTRlZGQzMzcyY2IyNWVmZDMxYjYzZjVlNGU1M2IifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/build.py#L79-L124",
+          "version": "repo-lines-v1:sha256:4845f95457da5129099fb9b4079760f938fab2f758682d4ca19a908338dcbe02:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMzYwYTQ1YzdmNTNiMTk4MDFlNGIwMWQ5NGUwNTUxN2Q4YmYyMWNjNDJkNjJiNTAzMjgzODk1OGVhZDYwMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiZWM5ZjMwMzI1YmViYzdhODQ4ZDgwZDg1ZDgxN2M2MWFhMzljNWY1MGVlOGU2ZTJmZjExMGYyMWVlMjZjYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2YjBjZTljNmUzZWUzMDhkNTcyODkwNzE1NTQxYmZlZTQxNmJkNmZiZDZkNDI0NjI4Mjk3MDFiYzRiZDc3NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjOGFhZjVkNDNmZDUyMTE2ZjE3ODhhM2U0Y2I3MzZiYWNiZWJjNThhY2YyOWU5YTBkYjJhMGM0NzZjZDNjNmUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/models.py#L254-L285",
+          "version": "repo-lines-v1:sha256:a9e443e9f89ed7cb470959f0b8844a859a490790fa33cc1229597bc1a1da8416:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjExMGJhMGNkMDQ1YzlmN2VkNWIzNmJmYTM4ZmZlOWM4Y2RlYmJkNjU5MzVlNzQ4OGUwZWFiNmZjMDNlNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWIwOTBiY2QxNjIwZmE2MmVhZWUxNTdhNzRmY2E2MzVhYTI5ZTEyY2JmZmQ2MThiNTc5MmQ4N2JjMDNhM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2MTdlZjNmMjY1NjE2NGU5ZTlmNjUwNjAzNDg3NmNkOTk5MzdlYjdhZDhhNGUwNjFjNjczNDE5MjQzYzNiYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0NzA2YTE4OThjMzI0M2FkYzljOWRkNTFmMjQwZWYyNjBlMDhmMWE1NGUwN2IxMzJjN2I5OGRkODIyODg2MjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c7dac831c2c2468eb02ab2ccfe939351",
+      "statement": "Packet assembly always emits dataset, column, target, data-trap, and feature-risk modules in stable order, adds a transformation-history module only with a manifest, and limits its recorded transformation steps to the lineage leading to the manifest current snapshot.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/build.py#L228-L273",
+          "version": "repo-lines-v1:sha256:a6f0f813536ccc885165c07e838545841eb654e1c52939c44a4b8a50da191dbf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MTZmOTJlZmIwNTRhMjJhMTk0MWU2ODFmMjMzMjQ0NDI1NDcwNTEyMGYxOTk0MjM4MjFkYzRhNGRiYWY4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkYTYxN2I5NWVkODBkNjU1Zjg1MTMzNzliNTc5MjEzNmQ1ZDIzNGFkYTVkYThkYjMxMTAyZWQxODNhNTE0MzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlZjgyZjQzMWUyYmExMTNiNWM1YmIzNjAxMmNhZjhkN2M3ZTdlNWExYzQxOGEyYTNiOTA4Yzk0Zjc0ZmUyOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0NDQxMTE3NjQ3NTgyN2NhOTJhMTUyM2FmOTU5ODgzMDBhZjBiYjM2NDZkZTdjZjYwZWMyMWI0MDE4ODdlZDEifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/build.py#L394-L470",
+          "version": "repo-lines-v1:sha256:78221d8c17bcd6308189776f006057b1743735204c372ed530142894211740ba:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YzUxMDRjZDBlMTE0MWIyYjFiMmRlNTIyNDNiMDBmM2Q2ZTg4YjZmYWMwMTk0ZWU4ODc4N2ZkODU2MjQ2YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkY2VmNmVjZWUyY2ZiYmEwZjVkZWQ3YTI0NjIyNGQzMWI5YTdlZGVhYjdhZGEwYTFmYmI3YTM4M2UwNzU4YzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiMmQ2NDE5MWMyZmU1MjU1OGM1NDMzMGMzMmFmNjJjMGFmYTFkNjZlZTg2NWEyMWZjNTMyMTUwNGMzY2I1NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkOTQ5YmM2NThlMDM1YmEzOWQyMWUxOGU0NWY0MjAxYjQ5NzI3OTcxMDU3NmY1MjUyNzgyMjRhNDM2YzQ4MjcifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/models.py#L23-L41",
+          "version": "repo-lines-v1:sha256:e41c83482c4a0e0a3e0d4aa6365033fb78ffe731aa10262374dddca8fd883028:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NjllMmM1ZjQyM2VmZjkxNTE1Zjg3MTdkOGYxNTc2NzEzZWM0ZTU5NDg0OGNhNzkwMmNiMDIzZTM0NTdkZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5YmMyY2E4Mjc3NDI2ZWVlNjY4MWIzMmE0YmVkM2IxNDkwYjAzNWZiZWFhMzkwNTk3ZmYwZjIyYzU5NDJiNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljNzVhMTRjOGNmOWM3NTAyNzBjODcxOTk4M2RiZWI1YTRiODM1YTEzM2EzM2ZkYzU1Mzk2ZDVjNmQ1YjdmMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjNzhhZTkxMThlMDg3YThhYzIzNDk2ZDM0MWYwOWY0MjZmY2E0MTRiOWNmZTNhYTQyNTNhOGJkNTA1NGRiMzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0304cc1f596741f7a04e10eea2ec0aec",
+      "statement": "Feature-risk detection is warning-only and flags a non-target column as a likely identifier exactly when it is fully populated and has one distinct value per row, recommending `exclude_or_verify`.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/feature_risks.py#L11-L46",
+          "version": "repo-lines-v1:sha256:dd95c292f872cdf39a09586b1ea3ff1e19e542638b167df7797ba406327adb0f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmNmNmI1MjkwNGU1ZDIwMTkxMmIyYmZmZWYyYTE0YTgyYTM0YzcxODNlMjk4NTc2ZGRjOWMxYjM3M2U3NWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMTQyNDYwMGY3ODI3MjZkYjY2MTcyOWE3ZjAyYWNjMDY0YTRkNmZkODk0MWVlMmQ1MzhjYTIwOTVkOTVlNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjOTE0NDIxZTJmNDY0ZTFhMmM1YWVjNzMxYTMyMTFmY2JmOGVjNDA4MzNmNzk5MWNiMDFmMzFmODJlZmI0ZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/models.py#L167-L208",
+          "version": "repo-lines-v1:sha256:b2d04b547de17207c39c0d7ec45bd94a591464846a879c6821f546bf9ef28981:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4NWEzYmFmYjhjNjlkNjJiMzA0Mjc1ZWYzNjA4Njc2ZTAwY2I5OWMwZTdmYjBkNmYyZGM3ZTRiZDBlZmE4ZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWIwOTBiY2QxNjIwZmE2MmVhZWUxNTdhNzRmY2E2MzVhYTI5ZTEyY2JmZmQ2MThiNTc5MmQ4N2JjMDNhM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiNTMwZWRlNGYzZTg4MmQ2ZTg1ZTllNmE3N2JiYTI5NTk5OTk3MWU2NTk5NGU0ZTA0MWJjMDAzYjE1NzhkMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiNDdhOTYwNDA5MmRlODZhMjI0MGRhNGNlNjZhYTNkNDZmZTA2NDNkNDNjYzhlNDRmNzBmMDE1ZjEyYzYwZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_958a2a1d3b6c47599ec7cc8c4cb7a161",
+      "statement": "Data-trap detection is warning-only: it checks target imbalance, augmentation before a current-lineage split, augmentation reaching evaluation data, and target-distribution changes of at least 0.05 across eligible single-input/single-output lineage augmentations.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/build.py#L340-L375",
+          "version": "repo-lines-v1:sha256:2a66994ac6f84b4d396acee5c1984fdbf94e63860ba919e63627b096398d6a82:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1OGVjYzY4NDJhZGU1YzYzNzYzMjNjMTkyMjQzOWEyMjUwMThhYzExNGY2Y2E5ZjQ5YmUwZGIyM2UwMWYzMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkZjRmZjA4NmUxMWY0NDVhNGM2YzEyNmY2NGMwNDg0ODYwZDJhODRmYTEwM2NiZDBjMzI3ZjJiMjk3Njg3NmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5NDMzMGY4N2U0NGI1MmVkMGMyZTBhODIxZGE4MGM2NGU3NTdiZGJjNGMxNjg1Y2U3ZGU5ZGE2NTBmY2IyMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3NTAyNjQwM2NiMDczZTk4N2E4YjNkYTQ3NTFjMTdiN2FjYzhhNWM2YWZkZTM3MTkwMTY3OTQxOWNhM2I3YzQifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/traps.py#L14-L54",
+          "version": "repo-lines-v1:sha256:3a4f86f5f146be1288d490919b25ad5538c1e87c2a6696f62e155c5bc65ef6cc:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmNzRiM2NjZGZkMTIwYTBiZDdhOGQ3YmVkMzY5ZDVjNzZlYjA4MDM5YWExY2YxM2ZiNjlkYjdjYzcxMjFjMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTYwMGE3M2QyZTAyZjM1MmI5MGZlZjFkOGQ2MzgxMWJhNGE4ZWUwYzFiZWFhN2FlNDY1OGYzNmFhMmUxOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1YzgyZGUzOGZhN2QxYTc4OWUzM2QwYTZhMDJkZjNiMzY0NWNiYjQ1Yzk0MWVlNWZiMzQzMjM3ODA4ZDk4NzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiYTM1NTZmMDRmMmYyMDVlNzc2MDc4NjNlZTkxODc2NzIyMjBlNjQyMzY0ZGE3ZGU1MThiMzU2YTUxZDc4NzAifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/traps.py#L57-L178",
+          "version": "repo-lines-v1:sha256:f4b7145aee08d979aa4a51ecd6ee5377a10c81baf146696045a2c81d7f7cc906:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMDQ0ZjgyMzUyMjMwZjJjNGRlNTM1OTZlNTY1ZTBiNzYyOWIxNTUxNTlmNWU1OTBlM2Y4ODdlZWE3ZDZhNjg1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIyZTE0MjQ2MDBmNzgyNzI2ZGI2NjE3MjlhN2YwMmFjYzA2NGE0ZDZmZDg5NDFlZTJkNTM4Y2EyMDk1ZDk1ZTZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNzAxNDllMDY5YWQ2N2VjY2Y0NzM2NDZmZjFjNzUwMDUwZDMyOWQxMTAwMThkYzU3NjY4NzhlYWZhMWQ2MDdkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiZWYwOWNjYTQxZTQ0ZGE5ZDhjMTY5ODk1ZWU1NTUwMzY4ZGY0ZTE3MzEyY2Q3MzhmYWQzZDdjZjYzOWMyNWM3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f31c29eaecc43bc8f5fe56a1ab07272",
+      "statement": "A prior bundle is accepted for revision lineage only if it contains parseable packet and build-record files whose packet digest agrees; a new build then increments the prior revision and records the previous packet digest, while request validation requires the record and digest to be supplied together and to agree.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/build.py#L127-L143",
+          "version": "repo-lines-v1:sha256:9ca984fede22fc08a808000af10b0e90aba0368aeb5fd7f8323facaf6b8db2b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MWFlYTMxMWMwYWQ5NzRlNWQ4MWE2ODc3MDgyNzljOTFiODkwNDk5NzQ2NjM1YjViMzA3MTdmNDY2NThhOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1OWNiNGY2YTJjYmVmZGE4NWY4YmFkYmE5MzhiZmUyYWQxZDZhOGRjOGQ0MmEzMzllN2U3N2E1OGZkMTc3NWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5MzA5NWNiODljM2FiMTYxMzI0ZjI4OTAwMjBhMWNkMWY3ZmFlMjhmZGU2MWYyNjhjMWRjZWZjNTk2ZGJiMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwYWY4YzY0ZmY2ZGMyOWI0N2YwMDJhODIzM2Y3NTQ3MjMxMzcwZGM2ODk1MzAwYTMzNTZhMTNjMGEzMjQ3ZjgifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/build.py#L248-L273",
+          "version": "repo-lines-v1:sha256:eee5301e637509ccd18a32d4dae84e4cbd872fe1331402e3fba875832f6bcb09:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MDc2NTAyMjY3YTE0MTY3NDM0NDZjZGNkNzc1MzYxYTQxYWE2NjQ5NzBmZWMxNThjZTUyOGI0ZTA3MGM3ODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkYTYxN2I5NWVkODBkNjU1Zjg1MTMzNzliNTc5MjEzNmQ1ZDIzNGFkYTVkYThkYjMxMTAyZWQxODNhNTE0MzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjZDZjMDFkZjhmNjQ5OGVkMjgyYzc0OTQzNDFiNGQ3Y2U2MjAxZWExMjZhMDkyYzUzNzIwNjZjMjUwNDE5NWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0NDQxMTE3NjQ3NTgyN2NhOTJhMTUyM2FmOTU5ODgzMDBhZjBiYjM2NDZkZTdjZjYwZWMyMWI0MDE4ODdlZDEifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/models.py#L217-L285",
+          "version": "repo-lines-v1:sha256:bd5b10e4bf997d61c964dead338128ab7deaced796bea5e7d30299dc7ba44695:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyNTZlNWQ4MmJkNTY1M2I0M2ZmN2IzNGViMTUyYjJhNzYxZjc5OTM2OGU2Yzc0MDEwYjdiYTFmYWIwYjQ0MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWIwOTBiY2QxNjIwZmE2MmVhZWUxNTdhNzRmY2E2MzVhYTI5ZTEyY2JmZmQ2MThiNTc5MmQ4N2JjMDNhM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5ZjhlMTM5NTI3YzgwNTdjN2I2NWI1Yjk1N2Q1Mzg5YTJhNWVjZWMzM2QyZGQyZTllMDFjMDY5OGJiYzY0Y2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0NzA2YTE4OThjMzI0M2FkYzljOWRkNTFmMjQwZWYyNjBlMDhmMWE1NGUwN2IxMzJjN2I5OGRkODIyODg2MjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_58e204402f2d49fd8206c81a997e6d3c",
+      "statement": "Bundle persistence reserves a previously nonexistent output directory exclusively, stages canonical JSON in a sibling temporary directory, reparses and validates digests, manifest, and exact file set, then atomically renames the staged directory; failures clean staged files and release an owned empty reservation.",
+      "evidence": [
+        {
+          "resource": "repo://src/dsx/builders/persist.py#L15-L45",
+          "version": "repo-lines-v1:sha256:8459758262b6d2afda7a661029b0e4f320e5859af5a78bb9a2f4f510658d01b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0YWI2Y2FmZGUwNzNhNWQxMTNkMWQxMzMwZTg0YTYxNDg0YTU3NjhlYTk1OWE4ZjE3N2I0NGE5MmY2ZmFkMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjIyMzQzZTljNzU1OTIzM2RjNDZkY2VhNTg5OTY1OGY2Yzg2YTczMTRmYTQ2MjA5OGYyOTI4YWY2YWQzZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhODU3OThmN2UyYjkyNjc1NjU1MjQxNDZkZjY2NTAyNjFhMjgzMmE2YmQ2ODM1OWUxMzUwNWUwNTg1ZjQzNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzY2UxZTVkMmQwNzRiNTc2OGFlOTU0NGY3Y2RiNGJlMmYyOWIxODEwNDMwOTQ4NWFkMjNlYjI4YjdkNTJmYTAifQ"
+        },
+        {
+          "resource": "repo://src/dsx/builders/persist.py#L48-L87",
+          "version": "repo-lines-v1:sha256:312254c837c40d029c28e766c9d59acb81d49f98e69ae1623fc6274c2b6d92aa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNWQ5ZmI4ZTU1ZmRiMDcyYTI1ZmIxZmE4MmFiYTcwNmQ1NzdjZThlMzMyNmY4NWVjZjI5YzdhZTUyYTI1MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjZWYzOGRiNTNkNjJlYmI5ZDU2NWQyNjM4ZWEyNTdjMzMwZDIxOGRlNWM0ZjZmMGZhYjQxMWJhNGFlZmU5ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZWZkOWUxNzJlNTE2NDhjYzY1N2RiZWEwNDYxM2ZiNzc5M2Q2ZjZjYmViOTIyZjE2YWVkYTZmZDRhMTlmNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/builders/test_persist.py#L171-L221",
+          "version": "repo-lines-v1:sha256:3c5e6148309ed96fcc7657b02dc545f69b102c5660980f382f6dce48885e8c78:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhODFjNGYzMDY1YzdkODdhM2I4ZWViYzY2N2UwYjEwODViZmQxOWZmNWVjN2FkNzRjMjM0ZmVjNTEzNDdhNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4YmI3YTIyM2IwZmRmMDRlYjhjZjkzZGU3ZWIwOWZjYTc3NDNlZTgzMWQwMzcwNDI2ZGExNzkxMDhiNjY1NmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyMzI0NDI0MDlhMWZlZjE5NzA0M2M2MWVkYTBjYWNkY2I3ZmIxNDAwNTFjYWExYzgyZmY5N2JhNWFlYjUyNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmMjAwNGNmNmNiN2NhMDhkMGQwNGQxMzUyMWJjYWMwZjgzNDRhOGZlZGNiYWI3OWQ2YjNlYzg3ZWI1N2MxOWIifQ"
+        },
+        {
+          "resource": "repo://tests/builders/test_persist.py#L52-L93",
+          "version": "repo-lines-v1:sha256:f7219ea55c04e1f857d4028b242a2244513ee5a053a34efa107692dee0a08cfb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxYTNhMDQyMDEzODkyMTUzZDc5ODlkOGU2YjRlNmVjMWUyNDZiMjc0YjJkZjFhNjM2MDI5ZDE3ODZmZjJmODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4YmI3YTIyM2IwZmRmMDRlYjhjZjkzZGU3ZWIwOWZjYTc3NDNlZTgzMWQwMzcwNDI2ZGExNzkxMDhiNjY1NmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5ZDNhMTY2NjdjM2YzMDQwZWIwYTY2MWJjMzEyMzI4NzNjOTczYTc2Y2ExMjFjYWNkYmJlOWNhOGQxODUwYzQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.0",
+    "at": "2026-09-02T23:04:01.230Z"
+  }
+}
